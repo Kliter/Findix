@@ -1,5 +1,7 @@
 package com.kl.findix.ui.map
 
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -16,6 +18,8 @@ class MapActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "MapActivity"
+
+        fun newInstance(context: Context) = Intent(context, MapActivity::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

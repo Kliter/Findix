@@ -4,4 +4,6 @@
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
     <string name="button_sign_in">SignIn</string>
+
+    <string name="web_client_key">983690829081-n0lfljm32e8q33bmthuo97i1s9l91rdt.apps.googleusercontent.com</string>
 </resources>
