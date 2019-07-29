@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.kl.findix.model.User
 
@@ -19,6 +20,10 @@ class FirebaseUserService: UserService {
 
     init {
         mAuth.addAuthStateListener(mAuthStateListener)
+    }
+
+    override fun getCurrentSignInUser(): FirebaseUser? {
+        return mAuth.currentUser
     }
 
     override fun signOut() {

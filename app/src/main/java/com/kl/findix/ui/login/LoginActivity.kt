@@ -12,7 +12,7 @@ import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.common.api.GoogleApiClient
 import com.kl.findix.R
 import com.kl.findix.databinding.ActivityLoginBinding
-import com.kl.findix.ui.map.MapActivity
+import com.kl.findix.ui.map.MapsActivity
 import com.kl.findix.util.REQUEST_CODE_SIGN_IN
 import com.kl.findix.viewmodel.LoginViewModel
 import com.kl.findix.viewmodel.ViewModelFactory
@@ -32,7 +32,16 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
+        mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(LoginViewModel::class.java)
         setupWidgets()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (mViewModel.getCurrentSignInUser() != null) {
+            val intent = Intent(this, MapsActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun setupWidgets() {
@@ -40,20 +49,19 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         setupViewModel()
 
         // Tmp implementation.
-        mViewModel.signOut()
+        //mViewModel.signOut()
     }
 
     private fun setupViewModel() {
         mViewModel.getUserLiveData().observe(this, Observer { user ->
             user?.let {
-                startActivity(MapActivity.newInstance(this))
+                startActivity(MapsActivity.newInstance(this))
                 finish()
             }
         })
     }
 
     private fun setupDataBinding() {
-        mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(LoginViewModel::class.java)
         val binding = DataBindingUtil.setContentView<ActivityLoginBinding>(this, R.layout.activity_login)
         binding.listener = this
         binding.btnGoogleSignIn.setOnClickListener(this)
