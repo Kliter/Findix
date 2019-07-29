@@ -1,10 +1,10 @@
 package com.kl.findix.di.module
 
-import android.app.Application
 import android.content.Context
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.GoogleApiClient
+import com.kl.findix.Application
 import com.kl.findix.R
 import com.kl.findix.firestore.FirebaseUserService
 import com.kl.findix.firestore.UserService
@@ -31,11 +31,12 @@ class AppModule {
             .requestEmail()
             .build()
 
-        return GoogleApiClient.Builder(context).addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOption).build()
+        return GoogleApiClient.Builder(context)
+            .addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOption)
+            .build()
     }
 
     @Singleton
     @Provides
     fun provideUserService(): UserService = FirebaseUserService()
-
 }
