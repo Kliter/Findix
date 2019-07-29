@@ -1,16 +1,21 @@
 package com.kl.findix.di.component
 
 import com.kl.findix.Application
+import com.kl.findix.di.module.AppModule
 import com.kl.findix.di.module.BuildersModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
 import dagger.android.AndroidInjector
+import dagger.android.support.AndroidSupportInjectionModule
+import javax.inject.Singleton
 
+@Singleton
 @Component(
     modules = [
-        AndroidInjectionModule::class,
-        BuildersModule::class
+        AndroidSupportInjectionModule::class,
+        BuildersModule::class,
+        AppModule::class
     ]
 )
 interface AppComponent: AndroidInjector<Application> {

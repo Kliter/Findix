@@ -16,7 +16,6 @@ class Application: Application(), HasActivityInjector {
     override fun onCreate() {
         super.onCreate()
 
-        // Init comopnent
         DaggerAppComponent.factory().create(this).inject(this)
     }
 
