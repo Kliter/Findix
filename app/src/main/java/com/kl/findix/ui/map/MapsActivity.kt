@@ -80,8 +80,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnN
     }
 
     private fun setupMap() {
-//        val mapFragment: SupportMapFragment = map as SupportMapFragment
-//        mapFragment.getMapAsync(this)
+        val mapFragment: SupportMapFragment = map as SupportMapFragment
+        mapFragment.getMapAsync(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

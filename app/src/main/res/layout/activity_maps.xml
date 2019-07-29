@@ -27,7 +27,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_above="@id/bottom_navigation_view"
                 android:layout_below="@id/appbar_layout"/>
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottom_navigation_view"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_alignParentBottom="true"
+                app:menu="@menu/menu_bottom_navigation_view"/>
 
     </RelativeLayout>
 
@@ -36,7 +44,9 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             app:headerLayout="@layout/layout_header"
-            app:menu="@menu/drawer"
-            android:layout_gravity="start"/>
+            app:menu="@menu/menu_map_drawer"
+            android:layout_gravity="start"
+            app:itemIconTint="@drawable/bottom_navigation_item_state"
+            app:itemTextColor="@drawable/bottom_navigation_item_state"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>
