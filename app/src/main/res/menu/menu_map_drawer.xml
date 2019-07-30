@@ -2,13 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-                android:id="@+id/menu_item1"
-                android:icon="@android:drawable/ic_menu_my_calendar"
-                android:title="Calendar" />
+                android:id="@+id/menu_profile"
+                android:icon="@drawable/ic_action_profile"
+                android:title="@string/action_profile" />
         <item
-                android:id="@+id/menu_item2"
-                android:icon="@android:drawable/ic_menu_myplaces"
-                android:title="Places" />
+                android:id="@+id/menu_message"
+                android:icon="@drawable/ic_action_message"
+                android:title="@string/action_message" />
+        <item
+                android:id="@+id/menu_list"
+                android:icon="@drawable/ic_action_list"
+                android:title="@string/action_list" />
+
     </group>
 
     <item android:title="TITLE!">

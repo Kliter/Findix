@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.maps.GoogleMap
@@ -20,13 +21,17 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.navigation.NavigationView
+import com.kl.findix.ui.list.ListActivity
 import com.kl.findix.ui.login.LoginActivity
+import com.kl.findix.ui.message.MessageActivity
+import com.kl.findix.ui.profile.ProfileActivity
+import com.kl.findix.util.setupBottomNavigationView
 import com.kl.findix.viewmodel.LoginViewModel
 import com.kl.findix.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import javax.inject.Inject
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener, SearchView.OnQueryTextListener {
 
     companion object {
         private const val TAG = "MapsActivity"
@@ -49,6 +54,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnN
 
     override fun onStart() {
         super.onStart()
+        bottom_navigation_view.selectedItemId = R.id.action_map
+        setupBottomNavigationView(this, bottom_navigation_view)
+
         if (mLoginViewModel.getCurrentSignInUser() == null) {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
@@ -86,14 +94,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnN
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_map, menu)
-        return true
-    }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
-            R.id.action_settings -> {
-                Log.d(TAG, "Settings Selected!");
-            }
+        if (menu != null) {
+            val searchView = menu.findItem(R.id.search_view).actionView as SearchView
+            searchView.setOnQueryTextListener(this)
         }
         return true
     }
@@ -108,22 +112,30 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnN
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        val intent = Intent()
         when (item.itemId) {
-            R.id.menu_item1 -> {
-                Log.d(TAG, "Item 1 Selected!");
+            R.id.action_profile -> {
+                intent.setClass(this, ProfileActivity::class.java)
             }
-            R.id.menu_item2 -> {
-                Log.d(TAG, "Item 2 Selected!");
+            R.id.action_message -> {
+                intent.setClass(this, MessageActivity::class.java)
             }
-            R.id.menu_item3 -> {
-                Log.d(TAG, "Item 3 Selected!");
-            }
-            R.id.menu_item4 -> {
-                Log.d(TAG, "Item 4 Selected!");
+            R.id.action_list -> {
+                intent.setClass(this, ListActivity::class.java)
             }
         }
-
         drawer_layout.closeDrawer(GravityCompat.START)
+        startActivity(intent)
+
         return true
+    }
+
+    override fun onQueryTextSubmit(text: String?): Boolean {
+        Log.d(TAG, "text is submitted")
+        return true
+    }
+
+    override fun onQueryTextChange(text: String?): Boolean {
+        return false
     }
 }
