@@ -7,20 +7,13 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.kl.findix.model.User
+import javax.inject.Inject
 
-class FirebaseUserService: UserService {
+class FirebaseUserService @Inject constructor(
+    var mAuth: FirebaseAuth
+): UserService {
 
     private var mUserData: MutableLiveData<User> = MutableLiveData()
-    private val mAuth = FirebaseAuth.getInstance()
-    private val mAuthStateListener = FirebaseAuth.AuthStateListener {
-        mAuth.currentUser?.let {
-            mUserData.value = User(it.uid, it.displayName, it.photoUrl.toString(), it.email)
-        }
-    }
-
-    init {
-        mAuth.addAuthStateListener(mAuthStateListener)
-    }
 
     override fun getCurrentSignInUser(): FirebaseUser? {
         return mAuth.currentUser
@@ -36,6 +29,5 @@ class FirebaseUserService: UserService {
     }
 
     override fun getUserLiveData(): LiveData<User> = mUserData
-
 
 }

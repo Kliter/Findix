@@ -54,13 +54,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnN
 
     override fun onStart() {
         super.onStart()
-        bottom_navigation_view.selectedItemId = R.id.action_map
-        setupBottomNavigationView(this, bottom_navigation_view)
 
         if (mLoginViewModel.getCurrentSignInUser() == null) {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        bottom_navigation_view.selectedItemId = R.id.action_map
+        setupBottomNavigationView(this, bottom_navigation_view)
     }
 
     private fun setupWidgets() {

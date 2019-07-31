@@ -5,7 +5,6 @@ import com.kl.findix.di.module.AppModule
 import com.kl.findix.di.module.BuildersModule
 import dagger.BindsInstance
 import dagger.Component
-import dagger.android.AndroidInjectionModule
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
