@@ -17,4 +17,10 @@
     <string name="action_list">List</string>
     <string name="action_message">Message</string>
     <string name="search">Search</string>
+    <string name="hint_username">User Name</string>
+    <string name="private_information">Private Information</string>
+    <string name="hint_website">WebSite</string>
+    <string name="hint_description">Description</string>
+    <string name="hint_phone">Phone Number</string>
+    <string name="hint_major">Major</string>
 </resources>
