@@ -19,8 +19,8 @@ class ListActivity : AppCompatActivity() {
         val binding = DataBindingUtil.setContentView<ActivityListBinding>(this, R.layout.activity_list)
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
         bottom_navigation_view.selectedItemId = R.id.action_list
         setupBottomNavigationView(this, bottom_navigation_view)
     }

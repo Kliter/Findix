@@ -19,8 +19,8 @@ class MessageActivity : AppCompatActivity() {
         val binding = DataBindingUtil.setContentView<ActivityMessageBinding>(this, R.layout.activity_message)
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
         bottom_navigation_view.selectedItemId = R.id.message
         setupBottomNavigationView(this, bottom_navigation_view)
     }

@@ -4,6 +4,9 @@ import android.content.Context
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.GoogleApiClient
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.kl.findix.Application
 import com.kl.findix.R
 import com.kl.findix.firestore.FirebaseUserService
@@ -38,5 +41,25 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideUserService(): UserService = FirebaseUserService()
+    fun provideUserService(firebaseAuth: FirebaseAuth): UserService {
+        return FirebaseUserService(firebaseAuth)
+    }
+
+    @Provides
+    @Singleton
+    fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
+
+    @Provides
+    @Singleton
+    fun provideFirebaseDatabase(): FirebaseDatabase {
+        val firebaseDatabase = FirebaseDatabase.getInstance()
+        firebaseDatabase.setPersistenceEnabled(true)
+        return firebaseDatabase
+    }
+
+    @Provides
+    @Singleton
+    fun provideFirebaseDatabaseReference(firebaseDatabase: FirebaseDatabase): DatabaseReference {
+        return firebaseDatabase.reference
+    }
 }
