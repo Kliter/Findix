@@ -9,10 +9,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.auth.api.Auth
-import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.kl.findix.R
 import com.kl.findix.databinding.ActivityLoginBinding
 import com.kl.findix.ui.map.MapsActivity
+import com.kl.findix.ui.signup.SignUpActivity
 import com.kl.findix.util.REQUEST_CODE_SIGN_IN
 import com.kl.findix.viewmodel.LoginViewModel
 import com.kl.findix.viewmodel.ViewModelFactory
@@ -26,13 +27,14 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     @Inject lateinit var mViewModelFactory: ViewModelFactory
-    @Inject lateinit var mGoogleApiClient: GoogleApiClient
+    @Inject lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var mViewModel: LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(LoginViewModel::class.java)
+
         setupWidgets()
     }
 
@@ -47,13 +49,10 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     private fun setupWidgets() {
         setupDataBinding()
         setupViewModel()
-
-        // Tmp implementation.
-        //mViewModel.signOut()
     }
 
     private fun setupViewModel() {
-        mViewModel.getUserLiveData().observe(this, Observer { user ->
+        mViewModel.user.observe(this, Observer { user ->
             user?.let {
                 startActivity(MapsActivity.newInstance(this))
                 finish()
@@ -68,7 +67,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun googleSignIn() {
-        val signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient)
+        val signInIntent = mGoogleSignInClient.signInIntent
         startActivityForResult(signInIntent, REQUEST_CODE_SIGN_IN)
     }
 
@@ -79,8 +78,11 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                 googleSignIn()
             }
             R.id.btn_email_sign_in -> {
-                //Todo: Implementation.
                 Log.d(TAG, "Pressed EmailSignIn Button.")
+            }
+            R.id.tv_sign_up -> {
+                val intent = Intent(this, SignUpActivity::class.java)
+                startActivity(intent)
             }
         }
     }
@@ -88,9 +90,9 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_SIGN_IN) {
-            val googleSignInResult = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
-            if (googleSignInResult.isSuccess) {
-                mViewModel.signIn(googleSignInResult.signInAccount)
+            val task = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
+            if (task.isSuccess) {
+                mViewModel.signIn(task.signInAccount)
             }
         }
     }

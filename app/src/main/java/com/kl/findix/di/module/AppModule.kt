@@ -1,16 +1,16 @@
 package com.kl.findix.di.module
 
 import android.content.Context
-import com.google.android.gms.auth.api.Auth
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.kl.findix.Application
 import com.kl.findix.R
-import com.kl.findix.firestore.FirebaseUserService
-import com.kl.findix.firestore.UserService
+import com.kl.findix.services.FirebaseUserServiceImpl
+import com.kl.findix.services.MapServiceImpl
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -28,21 +28,19 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideGoogleApiClient(context: Context): GoogleApiClient {
+    fun provideGoogleSignInClient(context: Context): GoogleSignInClient {
         val googleSignInOption = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(context.getString(R.string.web_client_key))
             .requestEmail()
             .build()
 
-        return GoogleApiClient.Builder(context)
-            .addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOption)
-            .build()
+        return GoogleSignIn.getClient(context, googleSignInOption)
     }
 
     @Singleton
     @Provides
-    fun provideUserService(firebaseAuth: FirebaseAuth): UserService {
-        return FirebaseUserService(firebaseAuth)
+    fun provideFirebaseUserService(context: Context, firebaseAuth: FirebaseAuth): FirebaseUserServiceImpl {
+        return FirebaseUserServiceImpl(context, firebaseAuth)
     }
 
     @Provides
@@ -61,5 +59,11 @@ class AppModule {
     @Singleton
     fun provideFirebaseDatabaseReference(firebaseDatabase: FirebaseDatabase): DatabaseReference {
         return firebaseDatabase.reference
+    }
+
+    @Singleton
+    @Provides
+    fun provideMapService(context: Context): MapServiceImpl {
+        return MapServiceImpl(context)
     }
 }

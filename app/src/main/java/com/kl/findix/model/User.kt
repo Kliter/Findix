@@ -1,11 +1,12 @@
 package com.kl.findix.model
 
 data class User(
-    var userIconUrl: String?,
-    var userName: String?,
-    var major: String?,
-    var description: String?,
-    var website: String?,
-    var mail: String,
-    var phone: String
+    var userIconUrl: String? = null,
+    var userName: String? = null,
+    var userId: String? = null,
+    var major: String? = null,
+    var description: String? = null,
+    var website: String? = null,
+    var email: String? = null,
+    var phone: String? = null
 )
