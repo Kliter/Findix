@@ -1,30 +1,31 @@
 package com.kl.findix.viewmodel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.FirebaseUser
-import com.kl.findix.firestore.UserService
+import com.kl.findix.model.User
+import com.kl.findix.services.FirebaseUserServiceImpl
 import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(
-    private val userService: UserService
+    private val firebaseUserService: FirebaseUserServiceImpl
 ): ViewModel() {
 
-    private var userLiveData = userService.getUserLiveData()
-
-    fun getUserLiveData() = userLiveData
+    var user: MutableLiveData<User> = firebaseUserService.getUserLiveData()
 
     fun getCurrentSignInUser(): FirebaseUser? {
-        return userService.getCurrentSignInUser()
+        return firebaseUserService.getCurrentSignInUser()
     }
 
     fun signOut() {
-        userService.signOut()
+        firebaseUserService.signOut()
     }
 
     fun signIn(googleSignInAccount: GoogleSignInAccount?) {
         googleSignInAccount?.let {
-            userService.signInWithGoogle(it)
+            firebaseUserService.signInWithGoogle(it)
         }
     }
 }

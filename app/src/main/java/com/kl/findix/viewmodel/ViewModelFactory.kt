@@ -9,7 +9,7 @@ import javax.inject.Singleton
 @Suppress("UNCHECKED_CAST")
 @Singleton
 class ViewModelFactory @Inject
-constructor(var creators: MutableMap<Class<out ViewModel>, Provider<ViewModel>>) : ViewModelProvider.Factory {
+constructor(private var creators: MutableMap<Class<out ViewModel>, Provider<ViewModel>>) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         var creator: Provider<out ViewModel>? = creators[modelClass]
@@ -22,13 +22,12 @@ constructor(var creators: MutableMap<Class<out ViewModel>, Provider<ViewModel>>)
             }
         }
         if (creator == null) {
-            throw IllegalArgumentException("unknown model class " + modelClass)
+            throw IllegalArgumentException("unknown model class $modelClass")
         }
         try {
             return creator.get() as T
         } catch (e: Exception) {
             throw RuntimeException(e)
         }
-
     }
 }

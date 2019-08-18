@@ -1,7 +1,11 @@
 package com.kl.findix.ui.map
 
+import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -9,24 +13,26 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.SearchView
+import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.*
 import dagger.android.AndroidInjection
 import com.kl.findix.R
 import kotlinx.android.synthetic.main.activity_maps.*
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.firestore.GeoPoint
 import com.kl.findix.ui.list.ListActivity
 import com.kl.findix.ui.login.LoginActivity
 import com.kl.findix.ui.message.MessageActivity
 import com.kl.findix.ui.profile.ProfileActivity
+import com.kl.findix.util.REQUEST_CODE_PERMISSION
 import com.kl.findix.util.setupBottomNavigationView
-import com.kl.findix.viewmodel.LoginViewModel
+import com.kl.findix.viewmodel.MapsViewModel
 import com.kl.findix.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import javax.inject.Inject
@@ -42,20 +48,58 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnN
     lateinit var mViewModelFactory: ViewModelFactory
 
     private var mMap: GoogleMap? = null
-    private lateinit var mLoginViewModel: LoginViewModel
+    private lateinit var mMapsViewModel: MapsViewModel
+
+    private lateinit var mFusedLocationProviderClient: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
-        mLoginViewModel = ViewModelProviders.of(this, mViewModelFactory).get(LoginViewModel::class.java)
+        mMapsViewModel = ViewModelProviders.of(this, mViewModelFactory).get(MapsViewModel::class.java)
+
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+
+//        if (ActivityCompat.checkSelfPermission(
+//                this,
+//                Manifest.permission.ACCESS_FINE_LOCATION
+//            ) == PackageManager.PERMISSION_GRANTED
+//        ) {
+//            getLastKnownPermission()
+//        } else {
+//            ActivityCompat.requestPermissions(
+//                this,
+//                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+//                REQUEST_CODE_PERMISSION
+//            )
+//        }
+
         setupWidgets()
     }
 
+//    private fun getLastKnownPermission() {
+//        if (ActivityCompat.checkSelfPermission(
+//                this,
+//                Manifest.permission.ACCESS_FINE_LOCATION
+//            ) == PackageManager.PERMISSION_GRANTED
+//        ) {
+//            mFusedLocationProviderClient.lastLocation.addOnCompleteListener { task ->
+//                if (task.isSuccessful) {
+//                    val location = task.result
+//                    location?.let {
+//                        val geoPoint = GeoPoint(location.latitude, location.longitude)
+//                        Log.d(TAG, "onComplete: latitude: ${location.latitude}")
+//                        Log.d(TAG, "onComplete: longitude: ${location.longitude}")
+//                    }
+//                }
+//            }
+//        }
+//    }
+
     override fun onStart() {
         super.onStart()
-
-        if (mLoginViewModel.getCurrentSignInUser() == null) {
+        mMapsViewModel.signOut()
+        if (mMapsViewModel.getCurrentSignInUser() == null) {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
@@ -112,6 +156,23 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, NavigationView.OnN
             val sydney = LatLng(-34.0, 151.0)// Tmp implementation.
             it.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
             it.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                it.isMyLocationEnabled = true
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CODE_PERMISSION) {
+            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                finish()
+            }
         }
     }
 
