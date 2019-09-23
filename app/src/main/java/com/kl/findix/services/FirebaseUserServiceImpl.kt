@@ -40,6 +40,9 @@ class FirebaseUserServiceImpl @Inject constructor(
             val credential = GoogleAuthProvider.getCredential(googleSignInAccount.idToken, null)
             mAuth.signInWithCredential(credential).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
+
+
+
                     val user = mAuth.currentUser
                     user?.let {
                         signUpGoogleAccount(user)
@@ -56,7 +59,7 @@ class FirebaseUserServiceImpl @Inject constructor(
 
     override fun getUserLiveData(): MutableLiveData<User> = mUserData
 
-    override fun signUpGoogleAccount(firebaseUser: FirebaseUser) {
+    private fun signUpGoogleAccount(firebaseUser: FirebaseUser) {
         val email = firebaseUser.email.toString()
         if (email.isNotEmpty()) {
             val user = User()
@@ -71,5 +74,13 @@ class FirebaseUserServiceImpl @Inject constructor(
                 .document(FirebaseAuth.getInstance().uid!!)
             newUserReference.set(user)
         }
+    }
+
+    private fun isAlreadySignUp(): Boolean {
+        val usersReference = firebaseFirestore.collection("Users").document(mAuth.currentUser?.uid!!)
+        usersReference.get().addOnCompleteListener { document ->
+            Log.d(TAG, "exist")
+        }
+        return true
     }
 }

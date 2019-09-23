@@ -10,5 +10,4 @@ interface FirebaseUserService {
     fun signOut()
     fun signInWithGoogle(googleSignInAccount: GoogleSignInAccount)
     fun getUserLiveData(): LiveData<User>
-    fun signUpGoogleAccount(firebaseUser: FirebaseUser)
 }
