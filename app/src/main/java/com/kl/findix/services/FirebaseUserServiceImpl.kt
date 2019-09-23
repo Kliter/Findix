@@ -40,9 +40,6 @@ class FirebaseUserServiceImpl @Inject constructor(
             val credential = GoogleAuthProvider.getCredential(googleSignInAccount.idToken, null)
             mAuth.signInWithCredential(credential).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-
-
-
                     val user = mAuth.currentUser
                     user?.let {
                         signUpGoogleAccount(user)

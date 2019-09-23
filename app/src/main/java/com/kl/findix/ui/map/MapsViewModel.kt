@@ -1,4 +1,4 @@
-package com.kl.findix.viewmodel
+package com.kl.findix.ui.map
 
 import android.app.Activity
 import androidx.lifecycle.ViewModel

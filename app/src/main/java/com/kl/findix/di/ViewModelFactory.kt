@@ -1,4 +1,4 @@
-package com.kl.findix.viewmodel
+package com.kl.findix.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

@@ -1,11 +1,9 @@
 package com.kl.findix.ui.map
 
 import android.Manifest
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -25,15 +23,13 @@ import kotlinx.android.synthetic.main.activity_maps.*
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.navigation.NavigationView
-import com.google.firebase.firestore.GeoPoint
 import com.kl.findix.ui.list.ListActivity
 import com.kl.findix.ui.login.LoginActivity
 import com.kl.findix.ui.message.MessageActivity
 import com.kl.findix.ui.profile.ProfileActivity
 import com.kl.findix.util.REQUEST_CODE_PERMISSION
 import com.kl.findix.util.setupBottomNavigationView
-import com.kl.findix.viewmodel.MapsViewModel
-import com.kl.findix.viewmodel.ViewModelFactory
+import com.kl.findix.di.ViewModelFactory
 import kotlinx.android.synthetic.main.layout_toolbar.*
 import javax.inject.Inject
 

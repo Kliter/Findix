@@ -1,9 +1,9 @@
 package com.kl.findix.di.module
 
 import androidx.lifecycle.ViewModel
-import com.kl.findix.viewmodel.LoginViewModel
-import com.kl.findix.viewmodel.MapsViewModel
-import com.kl.findix.viewmodel.ProfileViewModel
+import com.kl.findix.ui.login.LoginViewModel
+import com.kl.findix.ui.map.MapsViewModel
+import com.kl.findix.ui.profile.ProfileViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap

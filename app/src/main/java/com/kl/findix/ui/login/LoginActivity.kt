@@ -15,8 +15,7 @@ import com.kl.findix.databinding.ActivityLoginBinding
 import com.kl.findix.ui.map.MapsActivity
 import com.kl.findix.ui.signup.SignUpActivity
 import com.kl.findix.util.REQUEST_CODE_SIGN_IN
-import com.kl.findix.viewmodel.LoginViewModel
-import com.kl.findix.viewmodel.ViewModelFactory
+import com.kl.findix.di.ViewModelFactory
 import dagger.android.AndroidInjection
 import javax.inject.Inject
 
@@ -74,7 +73,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.btn_google_sign_in -> {
-                Log.d(TAG, "Pressed GoogleSignIn Button.")
                 googleSignIn()
             }
             R.id.btn_email_sign_in -> {
