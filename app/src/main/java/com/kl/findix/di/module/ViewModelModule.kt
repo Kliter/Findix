@@ -2,6 +2,7 @@ package com.kl.findix.di.module
 
 import androidx.lifecycle.ViewModel
 import com.kl.findix.ui.login.LoginViewModel
+import com.kl.findix.ui.login.SignUpViewModel
 import com.kl.findix.ui.map.MapsViewModel
 import com.kl.findix.ui.profile.ProfileViewModel
 import dagger.Binds
@@ -25,5 +26,10 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ProfileViewModel::class)
     internal abstract fun provideProfileViewModel(profileViewModel: ProfileViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SignUpViewModel::class)
+    internal abstract fun provideSignUpViewModel(signUpViewModel: SignUpViewModel): ViewModel
 
 }

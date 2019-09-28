@@ -12,7 +12,7 @@ class LoginViewModel @Inject constructor(
     private val firebaseUserService: FirebaseUserServiceImpl
 ): ViewModel() {
 
-    var user: MutableLiveData<User> = firebaseUserService.getUserLiveData()
+    val isSignedIn: MutableLiveData<Boolean> = MutableLiveData()
 
     fun getCurrentSignInUser(): FirebaseUser? {
         return firebaseUserService.getCurrentSignInUser()
@@ -26,5 +26,9 @@ class LoginViewModel @Inject constructor(
         googleSignInAccount?.let {
             firebaseUserService.signInWithGoogle(it)
         }
+    }
+
+    fun isSignedIn() {
+        isSignedIn.postValue(firebaseUserService.getCurrentSignInUser() != null)
     }
 }

@@ -1,6 +1,7 @@
 package com.kl.findix.di.module
 
 import android.content.Context
+import androidx.navigation.NavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
