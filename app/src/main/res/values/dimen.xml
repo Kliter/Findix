@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margin_x1">8dp</dimen>
+    <dimen name="margin_x2">16dp</dimen>
+    <dimen name="margin_x3">24dp</dimen>
+    <dimen name="margin_x4">32dp</dimen>
+    <dimen name="margin_x5">40dp</dimen>
+    <dimen name="margin_x6">48dp</dimen>
+    <dimen name="margin_x7">56dp</dimen>
+    <dimen name="margin_x8">64dp</dimen>
+    <dimen name="margin_x9">72dp</dimen>
+    <dimen name="margin_x10">80dp</dimen>
+    <dimen name="margin_x11">88dp</dimen>
+    <dimen name="margin_x12">96dp</dimen>
+    <dimen name="margin_x13">104dp</dimen>
+    <dimen name="margin_x14">112dp</dimen>
+    <dimen name="margin_x15">120dp</dimen>
+    <dimen name="margin_x16">128dp</dimen>
+    <dimen name="margin_x17">136dp</dimen>
+    <dimen name="margin_x18">144dp</dimen>
+    <dimen name="margin_x19">152dp</dimen>
+    <dimen name="margin_x20">160dp</dimen>
+</resources>

@@ -28,13 +28,15 @@ class LoginFragment : Fragment(), View.OnClickListener {
         private const val TAG = "LoginFragment"
     }
 
-    private lateinit var _viewModel: LoginViewModel
     @Inject
     lateinit var mViewModelFactory: ViewModelFactory
     @Inject
     lateinit var mGoogleSignInClient: GoogleSignInClient
     @Inject
     lateinit var navigator: LoginNavigator
+
+    private lateinit var _viewModel: LoginViewModel
+    private lateinit var epoxyController: LoginController
     private val binding: FragmentLoginBinding by lazy {
         DataBindingUtil.inflate<FragmentLoginBinding>(
             layoutInflater,
@@ -54,7 +56,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
             lifecycleOwner = this@LoginFragment
             viewModel = _viewModel
         }
-        binding.onClickGoogleSignInListener = this
+//        binding.onClickGoogleSignInListener = this
         return binding.root
     }
 
@@ -65,15 +67,9 @@ class LoginFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(view: View?) {
         when (view?.id) {
-            R.id.btn_google_sign_in -> {
+            R.id.btn_google_sign_in -> { // GoogleSignInボタンはonClick設定できないのでここで実装。
                 googleSignIn()
                 _viewModel.isSignedIn()
-            }
-            R.id.btn_email_sign_in -> {
-                Log.d(TAG, "Pressed EmailSignIn Button.")
-            }
-            R.id.tv_sign_up -> {
-                navigator.toSignUpFragment()
             }
         }
     }
@@ -81,6 +77,23 @@ class LoginFragment : Fragment(), View.OnClickListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         observeState(_viewModel)
+        setController()
+    }
+
+    private fun setController() {
+        epoxyController = LoginController(
+            onClickGoogleSignIn = {
+                // Todo
+            },
+            onClickEmailSignIn = {
+                Log.d(TAG, "Pressed EmailSignIn Button.")
+            },
+            onClickSignUp = {
+                navigator.toSignUpFragment()
+            }
+        ).also {
+            binding.recyclerView.setControllerAndBuildModels(it)
+        }
     }
 
     private fun observeState(viewModel: LoginViewModel) {
