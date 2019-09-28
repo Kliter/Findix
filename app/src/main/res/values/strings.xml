@@ -28,4 +28,5 @@
     <string name="induce_sign_up">Don\'t have an account?</string>
     <string name="sign_up">Sign Up</string>
     <string name="collection_users">Users</string>
+    <string name="button_sign_up">SignUp</string>
 </resources>

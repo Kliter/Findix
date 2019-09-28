@@ -2,6 +2,7 @@ package com.kl.findix.ui.login
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,9 +21,9 @@ class SignUpFragment : Fragment() {
     private lateinit var _viewModel: SignUpViewModel
     @Inject
     lateinit var mViewModelFactory: ViewModelFactory
-    //    @Inject
-//    lateinit var navigator: SignUpNavigator
-    val binding: FragmentSignupBinding by lazy {
+
+    private lateinit var epoxyController: SignUpController
+    private val binding: FragmentSignupBinding by lazy {
         DataBindingUtil.inflate<FragmentSignupBinding>(
             layoutInflater,
             R.layout.fragment_signup,
@@ -42,6 +43,21 @@ class SignUpFragment : Fragment() {
             viewModel = _viewModel
         }
         return binding.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        setController()
+    }
+
+    private fun setController() {
+        epoxyController = SignUpController(
+            onClickSignUp = {
+                // Todo
+            }
+        ).also {
+            binding.recyclerView.setControllerAndBuildModels(it)
+        }
     }
 
     override fun onAttach(context: Context) {
