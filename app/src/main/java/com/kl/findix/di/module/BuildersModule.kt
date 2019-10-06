@@ -1,9 +1,9 @@
 package com.kl.findix.di.module
 
+import com.kl.findix.di.module.login.LoginActivityModule
+import com.kl.findix.di.module.maps.MapsActivityModule
 import com.kl.findix.ui.list.ListActivity
 import com.kl.findix.ui.login.LoginActivity
-import com.kl.findix.ui.login.LoginFragment
-import com.kl.findix.ui.login.SignUpFragment
 import com.kl.findix.ui.map.MapsActivity
 import com.kl.findix.ui.message.MessageActivity
 import com.kl.findix.ui.profile.ProfileActivity
@@ -13,7 +13,7 @@ import dagger.android.ContributesAndroidInjector
 @Module
 abstract class BuildersModule {
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [MapsActivityModule::class])
     internal abstract fun provideMapActivity(): MapsActivity
 
     @ContributesAndroidInjector(modules = [LoginActivityModule::class])

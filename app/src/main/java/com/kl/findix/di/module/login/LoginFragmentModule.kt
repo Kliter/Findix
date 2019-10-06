@@ -1,4 +1,4 @@
-package com.kl.findix.di.module
+package com.kl.findix.di.module.login
 
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController

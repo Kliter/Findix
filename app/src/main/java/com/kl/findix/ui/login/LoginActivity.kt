@@ -42,17 +42,5 @@ class LoginActivity : AppCompatActivity(), HasSupportFragmentInjector {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_SIGN_IN) {
-            val task = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
-            if (task.isSuccess) {
-                _viewModel.signIn(task.signInAccount)
-            }
-        }
-    }
-
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> {
-        return fragmentInjector
-    }
+    override fun supportFragmentInjector(): AndroidInjector<Fragment> = fragmentInjector
 }

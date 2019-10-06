@@ -1,4 +1,4 @@
-package com.kl.findix.di.module
+package com.kl.findix.di.module.login
 
 import com.kl.findix.ui.login.LoginFragment
 import com.kl.findix.ui.login.SignUpFragment

@@ -1,6 +1,7 @@
 package com.kl.findix.ui.login
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.kl.findix.R
 import com.kl.findix.databinding.FragmentLoginBinding
@@ -22,7 +24,7 @@ import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_login.*
 import javax.inject.Inject
 
-class LoginFragment : Fragment(), View.OnClickListener {
+class LoginFragment : Fragment() {
 
     companion object {
         private const val TAG = "LoginFragment"
@@ -56,22 +58,12 @@ class LoginFragment : Fragment(), View.OnClickListener {
             lifecycleOwner = this@LoginFragment
             viewModel = _viewModel
         }
-//        binding.onClickGoogleSignInListener = this
         return binding.root
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         AndroidSupportInjection.inject(this)
-    }
-
-    override fun onClick(view: View?) {
-        when (view?.id) {
-            R.id.btn_google_sign_in -> { // GoogleSignInボタンはonClick設定できないのでここで実装。
-                googleSignIn()
-                _viewModel.isSignedIn()
-            }
-        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -83,7 +75,8 @@ class LoginFragment : Fragment(), View.OnClickListener {
     private fun setController() {
         epoxyController = LoginController(
             onClickGoogleSignIn = {
-                // Todo
+                googleSignIn()
+                _viewModel.isSignedIn()
             },
             onClickEmailSignIn = {
                 Log.d(TAG, "Pressed EmailSignIn Button.")
@@ -110,5 +103,15 @@ class LoginFragment : Fragment(), View.OnClickListener {
     private fun googleSignIn() {
         val signInIntent = mGoogleSignInClient.signInIntent
         startActivityForResult(signInIntent, REQUEST_CODE_SIGN_IN)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_SIGN_IN) {
+            val task = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
+            if (task.isSuccess) {
+                _viewModel.signIn(task.signInAccount)
+            }
+        }
     }
 }
