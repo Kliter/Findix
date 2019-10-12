@@ -5,270 +5,30 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         tools:context=".ui.profile.ProfileActivity">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.AppBarLayout
-                android:id="@+id/appbar_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true">
-
-            <include layout="@layout/layout_toolbar"/>
-
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_above="@id/bottom_navigation_view"
-                android:layout_below="@id/appbar_layout"
-                android:layout_margin="8dp"
-                android:elevation="4dp">
-
-            <ScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/colorWhite"
-                        android:padding="8dp">
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                            android:layout_width="120dp"
-                            android:layout_height="120dp"
-                            android:id="@+id/iv_user_icon"
-                            android:layout_marginTop="20dp"
-                            app:civ_border_color="@color/colorBlack"
-                            app:civ_border_width="2dp"
-                            android:src="@mipmap/ic_launcher"
-                            android:layout_centerHorizontal="true"/>
-
-                    <RelativeLayout
-                            android:id="@+id/layout_username"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="32dp"
-                            android:layout_below="@+id/iv_user_icon">
-
-                        <ImageView
-                                android:id="@+id/iv_username_icon"
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
-                                android:layout_centerVertical="true"
-                                android:src="@drawable/ic_user"/>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                                android:id="@+id/text_input_layout_username"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:layout_toEndOf="@id/iv_username_icon"
-                                style="@style/TextAppearance.MaterialComponents.Headline6"
-                                android:hint="@string/hint_username">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:inputType="text"
-                                    android:maxLines="1"/>
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                            android:id="@+id/layout_major"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:layout_below="@+id/layout_username">
-
-                        <ImageView
-                                android:id="@+id/iv_major_icon"
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
-                                android:layout_centerVertical="true"
-                                android:src="@drawable/ic_major"/>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                                android:id="@+id/text_input_layout_major"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:layout_toEndOf="@id/iv_major_icon"
-                                style="@style/TextAppearance.MaterialComponents.Headline6"
-                                android:hint="@string/hint_major">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:inputType="text"
-                                    android:maxLines="1"/>
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                            android:id="@+id/layout_description"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:layout_below="@+id/layout_major">
-
-                        <ImageView
-                                android:id="@+id/iv_description"
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
-                                android:layout_centerVertical="true"
-                                android:src="@drawable/ic_description"/>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                                android:id="@+id/text_input_layout_description"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:layout_toEndOf="@id/iv_description"
-                                style="@style/TextAppearance.MaterialComponents.Headline6"
-                                android:hint="@string/hint_description">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:inputType="text"
-                                    android:maxLines="1"/>
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                            android:id="@+id/layout_website"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginTop="16dp"
-                            android:layout_below="@+id/layout_description">
-
-                        <ImageView
-                                android:id="@+id/iv_website"
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
-                                android:layout_centerVertical="true"
-                                android:src="@drawable/ic_website"/>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                                android:id="@+id/text_input_layout_website"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:layout_toEndOf="@id/iv_website"
-                                style="@style/TextAppearance.MaterialComponents.Headline6"
-                                android:hint="@string/hint_website">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:inputType="textWebEditText"
-                                    android:maxLines="1"/>
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                    </RelativeLayout>
-
-                    <TextView
-                            android:id="@+id/tv_private_info"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="48dp"
-                            android:layout_below="@id/layout_website"
-                            style="@style/TextAppearance.MaterialComponents.Headline4"
-                            android:text="@string/private_information"
-                            android:layout_centerHorizontal="true"/>
-
-                    <RelativeLayout
-                            android:id="@+id/layout_email"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:layout_below="@+id/tv_private_info">
-
-                        <ImageView
-                                android:id="@+id/iv_mail"
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
-                                android:layout_centerVertical="true"
-                                android:src="@drawable/ic_mail"/>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                                android:id="@+id/text_input_layout_email"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:layout_toEndOf="@id/iv_mail"
-                                style="@style/TextAppearance.MaterialComponents.Headline6"
-                                android:hint="@string/hint_email">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:inputType="textEmailAddress"
-                                    android:maxLines="1"/>
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                            android:id="@+id/linear_layout_phone"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginTop="16dp"
-                            android:layout_below="@+id/layout_email">
-
-                        <ImageView
-                                android:id="@+id/iv_phone"
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
-                                android:layout_centerVertical="true"
-                                android:src="@drawable/ic_phone"/>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                                android:id="@+id/text_input_layout_phone"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:layout_toEndOf="@id/iv_phone"
-                                style="@style/TextAppearance.MaterialComponents.Headline6"
-                                android:hint="@string/hint_phone">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:inputType="phone"
-                                    android:maxLines="1"/>
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                    </RelativeLayout>
-
-                </RelativeLayout>
-
-            </ScrollView>
-
-        </androidx.cardview.widget.CardView>
+        <fragment
+                android:id="@+id/nav_host_fragment"
+                android:name="androidx.navigation.fragment.NavHostFragment"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:defaultNavHost="true"
+                app:layout_constraintBottom_toTopOf="@id/bottom_navigation_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:navGraph="@navigation/navigation_profile" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/bottom_navigation_view"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:layout_alignParentBottom="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:menu="@menu/menu_bottom_navigation_view"/>
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

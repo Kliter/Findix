@@ -2,6 +2,7 @@ package com.kl.findix.di.module
 
 import com.kl.findix.di.module.login.LoginActivityModule
 import com.kl.findix.di.module.maps.MapsActivityModule
+import com.kl.findix.di.module.profile.ProfileActivityModule
 import com.kl.findix.ui.list.ListActivity
 import com.kl.findix.ui.login.LoginActivity
 import com.kl.findix.ui.map.MapsActivity
@@ -19,7 +20,7 @@ abstract class BuildersModule {
     @ContributesAndroidInjector(modules = [LoginActivityModule::class])
     internal abstract fun provideLoginActivity(): LoginActivity
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [ProfileActivityModule::class])
     internal abstract fun provideProfileActivity(): ProfileActivity
 
     @ContributesAndroidInjector
