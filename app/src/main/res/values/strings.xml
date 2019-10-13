@@ -30,4 +30,9 @@
     <string name="collection_users">Users</string>
     <string name="button_sign_up">SignUp</string>
     <string name="user_info">User Info</string>
+
+    // SignUp
+    <string name="failed_sign_up">Failed to sign up.</string>
+    <string name="failed_sign_in">Failed to sign in.</string>
+
 </resources>

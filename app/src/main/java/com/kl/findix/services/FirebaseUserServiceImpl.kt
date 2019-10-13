@@ -18,7 +18,6 @@ class FirebaseUserServiceImpl @Inject constructor(
     val context: Context,
     var mAuth: FirebaseAuth
 ) : FirebaseUserService {
-
     companion object {
         private const val TAG = "FirebaseUserServiceImpl"
     }
@@ -79,5 +78,39 @@ class FirebaseUserServiceImpl @Inject constructor(
             Log.d(TAG, "exist")
         }
         return true
+    }
+
+    override fun signUpWithEmail(
+        email: String,
+        password: String,
+        emailSignUpSuccessListener: () -> Unit,
+        emailSignUpFailedListener: () -> Unit
+    ) {
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.d(TAG, "createUserWithEmail: Succeed.")
+                emailSignUpSuccessListener.invoke()
+            } else {
+                Log.d(TAG, "createUserWithEmail: Failed.")
+                emailSignUpFailedListener.invoke()
+            }
+        }
+    }
+
+    override fun signInWithEmail(
+        email: String,
+        password: String,
+        emailSignInSuccessListener: () -> Unit,
+        emailSignInFailedListener: () -> Unit
+    ) {
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.d(TAG, "signInWithEmail: Succeed.")
+                emailSignInSuccessListener.invoke()
+            } else {
+                Log.d(TAG, "signInWithEmail: Failed.")
+                emailSignInFailedListener.invoke()
+            }
+        }
     }
 }

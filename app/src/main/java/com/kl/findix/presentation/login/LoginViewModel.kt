@@ -13,9 +13,7 @@ class LoginViewModel @Inject constructor(
 
     val isSignedIn: MutableLiveData<Boolean> = MutableLiveData()
 
-    fun getCurrentSignInUser(): FirebaseUser? {
-        return firebaseUserService.getCurrentSignInUser()
-    }
+    fun getCurrentSignInUser(): FirebaseUser? = firebaseUserService.getCurrentSignInUser()
 
     fun signOut() {
         firebaseUserService.signOut()

@@ -10,4 +10,16 @@ interface FirebaseUserService {
     fun signOut()
     fun signInWithGoogle(googleSignInAccount: GoogleSignInAccount)
     fun getUserLiveData(): LiveData<User>
+    fun signUpWithEmail(
+        email: String,
+        password: String,
+        emailSignUpSuccessListener: () -> Unit,
+        emailSignUpFailedListener: () -> Unit
+    )
+    fun signInWithEmail(
+        email: String,
+        password: String,
+        emailSignInSuccessListener: () -> Unit,
+        emailSignInFailedListener: () -> Unit
+    )
 }
