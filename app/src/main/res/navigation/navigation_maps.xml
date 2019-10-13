@@ -7,7 +7,7 @@
 
     <fragment
             android:id="@+id/fragment_maps"
-            android:name="com.kl.findix.ui.map.MapsFragment"
+            android:name="com.kl.findix.presentation.map.MapsFragment"
             android:label="Map" />
 
 </navigation>

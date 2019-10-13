@@ -1,10 +1,9 @@
 package com.kl.findix.di.module.login
 
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.kl.findix.navigation.LoginNavigator
-import com.kl.findix.ui.login.LoginFragment
+import com.kl.findix.presentation.login.LoginFragment
 import dagger.Binds
 import dagger.Module
 import dagger.Provides

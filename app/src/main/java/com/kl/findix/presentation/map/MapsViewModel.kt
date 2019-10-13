@@ -1,15 +1,9 @@
-package com.kl.findix.ui.map
+package com.kl.findix.presentation.map
 
-import android.app.Activity
 import androidx.lifecycle.ViewModel
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.GeoPoint
 import com.kl.findix.services.FirebaseUserServiceImpl
-import com.kl.findix.util.Status.*
 import com.kl.findix.services.MapServiceImpl
-import com.kl.findix.util.Resource
 import javax.inject.Inject
 
 class MapsViewModel @Inject constructor(

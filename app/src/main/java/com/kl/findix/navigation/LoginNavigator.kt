@@ -1,7 +1,7 @@
 package com.kl.findix.navigation
 
 import androidx.navigation.NavController
-import com.kl.findix.ui.login.LoginFragmentDirections
+import com.kl.findix.presentation.login.LoginFragmentDirections
 
 class LoginNavigator (
     private val navController: NavController

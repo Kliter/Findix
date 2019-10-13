@@ -1,16 +1,13 @@
-package com.kl.findix.ui.login
+package com.kl.findix.presentation.login
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.gms.auth.api.Auth
 import com.kl.findix.R
 import com.kl.findix.databinding.ActivityLoginBinding
 import com.kl.findix.di.ViewModelFactory
-import com.kl.findix.util.REQUEST_CODE_SIGN_IN
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector

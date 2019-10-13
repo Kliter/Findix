@@ -7,7 +7,7 @@
 
     <fragment
             android:id="@+id/fragment_login"
-            android:name="com.kl.findix.ui.login.LoginFragment"
+            android:name="com.kl.findix.presentation.login.LoginFragment"
             android:label="Login" >
         <action
                 android:id="@+id/action_login_to_sign_up"
@@ -21,7 +21,7 @@
 
     <fragment
             android:id="@+id/fragment_sign_up"
-            android:name="com.kl.findix.ui.login.SignUpFragment"
+            android:name="com.kl.findix.presentation.login.SignUpFragment"
             android:label="SignUp"/>
 
 </navigation>

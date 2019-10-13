@@ -7,7 +7,7 @@
 
     <fragment
             android:id="@+id/fragment_profile"
-            android:name="com.kl.findix.ui.profile.ProfileFragment"
+            android:name="com.kl.findix.presentation.profile.ProfileFragment"
             android:label="Profile" />
 
 </navigation>

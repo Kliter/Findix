@@ -6,7 +6,7 @@
 
         <variable
                 name="viewModel"
-                type="com.kl.findix.ui.profile.ProfileViewModel" />
+                type="com.kl.findix.presentation.profile.ProfileViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

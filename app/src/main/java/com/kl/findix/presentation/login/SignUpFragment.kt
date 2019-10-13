@@ -1,8 +1,7 @@
-package com.kl.findix.ui.login
+package com.kl.findix.presentation.login
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

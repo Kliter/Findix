@@ -1,6 +1,6 @@
 package com.kl.findix.di.module.profile
 
-import com.kl.findix.ui.profile.ProfileFragment
+import com.kl.findix.presentation.profile.ProfileFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

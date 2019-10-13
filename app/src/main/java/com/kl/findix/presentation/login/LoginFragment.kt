@@ -1,4 +1,4 @@
-package com.kl.findix.ui.login
+package com.kl.findix.presentation.login
 
 import android.content.Context
 import android.content.Intent
@@ -17,9 +17,8 @@ import com.kl.findix.R
 import com.kl.findix.databinding.FragmentLoginBinding
 import com.kl.findix.di.ViewModelFactory
 import com.kl.findix.navigation.LoginNavigator
-import com.kl.findix.ui.map.MapsActivity
+import com.kl.findix.presentation.map.MapsActivity
 import com.kl.findix.util.REQUEST_CODE_SIGN_IN
-import dagger.android.AndroidInjection
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_login.*
 import javax.inject.Inject

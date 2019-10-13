@@ -1,4 +1,4 @@
-package com.kl.findix.ui.login
+package com.kl.findix.presentation.login
 
 import com.airbnb.epoxy.EpoxyController
 import com.kl.findix.itemAppTitleView

@@ -1,4 +1,4 @@
-package com.kl.findix.ui.profile
+package com.kl.findix.presentation.profile
 
 import android.content.Context
 import android.os.Bundle

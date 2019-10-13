@@ -1,10 +1,7 @@
-package com.kl.findix.ui.profile
+package com.kl.findix.presentation.profile
 
-import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.google.firebase.database.DatabaseReference

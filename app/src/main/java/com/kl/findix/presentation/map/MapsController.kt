@@ -1,4 +1,4 @@
-package com.kl.findix.ui.map
+package com.kl.findix.presentation.map
 
 import com.airbnb.epoxy.EpoxyController
 

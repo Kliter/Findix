@@ -7,7 +7,7 @@
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".ui.list.ListActivity">
+            tools:context=".presentation.list.ListActivity">
 
 
         <com.google.android.material.bottomnavigation.BottomNavigationView

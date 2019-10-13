@@ -7,7 +7,7 @@
 
         <variable
                 name="viewModel"
-                type="com.kl.findix.ui.map.MapsViewModel" />
+                type="com.kl.findix.presentation.map.MapsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

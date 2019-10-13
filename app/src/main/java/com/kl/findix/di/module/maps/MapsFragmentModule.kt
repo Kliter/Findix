@@ -3,7 +3,7 @@ package com.kl.findix.di.module.maps
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.kl.findix.navigation.MapsNavigator
-import com.kl.findix.ui.map.MapsFragment
+import com.kl.findix.presentation.map.MapsFragment
 import dagger.Binds
 import dagger.Module
 import dagger.Provides

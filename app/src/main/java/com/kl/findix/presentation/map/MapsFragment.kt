@@ -1,21 +1,16 @@
-package com.kl.findix.ui.map
+package com.kl.findix.presentation.map
 
 import android.Manifest
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
-import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -30,15 +25,10 @@ import com.kl.findix.R
 import com.kl.findix.databinding.FragmentMapsBinding
 import com.kl.findix.di.ViewModelFactory
 import com.kl.findix.navigation.MapsNavigator
-import com.kl.findix.ui.list.ListActivity
-import com.kl.findix.ui.message.MessageActivity
-import com.kl.findix.ui.profile.ProfileActivity
 import com.kl.findix.util.REQUEST_CODE_PERMISSION
 import dagger.android.support.AndroidSupportInjection
-import kotlinx.android.synthetic.main.activity_maps.*
 import kotlinx.android.synthetic.main.fragment_maps.*
 import kotlinx.android.synthetic.main.fragment_maps.container
-import kotlinx.android.synthetic.main.layout_toolbar.*
 import javax.inject.Inject
 
 class MapsFragment : Fragment(), OnMapReadyCallback,

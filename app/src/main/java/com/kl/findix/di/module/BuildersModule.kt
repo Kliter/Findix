@@ -3,11 +3,11 @@ package com.kl.findix.di.module
 import com.kl.findix.di.module.login.LoginActivityModule
 import com.kl.findix.di.module.maps.MapsActivityModule
 import com.kl.findix.di.module.profile.ProfileActivityModule
-import com.kl.findix.ui.list.ListActivity
-import com.kl.findix.ui.login.LoginActivity
-import com.kl.findix.ui.map.MapsActivity
-import com.kl.findix.ui.message.MessageActivity
-import com.kl.findix.ui.profile.ProfileActivity
+import com.kl.findix.presentation.list.ListActivity
+import com.kl.findix.presentation.login.LoginActivity
+import com.kl.findix.presentation.map.MapsActivity
+import com.kl.findix.presentation.message.MessageActivity
+import com.kl.findix.presentation.profile.ProfileActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

@@ -1,10 +1,9 @@
-package com.kl.findix.ui.login
+package com.kl.findix.presentation.login
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.FirebaseUser
-import com.kl.findix.model.User
 import com.kl.findix.services.FirebaseUserServiceImpl
 import javax.inject.Inject
 

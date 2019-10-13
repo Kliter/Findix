@@ -2,13 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        tools:context=".ui.signup.SignUpActivity">
+        tools:context=".presentation.signup.SignUpActivity">
 
     <data>
 
         <variable
                 name="viewModel"
-                type="com.kl.findix.ui.login.SignUpViewModel" />
+                type="com.kl.findix.presentation.login.SignUpViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

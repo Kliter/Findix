@@ -1,7 +1,7 @@
 package com.kl.findix.di.module.login
 
-import com.kl.findix.ui.login.LoginFragment
-import com.kl.findix.ui.login.SignUpFragment
+import com.kl.findix.presentation.login.LoginFragment
+import com.kl.findix.presentation.login.SignUpFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
