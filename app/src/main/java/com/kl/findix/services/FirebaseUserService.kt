@@ -16,12 +16,14 @@ interface FirebaseUserService {
     )
     fun getUserLiveData(): LiveData<User>
     fun signUpWithEmail(
-        signInInfo: SignInInfo,
+        email: String,
+        password: String,
         emailSignUpSuccessListener: () -> Unit,
         emailSignUpFailedListener: () -> Unit
     )
     fun signInWithEmail(
-        signInInfo: SignInInfo,
+        email: String,
+        password: String,
         emailSignInSuccessListener: () -> Unit,
         emailSignInFailedListener: () -> Unit
     )

@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.kl.findix.model.SignInInfo
 import com.kl.findix.services.FirebaseUserService
+import com.kl.findix.util.safeLet
 import javax.inject.Inject
 
 class SignUpViewModel @Inject constructor(
@@ -19,20 +20,25 @@ class SignUpViewModel @Inject constructor(
     fun getCurrentSignInUser() = firebaseUserService.getCurrentSignInUser()
 
     fun signUpWithEmail() {
-        firebaseUserService.signUpWithEmail(
-            signInInfo = signInInfo,
-            emailSignUpSuccessListener = {
-                signUpResult.postValue(true)
-            },
-            emailSignUpFailedListener = {
-                signUpResult.postValue(false)
-            }
-        )
+        safeLet(signInInfo.email, signInInfo.password) { email, password ->
+            firebaseUserService.signUpWithEmail(
+                email = email,
+                password = password,
+                emailSignUpSuccessListener = {
+                    signUpResult.postValue(true)
+                },
+                emailSignUpFailedListener = {
+                    signUpResult.postValue(false)
+                }
+            )
+        }
     }
 
     fun signInWithEmail() {
+        safeLet(signInInfo.email, signInInfo.password) { email, password ->
             firebaseUserService.signInWithEmail(
-                signInInfo = signInInfo,
+                email = email,
+                password = password,
                 emailSignInSuccessListener = {
                     signInResult.postValue(true)
                 },
@@ -40,5 +46,6 @@ class SignUpViewModel @Inject constructor(
                     signInResult.postValue(false)
                 }
             )
+        }
     }
 }

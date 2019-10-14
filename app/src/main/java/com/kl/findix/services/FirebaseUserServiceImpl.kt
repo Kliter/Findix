@@ -11,9 +11,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.kl.findix.R
-import com.kl.findix.model.SignInInfo
 import com.kl.findix.model.User
-import com.kl.findix.util.safeLet
 import javax.inject.Inject
 
 class FirebaseUserServiceImpl @Inject constructor(
@@ -91,37 +89,35 @@ class FirebaseUserServiceImpl @Inject constructor(
     }
 
     override fun signUpWithEmail(
-        signInInfo: SignInInfo,
+        email: String,
+        password: String,
         emailSignUpSuccessListener: () -> Unit,
         emailSignUpFailedListener: () -> Unit
     ) {
-        safeLet(signInInfo.email, signInInfo.password) { email, password ->
-            mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d(TAG, "createUserWithEmail: Succeed.")
-                    emailSignUpSuccessListener.invoke()
-                } else {
-                    Log.d(TAG, "createUserWithEmail: Failed.")
-                    emailSignUpFailedListener.invoke()
-                }
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.d(TAG, "createUserWithEmail: Succeed.")
+                emailSignUpSuccessListener.invoke()
+            } else {
+                Log.d(TAG, "createUserWithEmail: Failed.")
+                emailSignUpFailedListener.invoke()
             }
         }
     }
 
     override fun signInWithEmail(
-        signInInfo: SignInInfo,
+        email: String,
+        password: String,
         emailSignInSuccessListener: () -> Unit,
         emailSignInFailedListener: () -> Unit
     ) {
-        safeLet(signInInfo.email, signInInfo.password) { email, password ->
-            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d(TAG, "signInWithEmail: Succeed.")
-                    emailSignInSuccessListener.invoke()
-                } else {
-                    Log.d(TAG, "signInWithEmail: Failed.")
-                    emailSignInFailedListener.invoke()
-                }
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.d(TAG, "signInWithEmail: Succeed.")
+                emailSignInSuccessListener.invoke()
+            } else {
+                Log.d(TAG, "signInWithEmail: Failed.")
+                emailSignInFailedListener.invoke()
             }
         }
     }

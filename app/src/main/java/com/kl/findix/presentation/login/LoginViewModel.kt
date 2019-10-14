@@ -6,6 +6,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.FirebaseUser
 import com.kl.findix.model.SignInInfo
 import com.kl.findix.services.FirebaseUserService
+import com.kl.findix.util.safeLet
 import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(
@@ -36,15 +37,18 @@ class LoginViewModel @Inject constructor(
     }
 
     fun signInWithEmail() {
-        firebaseUserService.signInWithEmail(
-            signInInfo = signInInfo,
-            emailSignInSuccessListener = {
-                signInResult.postValue(true)
-            },
-            emailSignInFailedListener = {
-                signInResult.postValue(false)
-            }
-        )
+        safeLet(signInInfo.email, signInInfo.password) { email, password ->
+            firebaseUserService.signInWithEmail(
+                email = email,
+                password = password,
+                emailSignInSuccessListener = {
+                    signInResult.postValue(true)
+                },
+                emailSignInFailedListener = {
+                    signInResult.postValue(false)
+                }
+            )
+        }
     }
 
     fun isSignedIn() {
