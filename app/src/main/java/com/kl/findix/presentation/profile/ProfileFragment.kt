@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.kl.findix.R
 import com.kl.findix.databinding.FragmentProfileBinding
 import com.kl.findix.di.ViewModelFactory
@@ -29,6 +31,8 @@ class ProfileFragment : Fragment() {
     lateinit var mViewModelFactory: ViewModelFactory
 
     private var epoxyController: ProfileController? = null
+    private lateinit var database: FirebaseDatabase
+    private lateinit var myRef: DatabaseReference
     private lateinit var _viewModel: ProfileViewModel
     private val binding: FragmentProfileBinding by lazy {
         DataBindingUtil.inflate<FragmentProfileBinding>(
@@ -46,10 +50,13 @@ class ProfileFragment : Fragment() {
     ): View? {
         _viewModel =
             ViewModelProviders.of(this, mViewModelFactory).get(ProfileViewModel::class.java)
+        database = FirebaseDatabase.getInstance()
+        myRef = database.getReference("User")
+
         binding.apply {
             lifecycleOwner = this@ProfileFragment
             viewModel = _viewModel
-            onClickSave = View.OnClickListener { _ ->
+            onClickSave = View.OnClickListener {
                 saveProfileSettings()
             }
         }

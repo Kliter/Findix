@@ -24,9 +24,6 @@ class ProfileActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     @Inject
     lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
-
-    private lateinit var database: FirebaseDatabase
-    private lateinit var myRef: DatabaseReference
     private val binding: ActivityProfileBinding by lazy {
         DataBindingUtil.setContentView<ActivityProfileBinding>(this, R.layout.activity_profile)
     }
@@ -34,9 +31,6 @@ class ProfileActivity : AppCompatActivity(), HasSupportFragmentInjector {
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
-
-        database = FirebaseDatabase.getInstance()
-        myRef = database.getReference("User")
     }
 
     override fun onResume() {
