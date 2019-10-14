@@ -3,8 +3,6 @@ package com.kl.findix.presentation.profile
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -51,6 +49,9 @@ class ProfileFragment : Fragment() {
         binding.apply {
             lifecycleOwner = this@ProfileFragment
             viewModel = _viewModel
+            onClickSave = View.OnClickListener { _ ->
+                saveProfileSettings()
+            }
         }
 
         return binding.root
@@ -64,11 +65,6 @@ class ProfileFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setController()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_profile, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -100,5 +96,4 @@ class ProfileFragment : Fragment() {
     private fun saveProfileSettings() {
 //        myRef.child("users").child(userId).setValue(user)
     }
-
 }
