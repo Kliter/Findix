@@ -18,7 +18,7 @@ class SignUpViewModel @Inject constructor(
 
     fun getCurrentSignInUser() = firebaseUserService.getCurrentSignInUser()
 
-    fun emailSignUp() {
+    fun signUpWithEmail() {
         firebaseUserService.signUpWithEmail(
             signInInfo = signInInfo,
             emailSignUpSuccessListener = {
@@ -30,7 +30,7 @@ class SignUpViewModel @Inject constructor(
         )
     }
 
-    fun emailSignIn() {
+    fun signInWithEmail() {
             firebaseUserService.signInWithEmail(
                 signInInfo = signInInfo,
                 emailSignInSuccessListener = {

@@ -4,6 +4,9 @@
         xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <variable
+                name="signInInfo"
+                type="com.kl.findix.model.SignInInfo" />
 
         <variable
                 name="onClickGoogleSign"
@@ -39,6 +42,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
+                    android:text="@={signInInfo.email}"
                     android:maxLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -60,6 +64,7 @@
                     android:id="@+id/password_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="@={signInInfo.password}"
                     android:inputType="textPassword" />
 
         </com.google.android.material.textfield.TextInputLayout>

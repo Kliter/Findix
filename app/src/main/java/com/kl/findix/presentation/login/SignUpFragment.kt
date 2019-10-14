@@ -63,7 +63,7 @@ class SignUpFragment : Fragment() {
         epoxyController = SignUpController(
             _viewModel.signInInfo,
             onClickSignUp = {
-                _viewModel.emailSignUp()
+                _viewModel.signUpWithEmail()
             }
         ).also {
             binding.recyclerView.setControllerAndBuildModels(it)
@@ -75,7 +75,7 @@ class SignUpFragment : Fragment() {
             this.signUpResult.nonNullObserve(viewLifecycleOwner) { result ->
                 context?.let { context ->
                     if (result) {
-                        this.emailSignIn()
+                        this.signInWithEmail()
                     } else{
                         showToast(context, context.getString(R.string.failed_sign_up))
                     }

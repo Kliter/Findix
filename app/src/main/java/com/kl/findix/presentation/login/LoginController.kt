@@ -3,8 +3,10 @@ package com.kl.findix.presentation.login
 import com.airbnb.epoxy.EpoxyController
 import com.kl.findix.itemAppTitleView
 import com.kl.findix.itemLoginParameterView
+import com.kl.findix.model.SignInInfo
 
 class LoginController(
+    private val signInInfo: SignInInfo,
     private val onClickGoogleSignIn: () -> Unit,
     private val onClickEmailSignIn: () -> Unit,
     private val onClickSignUp: () -> Unit
@@ -16,6 +18,7 @@ class LoginController(
         }
         itemLoginParameterView {
             id(modelCountBuiltSoFar)
+            signInInfo(signInInfo)
             onClickGoogleSign { _ ->
                 onClickGoogleSignIn.invoke()
             }

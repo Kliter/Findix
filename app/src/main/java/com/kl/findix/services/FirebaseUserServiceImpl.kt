@@ -36,22 +36,30 @@ class FirebaseUserServiceImpl @Inject constructor(
         mAuth.signOut()
     }
 
-    override fun signInWithGoogle(googleSignInAccount: GoogleSignInAccount) {
+    override fun signInWithGoogle(
+        googleSignInAccount: GoogleSignInAccount,
+        googleSignInSuccessListener: () -> Unit,
+        googleSignInFailedListener: () -> Unit
+    ) {
         try {
             val credential = GoogleAuthProvider.getCredential(googleSignInAccount.idToken, null)
             mAuth.signInWithCredential(credential).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
+                    Log.d(TAG, "Google signin is succeed.")
                     val user = mAuth.currentUser
                     user?.let {
                         signUpGoogleAccount(user)
                     }
+                    googleSignInSuccessListener.invoke()
                 }
                 else {
                     Log.d(TAG, "Google signin is failed.")
+                    googleSignInFailedListener.invoke()
                 }
             }
         } catch (e: ApiException) {
             e.printStackTrace()
+            googleSignInFailedListener.invoke()
         }
     }
 

@@ -3,7 +3,6 @@ package com.kl.findix.presentation.login
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +18,8 @@ import com.kl.findix.di.ViewModelFactory
 import com.kl.findix.navigation.LoginNavigator
 import com.kl.findix.presentation.map.MapsActivity
 import com.kl.findix.util.REQUEST_CODE_SIGN_IN
+import com.kl.findix.util.nonNullObserve
+import com.kl.findix.util.showToast
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_login.*
 import javax.inject.Inject
@@ -73,12 +74,13 @@ class LoginFragment : Fragment() {
 
     private fun setController() {
         epoxyController = LoginController(
+            _viewModel.signInInfo,
             onClickGoogleSignIn = {
                 googleSignIn()
                 _viewModel.isSignedIn()
             },
             onClickEmailSignIn = {
-                Log.d(TAG, "Pressed EmailSignIn Button.")
+                _viewModel.signInWithEmail()
             },
             onClickSignUp = {
                 navigator.toSignUpFragment()
@@ -89,14 +91,17 @@ class LoginFragment : Fragment() {
     }
 
     private fun observeState(viewModel: LoginViewModel) {
-        viewModel.isSignedIn.observe(viewLifecycleOwner, Observer { isSignedIn ->
+        viewModel.signInResult.nonNullObserve(viewLifecycleOwner) { result ->
             context?.let { context ->
-                if (isSignedIn) {
+                if (result) {
+                    showToast(context, getString(R.string.succeed_sign_in))
                     startActivity(MapsActivity.newInstance(context))
                     activity?.finish()
+                } else {
+                    showToast(context, getString(R.string.failed_sign_in))
                 }
             }
-        })
+        }
     }
 
     private fun googleSignIn() {
@@ -109,7 +114,7 @@ class LoginFragment : Fragment() {
         if (requestCode == REQUEST_CODE_SIGN_IN) {
             val task = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
             if (task.isSuccess) {
-                _viewModel.signIn(task.signInAccount)
+                _viewModel.signInWithGoogle(task.signInAccount)
             }
         }
     }

@@ -32,6 +32,8 @@
     <string name="user_info">User Info</string>
 
     // SignUp
+    <string name="succeed_sign_up">Succeed to sign up.</string>
+    <string name="succeed_sign_in">Succeed to sign in.</string>
     <string name="failed_sign_up">Failed to sign up.</string>
     <string name="failed_sign_in">Failed to sign in.</string>
 
