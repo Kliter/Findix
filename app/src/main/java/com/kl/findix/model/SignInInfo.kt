@@ -1,25 +1,27 @@
 package com.kl.findix.model
 
-import androidx.databinding.ObservableField
+import androidx.databinding.BaseObservable
+import androidx.databinding.Bindable
+import androidx.databinding.library.baseAdapters.BR
 
-class SignInInfo(
-    email: String,
-    password: String
-) {
+class SignInInfo() : BaseObservable() {
 
-    var _email = ObservableField<String>()
-    var _password = ObservableField<String>()
-
-    init {
-        _email.set(email)
-        _password.set(password)
+    constructor(email: String, password: String): this() {
+        this.email = email
+        this.password = password
     }
 
-    fun setEmail(email: String) {
-        _email.set(email)
-    }
+    @get:Bindable
+    var email: String? = null
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.email)
+        }
 
-    fun setPassword(password: String) {
-        _password.set(password)
-    }
+    @get:Bindable
+    var password: String? = null
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.password)
+        }
 }

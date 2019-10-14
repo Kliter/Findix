@@ -22,6 +22,12 @@ abstract class ViewModelModule {
     @Binds
     @IntoMap
     @Singleton
+    @ViewModelKey(SignUpViewModel::class)
+    internal abstract fun provideSignUpViewModel(signUpViewModel: SignUpViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @Singleton
     @ViewModelKey(MapsViewModel::class)
     internal abstract fun provideMapViewModel(mapsViewModel: MapsViewModel): ViewModel
 
@@ -30,11 +36,5 @@ abstract class ViewModelModule {
     @Singleton
     @ViewModelKey(ProfileViewModel::class)
     internal abstract fun provideProfileViewModel(profileViewModel: ProfileViewModel): ViewModel
-
-    @Binds
-    @IntoMap
-    @Singleton
-    @ViewModelKey(SignUpViewModel::class)
-    internal abstract fun provideSignUpViewModel(signUpViewModel: SignUpViewModel): ViewModel
 
 }

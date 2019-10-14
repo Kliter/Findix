@@ -6,12 +6,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.material.snackbar.Snackbar
 import com.kl.findix.R
 import com.kl.findix.databinding.FragmentSignupBinding
 import com.kl.findix.di.ViewModelFactory
@@ -51,33 +48,26 @@ class SignUpFragment : Fragment() {
         return binding.root
     }
 
-    override fun onStart() {
-        super.onStart()
-        if (_viewModel.getCurrentSignInUser() != null) {
-            val intent = Intent(context, MapsActivity::class.java)
-            startActivity(intent)
-        }
-    }
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setController()
+        observeEvent(_viewModel)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        AndroidSupportInjection.inject(this)
     }
 
     private fun setController() {
         epoxyController = SignUpController(
+            _viewModel.signInInfo,
             onClickSignUp = {
                 _viewModel.emailSignUp()
             }
         ).also {
             binding.recyclerView.setControllerAndBuildModels(it)
         }
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        AndroidSupportInjection.inject(this)
-        observeEvent(_viewModel)
     }
 
     private fun observeEvent(viewModel: SignUpViewModel) {

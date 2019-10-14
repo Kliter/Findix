@@ -2,9 +2,8 @@ package com.kl.findix.presentation.login
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.kl.findix.R
+import com.kl.findix.model.SignInInfo
 import com.kl.findix.services.FirebaseUserService
-import com.kl.findix.util.safeLet
 import javax.inject.Inject
 
 class SignUpViewModel @Inject constructor(
@@ -15,18 +14,13 @@ class SignUpViewModel @Inject constructor(
     val signUpResult: MutableLiveData<Boolean> = MutableLiveData()
     val signInResult: MutableLiveData<Boolean> = MutableLiveData()
 
-    private var _email: String? = null
-    private var _password: String? = null
+    var signInInfo: SignInInfo = SignInInfo("", "")
 
     fun getCurrentSignInUser() = firebaseUserService.getCurrentSignInUser()
 
-    fun emailSignUp(email: String, password: String) {
-        _email = email
-        _password = password
-
+    fun emailSignUp() {
         firebaseUserService.signUpWithEmail(
-            email = email,
-            password = password,
+            signInInfo = signInInfo,
             emailSignUpSuccessListener = {
                 signUpResult.postValue(true)
             },
@@ -37,10 +31,8 @@ class SignUpViewModel @Inject constructor(
     }
 
     fun emailSignIn() {
-        safeLet(_email, _password) { email, password ->
             firebaseUserService.signInWithEmail(
-                email = email,
-                password = password,
+                signInInfo = signInInfo,
                 emailSignInSuccessListener = {
                     signInResult.postValue(true)
                 },
@@ -48,6 +40,5 @@ class SignUpViewModel @Inject constructor(
                     signInResult.postValue(false)
                 }
             )
-        }
     }
 }

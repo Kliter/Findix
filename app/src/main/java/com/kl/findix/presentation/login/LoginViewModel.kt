@@ -4,11 +4,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.FirebaseUser
+import com.kl.findix.services.FirebaseUserService
 import com.kl.findix.services.FirebaseUserServiceImpl
 import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(
-    private val firebaseUserService: FirebaseUserServiceImpl
+    private val firebaseUserService: FirebaseUserService
 ): ViewModel() {
 
     val isSignedIn: MutableLiveData<Boolean> = MutableLiveData()

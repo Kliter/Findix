@@ -32,7 +32,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
-                    android:text="@{signInInfo._email}"
+                    android:text="@={signInInfo.email}"
                     android:maxLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -54,7 +54,7 @@
                     android:id="@+id/password_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{signInInfo._password}"
+                    android:text="@={signInInfo.password}"
                     android:inputType="textPassword" />
 
         </com.google.android.material.textfield.TextInputLayout>

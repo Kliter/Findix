@@ -3,6 +3,7 @@ package com.kl.findix.services
 import androidx.lifecycle.LiveData
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.FirebaseUser
+import com.kl.findix.model.SignInInfo
 import com.kl.findix.model.User
 
 interface FirebaseUserService {
@@ -11,14 +12,12 @@ interface FirebaseUserService {
     fun signInWithGoogle(googleSignInAccount: GoogleSignInAccount)
     fun getUserLiveData(): LiveData<User>
     fun signUpWithEmail(
-        email: String,
-        password: String,
+        signInInfo: SignInInfo,
         emailSignUpSuccessListener: () -> Unit,
         emailSignUpFailedListener: () -> Unit
     )
     fun signInWithEmail(
-        email: String,
-        password: String,
+        signInInfo: SignInInfo,
         emailSignInSuccessListener: () -> Unit,
         emailSignInFailedListener: () -> Unit
     )

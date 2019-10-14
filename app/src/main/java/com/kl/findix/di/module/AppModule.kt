@@ -1,7 +1,6 @@
 package com.kl.findix.di.module
 
 import android.content.Context
-import androidx.navigation.NavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -10,6 +9,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.kl.findix.Application
 import com.kl.findix.R
+import com.kl.findix.services.FirebaseUserService
 import com.kl.findix.services.FirebaseUserServiceImpl
 import com.kl.findix.services.MapServiceImpl
 import dagger.Module
@@ -40,7 +40,7 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideFirebaseUserService(context: Context, firebaseAuth: FirebaseAuth): FirebaseUserServiceImpl {
+    fun provideFirebaseUserService(context: Context, firebaseAuth: FirebaseAuth): FirebaseUserService {
         return FirebaseUserServiceImpl(context, firebaseAuth)
     }
 
