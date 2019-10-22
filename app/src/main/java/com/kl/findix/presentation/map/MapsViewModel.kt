@@ -11,12 +11,12 @@ class MapsViewModel @Inject constructor(
     private val firebaseUserService: FirebaseUserServiceImpl
 ) : ViewModel() {
 
-    fun getCurrentSignInUser(): FirebaseUser? {
+    suspend fun getCurrentSignInUser(): FirebaseUser? {
         return firebaseUserService.getCurrentSignInUser()
     }
 
     // 仮
-    fun signOut() {
+    suspend fun signOut() {
         firebaseUserService.signOut()
     }
 }

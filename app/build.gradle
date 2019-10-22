@@ -51,6 +51,7 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:$aac_version"
     implementation "android.arch.lifecycle:reactivestreams:$aac_version"
     kapt "android.arch.lifecycle:compiler:$aac_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0"
 
     // Firebase
     implementation "com.google.firebase:firebase-core:17.2.0"
