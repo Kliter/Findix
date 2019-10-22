@@ -19,12 +19,6 @@ class LoginViewModel @Inject constructor(
     val signInResult: MutableLiveData<Boolean> = MutableLiveData()
     var signInInfo: SignInInfo = SignInInfo("", "")
 
-    suspend fun getCurrentSignInUser(): FirebaseUser? {
-        return viewModelScope.async {
-            firebaseUserService.getCurrentSignInUser()
-        }.await()
-    }
-
     fun signOut() {
         viewModelScope.launch {
             firebaseUserService.signOut()

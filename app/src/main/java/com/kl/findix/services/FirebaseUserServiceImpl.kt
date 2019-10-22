@@ -28,7 +28,7 @@ class FirebaseUserServiceImpl @Inject constructor(
 
     private val firebaseFirestore = FirebaseFirestore.getInstance()
 
-    override suspend fun getCurrentSignInUser(): FirebaseUser? {
+    override fun getCurrentSignInUser(): FirebaseUser? {
         return mAuth.currentUser
     }
 

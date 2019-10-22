@@ -5,6 +5,10 @@
     <data>
 
         <variable
+                name="parameter"
+                type="String" />
+
+        <variable
                 name="iconRes"
                 type="android.graphics.drawable.Drawable" />
 
@@ -49,6 +53,7 @@
             <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="@={parameter}"
                     android:inputType="text"
                     android:maxLines="1" />
 

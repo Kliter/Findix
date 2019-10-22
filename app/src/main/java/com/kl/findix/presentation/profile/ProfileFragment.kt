@@ -31,8 +31,6 @@ class ProfileFragment : Fragment() {
     lateinit var mViewModelFactory: ViewModelFactory
 
     private var epoxyController: ProfileController? = null
-    private lateinit var database: FirebaseDatabase
-    private lateinit var myRef: DatabaseReference
     private lateinit var _viewModel: ProfileViewModel
     private val binding: FragmentProfileBinding by lazy {
         DataBindingUtil.inflate<FragmentProfileBinding>(
@@ -43,6 +41,11 @@ class ProfileFragment : Fragment() {
         )
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        AndroidSupportInjection.inject(this)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -50,23 +53,16 @@ class ProfileFragment : Fragment() {
     ): View? {
         _viewModel =
             ViewModelProviders.of(this, mViewModelFactory).get(ProfileViewModel::class.java)
-        database = FirebaseDatabase.getInstance()
-        myRef = database.getReference("User")
 
         binding.apply {
             lifecycleOwner = this@ProfileFragment
             viewModel = _viewModel
             onClickSave = View.OnClickListener {
-                saveProfileSettings()
+                _viewModel.saveProfileSettings()
             }
         }
 
         return binding.root
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        AndroidSupportInjection.inject(this)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -74,18 +70,10 @@ class ProfileFragment : Fragment() {
         setController()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.menu_save -> {
-                saveProfileSettings()
-            }
-        }
-        return true
-    }
-
     private fun setController() {
         context?.let {
             epoxyController = ProfileController(
+                _viewModel.user,
                 getString(R.string.hint_username),
                 it.getDrawable(R.drawable.ic_user),
                 getString(R.string.hint_major),
@@ -98,9 +86,5 @@ class ProfileFragment : Fragment() {
                 binding.recyclerView.setControllerAndBuildModels(it)
             }
         }
-    }
-
-    private fun saveProfileSettings() {
-//        myRef.child("users").child(userId).setValue(user)
     }
 }

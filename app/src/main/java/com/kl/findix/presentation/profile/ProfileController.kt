@@ -7,8 +7,10 @@ import com.kl.findix.itemUserIcon
 import com.kl.findix.itemUserinfoEmailInputView
 import com.kl.findix.itemUserinfoInputView
 import com.kl.findix.itemUserinfoPhoneNumberInputView
+import com.kl.findix.model.User
 
 class ProfileController(
+    private val user: User,
     private val userNameHint: String,
     private val userNameIconRes: Drawable?,
     private val majorHint: String,
@@ -27,14 +29,15 @@ class ProfileController(
 
         itemUserinfoInputView {
             id(modelCountBuiltSoFar)
+            parameter(user.userName)
             hint(userNameHint)
             userNameIconRes?.let {
                 iconRes(it)
             }
-
         }
         itemUserinfoInputView {
             id(modelCountBuiltSoFar)
+            parameter(user.major)
             hint(majorHint)
             majorIconRes?.let {
                 iconRes(it)
@@ -42,6 +45,7 @@ class ProfileController(
         }
         itemUserinfoInputView {
             id(modelCountBuiltSoFar)
+            parameter(user.description)
             hint(descriptionHint)
             descriptionIconRes?.let {
                 iconRes(it)
@@ -49,6 +53,7 @@ class ProfileController(
         }
         itemUserinfoInputView {
             id(modelCountBuiltSoFar)
+            parameter(user.website)
             hint(websiteHint)
             websiteIconRes?.let {
                 iconRes(it)
@@ -61,9 +66,11 @@ class ProfileController(
 
         itemUserinfoEmailInputView {
             id(modelCountBuiltSoFar)
+            parameter(user.email)
         }
         itemUserinfoPhoneNumberInputView {
             id(modelCountBuiltSoFar)
+            parameter(user.phone)
         }
     }
 }

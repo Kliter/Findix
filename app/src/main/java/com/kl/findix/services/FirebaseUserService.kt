@@ -7,7 +7,7 @@ import com.kl.findix.model.SignInInfo
 import com.kl.findix.model.User
 
 interface FirebaseUserService {
-    suspend fun getCurrentSignInUser(): FirebaseUser?
+    fun getCurrentSignInUser(): FirebaseUser?
     suspend fun signOut()
     suspend fun signInWithGoogle(
         googleSignInAccount: GoogleSignInAccount,
