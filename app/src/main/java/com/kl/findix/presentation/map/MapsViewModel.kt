@@ -1,9 +1,11 @@
 package com.kl.findix.presentation.map
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.firebase.auth.FirebaseUser
+import androidx.lifecycle.viewModelScope
 import com.kl.findix.services.FirebaseUserServiceImpl
 import com.kl.findix.services.MapServiceImpl
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MapsViewModel @Inject constructor(
@@ -11,12 +13,22 @@ class MapsViewModel @Inject constructor(
     private val firebaseUserService: FirebaseUserServiceImpl
 ) : ViewModel() {
 
-    suspend fun getCurrentSignInUser(): FirebaseUser? {
-        return firebaseUserService.getCurrentSignInUser()
+
+    // Event
+    val backToLoginCommand: MutableLiveData<Boolean> = MutableLiveData()
+
+    fun getCurrentSignInUser() {
+        viewModelScope.launch {
+            if (firebaseUserService.getCurrentSignInUser() != null) {
+                backToLoginCommand.postValue(true)
+            }
+        }
     }
 
     // 仮
-    suspend fun signOut() {
-        firebaseUserService.signOut()
+    fun signOut() {
+        viewModelScope.launch {
+            firebaseUserService.signOut()
+        }
     }
 }

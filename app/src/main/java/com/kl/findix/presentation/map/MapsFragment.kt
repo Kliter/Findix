@@ -2,11 +2,11 @@ package com.kl.findix.presentation.map
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
@@ -20,19 +20,18 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.material.navigation.NavigationView
 import com.kl.findix.R
 import com.kl.findix.databinding.FragmentMapsBinding
 import com.kl.findix.di.ViewModelFactory
 import com.kl.findix.navigation.MapsNavigator
+import com.kl.findix.presentation.login.LoginActivity
 import com.kl.findix.util.REQUEST_CODE_PERMISSION
+import com.kl.findix.util.nonNullObserve
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_maps.*
-import kotlinx.android.synthetic.main.fragment_maps.container
 import javax.inject.Inject
 
-class MapsFragment : Fragment(), OnMapReadyCallback,
-    NavigationView.OnNavigationItemSelectedListener, SearchView.OnQueryTextListener {
+class MapsFragment : Fragment(), OnMapReadyCallback, SearchView.OnQueryTextListener {
 
     companion object {
         fun newInstance() = MapsFragment()
@@ -56,6 +55,12 @@ class MapsFragment : Fragment(), OnMapReadyCallback,
         )
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        AndroidSupportInjection.inject(this)
+    }
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -71,14 +76,27 @@ class MapsFragment : Fragment(), OnMapReadyCallback,
         return binding.root
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        AndroidSupportInjection.inject(this)
-    }
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         observeState()
+        observeEvent(_viewModel)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        _viewModel.getCurrentSignInUser()
+    }
+
+    private fun observeState() {
+        //Todo
+    }
+
+    private fun observeEvent(viewModel: MapsViewModel) {
+        viewModel.backToLoginCommand.nonNullObserve(viewLifecycleOwner) {
+            // _viewModel.signOut()
+            val intent = Intent(requireContext(), LoginActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun onMapReady(googleMap: GoogleMap?) {
@@ -121,33 +139,8 @@ class MapsFragment : Fragment(), OnMapReadyCallback,
         return false
     }
 
-    fun observeState() {
-        //Todo
-    }
-
     private fun setupMap() {
         val mapFragment: SupportMapFragment? = map as SupportMapFragment?
         mapFragment?.getMapAsync(this)
-    }
-
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        context?.let {
-            when (item.itemId) {
-                R.id.action_profile -> {
-                    Log.d(TAG, "Profile")
-                }
-                R.id.action_message -> {
-                    Log.d(TAG, "Message")
-                }
-                R.id.action_list -> {
-                    Log.d(TAG, "List")
-                }
-                else -> {
-                    Log.e(TAG, "Invalid item.")
-                }
-            }
-        }
-
-        return true
     }
 }

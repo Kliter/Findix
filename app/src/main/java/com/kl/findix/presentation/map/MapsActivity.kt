@@ -86,15 +86,6 @@ class MapsActivity : AppCompatActivity(), HasSupportFragmentInjector {
 //        }
 //    }
 
-    override fun onStart() {
-        super.onStart()
-//        _viewModel.signOut()
-        if (_viewModel.getCurrentSignInUser() == null) {
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-        }
-    }
-
     override fun onResume() {
         super.onResume()
         binding.bottomNavigationView.selectedItemId = R.id.action_map
