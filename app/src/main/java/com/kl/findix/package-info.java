@@ -6,7 +6,7 @@
         R.layout.item_user_icon,
         R.layout.item_userinfo_input_view,
         R.layout.item_userinfo_email_input_view,
-        R.layout.item_userinfo_phone_number_input_view
+        R.layout.item_userinfo_phone_number_input_view,
 })
 
 package com.kl.findix;

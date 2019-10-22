@@ -22,6 +22,8 @@ import com.kl.findix.util.nonNullObserve
 import com.kl.findix.util.showToast
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_login.*
+import kotlinx.android.synthetic.main.item_login_parameter_view.*
+import kotlinx.android.synthetic.main.item_userinfo_phone_number_input_view.*
 import javax.inject.Inject
 
 class LoginFragment : Fragment() {
@@ -96,7 +98,6 @@ class LoginFragment : Fragment() {
                 if (result) {
                     showToast(context, getString(R.string.succeed_sign_in))
                     startActivity(MapsActivity.newInstance(context))
-                    activity?.finish()
                 } else {
                     showToast(context, getString(R.string.failed_sign_in))
                 }

@@ -13,13 +13,12 @@ class MapsViewModel @Inject constructor(
     private val firebaseUserService: FirebaseUserServiceImpl
 ) : ViewModel() {
 
-
     // Event
     val backToLoginCommand: MutableLiveData<Boolean> = MutableLiveData()
 
     fun getCurrentSignInUser() {
         viewModelScope.launch {
-            if (firebaseUserService.getCurrentSignInUser() != null) {
+            if (firebaseUserService.getCurrentSignInUser() == null) {
                 backToLoginCommand.postValue(true)
             }
         }

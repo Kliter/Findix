@@ -19,9 +19,7 @@ class SignUpViewModel @Inject constructor(
 
     var signInInfo: SignInInfo = SignInInfo("", "")
 
-    suspend fun getCurrentSignInUser() = firebaseUserService.getCurrentSignInUser()
-
-    suspend fun signUpWithEmail() {
+    fun signUpWithEmail() {
         safeLet(signInInfo.email, signInInfo.password) { email, password ->
             viewModelScope.launch {
                 firebaseUserService.signUpWithEmail(
@@ -38,7 +36,7 @@ class SignUpViewModel @Inject constructor(
         }
     }
 
-    suspend fun signInWithEmail() {
+    fun signInWithEmail() {
         safeLet(signInInfo.email, signInInfo.password) { email, password ->
             viewModelScope.launch {
                 firebaseUserService.signInWithEmail(
