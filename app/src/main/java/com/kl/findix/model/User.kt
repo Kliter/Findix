@@ -7,13 +7,13 @@ import androidx.databinding.library.baseAdapters.BR
 class User(): BaseObservable() {
 
     constructor(
-        userName: String?,
-        userId: String?,
-        major: String?,
-        description: String?,
-        website: String?,
-        email: String?,
-        phone: String?
+        userName: String? = "",
+        userId: String? = "",
+        major: String? = "",
+        description: String? = "",
+        website: String? = "",
+        email: String? = "",
+        phone: String? = ""
     ): this() {
         this.userName = userName
         this.userId = userId
