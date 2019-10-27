@@ -41,12 +41,6 @@ class AppModule {
         return GoogleSignIn.getClient(context, googleSignInOption)
     }
 
-    @Singleton
-    @Provides
-    fun provideFirebaseUserService(context: Context, firebaseAuth: FirebaseAuth): FirebaseUserService {
-        return FirebaseUserServiceImpl(context, firebaseAuth)
-    }
-
     @Provides
     @Singleton
     fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
@@ -54,15 +48,4 @@ class AppModule {
     @Provides
     @Singleton
     fun provideFirebaseDatabase(): FirebaseFirestore = FirebaseFirestore.getInstance()
-
-    @Singleton
-    @Provides
-    fun provideMapService(context: Context): MapServiceImpl {
-        return MapServiceImpl(context)
-    }
-
-    @Singleton
-    @Provides
-    fun provideFirebaseDataBaseService(firebaseFirestore: FirebaseFirestore): FirebaseDataBaseService =
-        FirebaseDataBaseServiceImpl(firebaseFirestore)
 }
