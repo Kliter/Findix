@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -22,8 +21,6 @@ import com.kl.findix.util.nonNullObserve
 import com.kl.findix.util.showToast
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_login.*
-import kotlinx.android.synthetic.main.item_login_parameter_view.*
-import kotlinx.android.synthetic.main.item_userinfo_phone_number_input_view.*
 import javax.inject.Inject
 
 class LoginFragment : Fragment() {

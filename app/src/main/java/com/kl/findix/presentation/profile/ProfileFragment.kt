@@ -73,15 +73,7 @@ class ProfileFragment : Fragment() {
     private fun setController() {
         context?.let {
             epoxyController = ProfileController(
-                _viewModel.user,
-                getString(R.string.hint_username),
-                it.getDrawable(R.drawable.ic_user),
-                getString(R.string.hint_major),
-                it.getDrawable(R.drawable.ic_major),
-                getString(R.string.hint_description),
-                it.getDrawable(R.drawable.ic_description),
-                getString(R.string.hint_website),
-                it.getDrawable(R.drawable.ic_website)
+                _viewModel.user
             ).also {
                 binding.recyclerView.setControllerAndBuildModels(it)
             }
