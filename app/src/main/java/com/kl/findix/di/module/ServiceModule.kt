@@ -3,6 +3,7 @@ package com.kl.findix.di.module
 import android.content.Context
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import com.kl.findix.services.FileService
 import com.kl.findix.services.FileServiceImpl
 import com.kl.findix.services.FirebaseDataBaseService
@@ -25,8 +26,8 @@ class ServiceModule {
 
     @Singleton
     @Provides
-    fun provideFirebaseUserService(context: Context, firebaseAuth: FirebaseAuth): FirebaseUserService {
-        return FirebaseUserServiceImpl(context, firebaseAuth)
+    fun provideFirebaseUserService(context: Context, firebaseAuth: FirebaseAuth, database: FirebaseFirestore): FirebaseUserService {
+        return FirebaseUserServiceImpl(context, firebaseAuth, database)
     }
 
     @Singleton
@@ -42,7 +43,7 @@ class ServiceModule {
 
     @Singleton
     @Provides
-    fun provideFirebaseStorageService(): FirebaseStorageService = FirebaseStorageServiceImpl()
+    fun provideFirebaseStorageService(storage: FirebaseStorage): FirebaseStorageService = FirebaseStorageServiceImpl(storage)
 
     @Singleton
     @Provides

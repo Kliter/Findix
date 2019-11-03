@@ -5,16 +5,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import com.kl.findix.Application
 import com.kl.findix.R
-import com.kl.findix.services.FirebaseDataBaseService
-import com.kl.findix.services.FirebaseDataBaseServiceImpl
-import com.kl.findix.services.FirebaseUserService
-import com.kl.findix.services.FirebaseUserServiceImpl
-import com.kl.findix.services.MapServiceImpl
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -48,4 +42,8 @@ class AppModule {
     @Provides
     @Singleton
     fun provideFirebaseDatabase(): FirebaseFirestore = FirebaseFirestore.getInstance()
+
+    @Provides
+    @Singleton
+    fun provideFirebaseStorage(): FirebaseStorage = FirebaseStorage.getInstance()
 }

@@ -18,15 +18,14 @@ import javax.inject.Inject
 
 class FirebaseUserServiceImpl @Inject constructor(
     val context: Context,
-    var mAuth: FirebaseAuth
+    var mAuth: FirebaseAuth,
+    var firestore: FirebaseFirestore
 ) : FirebaseUserService {
     companion object {
         private const val TAG = "FirebaseUserServiceImpl"
     }
 
     private var mUserData: MutableLiveData<User> = MutableLiveData()
-
-    private val firebaseFirestore = FirebaseFirestore.getInstance()
 
     override fun getCurrentSignInUser(): FirebaseUser? {
         return mAuth.currentUser
@@ -83,7 +82,7 @@ class FirebaseUserServiceImpl @Inject constructor(
                     }
                     user.userId = FirebaseAuth.getInstance().uid
 
-                    val newUserReference: DocumentReference = firebaseFirestore
+                    val newUserReference: DocumentReference = firestore
                         .collection(context.getString(R.string.collection_users))
                         .document(FirebaseAuth.getInstance().uid!!)
                     newUserReference.set(user)
@@ -95,7 +94,7 @@ class FirebaseUserServiceImpl @Inject constructor(
     private suspend fun isAlreadySignUp(): Boolean {
         coroutineScope {
             launch {
-                val usersReference = firebaseFirestore.collection("Users").document(mAuth.currentUser?.uid!!)
+                val usersReference = firestore.collection("Users").document(mAuth.currentUser?.uid!!)
                 usersReference.get().addOnCompleteListener { document ->
                     Log.d(TAG, "exist")
                 }
