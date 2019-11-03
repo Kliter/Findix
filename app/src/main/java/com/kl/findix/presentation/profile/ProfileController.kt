@@ -4,17 +4,20 @@ import com.airbnb.epoxy.EpoxyController
 import com.kl.findix.itemProfileBaseInfoView
 import com.kl.findix.itemProfilePrivateInfoView
 import com.kl.findix.itemProfileSectionHeaderView
-import com.kl.findix.itemUserIcon
+import com.kl.findix.itemProfileUserIcon
 import com.kl.findix.model.User
 
 class ProfileController(
-    private val user: User
+    private val user: User,
+    private val onClickUserIcon: () -> Unit
 ): EpoxyController() {
 
     override fun buildModels() {
-        itemUserIcon {
+        itemProfileUserIcon {
             id(modelCountBuiltSoFar)
-            // Todo: Pass the parameter of user icon.
+            onClickUserIcon { it ->
+                onClickUserIcon.invoke()
+            }
         }
 
         itemProfileBaseInfoView {

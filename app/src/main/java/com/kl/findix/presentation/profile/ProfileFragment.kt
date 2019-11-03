@@ -73,7 +73,9 @@ class ProfileFragment : Fragment() {
     private fun setController() {
         context?.let {
             epoxyController = ProfileController(
-                _viewModel.user
+                _viewModel.user,
+                onClickUserIcon = {
+                }
             ).also {
                 binding.recyclerView.setControllerAndBuildModels(it)
             }

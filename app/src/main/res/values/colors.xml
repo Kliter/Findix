@@ -5,4 +5,15 @@
     <color name="colorAccent">#D81B60</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlack">#000000</color>
+
+    <color name="colorBlack_90">#e6000000</color>
+    <color name="colorBlack_80">#cc000000</color>
+    <color name="colorBlack_70">#b3000000</color>
+    <color name="colorBlack_60">#99000000</color>
+    <color name="colorBlack_50">#80000000</color>
+    <color name="colorBlack_40">#66000000</color>
+    <color name="colorBlack_30">#4d000000</color>
+    <color name="colorBlack_20">#33000000</color>
+    <color name="colorBlack_10">#1a000000</color>
+
 </resources>
