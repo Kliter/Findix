@@ -20,7 +20,6 @@ import com.kl.findix.util.REQUEST_CODE_SIGN_IN
 import com.kl.findix.util.nonNullObserve
 import com.kl.findix.util.showToast
 import dagger.android.support.AndroidSupportInjection
-import kotlinx.android.synthetic.main.fragment_login.*
 import javax.inject.Inject
 
 class LoginFragment : Fragment() {
@@ -38,14 +37,7 @@ class LoginFragment : Fragment() {
 
     private lateinit var _viewModel: LoginViewModel
     private lateinit var epoxyController: LoginController
-    private val binding: FragmentLoginBinding by lazy {
-        DataBindingUtil.inflate<FragmentLoginBinding>(
-            layoutInflater,
-            R.layout.fragment_login,
-            container,
-            false
-        )
-    }
+    private lateinit var binding: FragmentLoginBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,7 +45,12 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _viewModel = ViewModelProviders.of(this, mViewModelFactory).get(LoginViewModel::class.java)
-        binding.apply {
+        binding = DataBindingUtil.inflate<FragmentLoginBinding>(
+            inflater,
+            R.layout.fragment_login,
+            container,
+            false
+        ).apply {
             lifecycleOwner = this@LoginFragment
             viewModel = _viewModel
         }

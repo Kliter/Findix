@@ -46,14 +46,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, SearchView.OnQueryTextListe
     private var mMap: GoogleMap? = null
 
     private lateinit var _viewModel: MapsViewModel
-    private val binding: FragmentMapsBinding by lazy {
-        DataBindingUtil.inflate<FragmentMapsBinding>(
-            layoutInflater,
-            R.layout.fragment_maps,
-            container,
-            false
-        )
-    }
+    private lateinit var binding: FragmentMapsBinding
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -67,7 +60,12 @@ class MapsFragment : Fragment(), OnMapReadyCallback, SearchView.OnQueryTextListe
         savedInstanceState: Bundle?
     ): View? {
         _viewModel = ViewModelProviders.of(this, mViewModelFactory).get(MapsViewModel::class.java)
-        binding.apply {
+        binding = DataBindingUtil.inflate<FragmentMapsBinding>(
+            inflater,
+            R.layout.fragment_maps,
+            container,
+            false
+        ).apply {
             lifecycleOwner = this@MapsFragment
             viewModel = _viewModel
         }

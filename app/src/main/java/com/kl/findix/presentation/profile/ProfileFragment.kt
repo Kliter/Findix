@@ -38,14 +38,7 @@ class ProfileFragment : Fragment() {
 
     private var epoxyController: ProfileController? = null
     private lateinit var _viewModel: ProfileViewModel
-    private val binding: FragmentProfileBinding by lazy {
-        DataBindingUtil.inflate<FragmentProfileBinding>(
-            layoutInflater,
-            R.layout.fragment_profile,
-            container,
-            false
-        )
-    }
+    private lateinit var binding: FragmentProfileBinding
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -60,14 +53,18 @@ class ProfileFragment : Fragment() {
         _viewModel =
             ViewModelProviders.of(this, mViewModelFactory).get(ProfileViewModel::class.java)
 
-        binding.apply {
+        binding = DataBindingUtil.inflate<FragmentProfileBinding>(
+            inflater,
+            R.layout.fragment_profile,
+            container,
+            false
+        ).apply {
             lifecycleOwner = this@ProfileFragment
             viewModel = _viewModel
             onClickSave = View.OnClickListener {
                 _viewModel.saveProfileSettings()
             }
         }
-
         return binding.root
     }
 

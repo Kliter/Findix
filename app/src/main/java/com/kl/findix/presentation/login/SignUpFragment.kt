@@ -16,7 +16,6 @@ import com.kl.findix.presentation.map.MapsActivity
 import com.kl.findix.util.nonNullObserve
 import com.kl.findix.util.showToast
 import dagger.android.support.AndroidSupportInjection
-import kotlinx.android.synthetic.main.fragment_signup.*
 import javax.inject.Inject
 
 class SignUpFragment : Fragment() {
@@ -26,14 +25,7 @@ class SignUpFragment : Fragment() {
     lateinit var mViewModelFactory: ViewModelFactory
 
     private lateinit var epoxyController: SignUpController
-    private val binding: FragmentSignupBinding by lazy {
-        DataBindingUtil.inflate<FragmentSignupBinding>(
-            layoutInflater,
-            R.layout.fragment_signup,
-            container,
-            false
-        )
-    }
+    private lateinit var binding: FragmentSignupBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,7 +33,13 @@ class SignUpFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _viewModel = ViewModelProviders.of(this, mViewModelFactory).get(SignUpViewModel::class.java)
-        binding.apply {
+
+        binding = DataBindingUtil.inflate<FragmentSignupBinding>(
+            inflater,
+            R.layout.fragment_signup,
+            container,
+            false
+        ).apply {
             lifecycleOwner = this@SignUpFragment
             viewModel = _viewModel
         }
