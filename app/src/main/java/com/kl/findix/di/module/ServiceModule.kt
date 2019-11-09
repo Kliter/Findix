@@ -12,6 +12,8 @@ import com.kl.findix.services.FirebaseStorageService
 import com.kl.findix.services.FirebaseStorageServiceImpl
 import com.kl.findix.services.FirebaseUserService
 import com.kl.findix.services.FirebaseUserServiceImpl
+import com.kl.findix.services.ImageService
+import com.kl.findix.services.ImageServiceImpl
 import com.kl.findix.services.MapServiceImpl
 import dagger.Module
 import dagger.Provides
@@ -48,4 +50,8 @@ class ServiceModule {
     @Singleton
     @Provides
     fun provideFileService(): FileService = FileServiceImpl()
+
+    @Singleton
+    @Provides
+    fun provideImageService(): ImageService = ImageServiceImpl()
 }

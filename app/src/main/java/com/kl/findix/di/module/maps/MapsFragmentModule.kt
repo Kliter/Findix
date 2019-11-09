@@ -22,5 +22,4 @@ abstract class MapsFragmentModule {
             return MapsNavigator(fragment.findNavController())
         }
     }
-
 }

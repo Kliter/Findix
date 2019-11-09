@@ -1,7 +1,10 @@
 package com.kl.findix.presentation.profile
 
 import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -11,10 +14,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.kl.findix.R
 import com.kl.findix.databinding.FragmentProfileBinding
 import com.kl.findix.di.ViewModelFactory
 import com.kl.findix.navigation.ProfileNavigator
+import com.kl.findix.util.REQUEST_CODE_CHOOOSE_PROFILE_ICON
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_profile.*
 import javax.inject.Inject
@@ -75,10 +81,20 @@ class ProfileFragment : Fragment() {
             epoxyController = ProfileController(
                 _viewModel.user,
                 onClickUserIcon = {
+                    val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                    startActivityForResult(intent, REQUEST_CODE_CHOOOSE_PROFILE_ICON)
                 }
             ).also {
                 binding.recyclerView.setControllerAndBuildModels(it)
             }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_CHOOOSE_PROFILE_ICON) {
+            val bitmap = data?.extras?.get("data")
+            _viewModel.uploadProfileIcon(bitmap as String)
         }
     }
 }
