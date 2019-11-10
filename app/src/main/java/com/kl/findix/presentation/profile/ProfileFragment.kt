@@ -2,25 +2,20 @@ package com.kl.findix.presentation.profile
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import com.kl.findix.R
 import com.kl.findix.databinding.FragmentProfileBinding
 import com.kl.findix.di.ViewModelFactory
 import com.kl.findix.navigation.ProfileNavigator
 import com.kl.findix.util.REQUEST_CODE_CHOOOSE_PROFILE_ICON
+import com.kl.findix.util.nonNullObserve
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_profile.*
 import javax.inject.Inject
@@ -38,7 +33,14 @@ class ProfileFragment : Fragment() {
 
     private var epoxyController: ProfileController? = null
     private lateinit var _viewModel: ProfileViewModel
-    private lateinit var binding: FragmentProfileBinding
+    private val binding: FragmentProfileBinding by lazy {
+        DataBindingUtil.inflate<FragmentProfileBinding>(
+            layoutInflater,
+            R.layout.fragment_profile,
+            container,
+            false
+        )
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -53,35 +55,41 @@ class ProfileFragment : Fragment() {
         _viewModel =
             ViewModelProviders.of(this, mViewModelFactory).get(ProfileViewModel::class.java)
 
-        binding = DataBindingUtil.inflate<FragmentProfileBinding>(
-            inflater,
-            R.layout.fragment_profile,
-            container,
-            false
-        ).apply {
+        binding.apply {
             lifecycleOwner = this@ProfileFragment
             viewModel = _viewModel
             onClickSave = View.OnClickListener {
                 _viewModel.saveProfileSettings()
             }
         }
+
+        _viewModel.fetchUserInfo()
+
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setController()
+        observeState(_viewModel)
+    }
+
+    private fun observeState(viewModel: ProfileViewModel) {
+        viewModel.user.nonNullObserve(viewLifecycleOwner) { user ->
+            epoxyController?.user = user
+            epoxyController?.requestModelBuild()
+        }
     }
 
     private fun setController() {
         context?.let {
             epoxyController = ProfileController(
-                _viewModel.user,
                 onClickUserIcon = {
                     val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                     startActivityForResult(intent, REQUEST_CODE_CHOOOSE_PROFILE_ICON)
                 }
             ).also {
+                epoxyController?.user = _viewModel._user
                 binding.recyclerView.setControllerAndBuildModels(it)
             }
         }

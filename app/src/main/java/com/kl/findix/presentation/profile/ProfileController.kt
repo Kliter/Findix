@@ -8,9 +8,10 @@ import com.kl.findix.itemProfileUserIcon
 import com.kl.findix.model.User
 
 class ProfileController(
-    private val user: User,
     private val onClickUserIcon: () -> Unit
 ): EpoxyController() {
+
+    var user: User? = null
 
     override fun buildModels() {
         itemProfileUserIcon {
