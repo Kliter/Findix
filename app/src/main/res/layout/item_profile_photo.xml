@@ -3,7 +3,9 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable
+                name="profilePhotoSrc"
+                type="android.graphics.Bitmap" />
         <variable
                 name="onClickUserIcon"
                 type="android.view.View.OnClickListener" />
@@ -22,7 +24,7 @@
                 android:layout_marginTop="@dimen/margin_x3"
                 android:layout_marginBottom="@dimen/margin_x4"
                 android:foreground="@drawable/ripple_white"
-                android:src="@mipmap/ic_launcher"
+                app:bitmapSrc="@{profilePhotoSrc}"
                 app:civ_border_color="@color/colorBlack"
                 app:civ_border_width="2dp"
                 app:layout_constraintEnd_toEndOf="parent"

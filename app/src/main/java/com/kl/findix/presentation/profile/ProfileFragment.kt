@@ -1,11 +1,9 @@
 package com.kl.findix.presentation.profile
 
 import android.app.Activity.RESULT_OK
-import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +19,6 @@ import com.kl.findix.util.nonNullObserve
 import com.kl.findix.util.safeLet
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_profile.*
-import java.io.InputStream
 import javax.inject.Inject
 
 class ProfileFragment : Fragment() {
@@ -64,7 +61,9 @@ class ProfileFragment : Fragment() {
             lifecycleOwner = this@ProfileFragment
             viewModel = _viewModel
             onClickSave = View.OnClickListener {
-                _viewModel.saveProfileSettings()
+                activity?.contentResolver?.let { contentResolver ->
+                    _viewModel.saveProfileSettings(contentResolver)
+                }
             }
         }
 
@@ -80,10 +79,17 @@ class ProfileFragment : Fragment() {
     }
 
     private fun observeState(viewModel: ProfileViewModel) {
-        viewModel.user.nonNullObserve(viewLifecycleOwner) { user ->
-            epoxyController?.user = user
-            epoxyController?.requestModelBuild()
+        viewModel.run {
+            user.nonNullObserve(viewLifecycleOwner) { user ->
+                epoxyController?.user = user
+                epoxyController?.requestModelBuild()
+            }
+            profilePhotoBitmap.nonNullObserve(viewLifecycleOwner) { profilePhotoBitmap ->
+                epoxyController?.profilePhotoSrc = profilePhotoBitmap
+                epoxyController?.requestModelBuild()
+            }
         }
+
     }
 
     private fun setController() {
@@ -106,9 +112,8 @@ class ProfileFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_CHOOOSE_PROFILE_ICON && resultCode == RESULT_OK) {
             safeLet(data?.data, activity?.contentResolver) { uri, contentResolver ->
-                _viewModel.uploadProfileIcon(uri, contentResolver)
+                _viewModel.updateProfilePhoto(uri, contentResolver)
             }
-//            _viewModel.uploadProfileIcon(bitmap as String)
         }
     }
 }

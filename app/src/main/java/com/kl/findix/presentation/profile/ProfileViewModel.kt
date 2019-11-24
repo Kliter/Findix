@@ -14,6 +14,7 @@ import com.kl.findix.services.FirebaseDataBaseService
 import com.kl.findix.services.FirebaseStorageService
 import com.kl.findix.services.FirebaseUserService
 import com.kl.findix.services.ImageService
+import com.kl.findix.util.safeLet
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,7 +31,11 @@ class ProfileViewModel @Inject constructor(
 
     // State
     var user: MutableLiveData<User> = MutableLiveData()
+
+    var profilePhotoBitmap: MutableLiveData<Bitmap> = MutableLiveData()
+
     var _user: User = User()
+    private var _profilePhotoUri: Uri? = null
 
     private var firebaseUser: FirebaseUser? = firebaseUserService.getCurrentSignInUser()
 
@@ -45,31 +50,43 @@ class ProfileViewModel @Inject constructor(
                     }
                 )
             }
+
+            // ProfilePhoto 取得してデフォルトで表示したいけどだるいからここまで
         }
     }
 
-    fun saveProfileSettings() {
+    fun saveProfileSettings(contentResolver: ContentResolver) {
         viewModelScope.launch {
             firebaseUser?.let {
                 firebaseDataBaseService.updateProfileInfo(it, _user)
             }
+
+            // Profile Photo保存
+            safeLet(firebaseUserService.getCurrentSignInUser(), _profilePhotoUri) { currentSignInUser, profilePhotoUri ->
+                firebaseUserService.getCurrentSignInUser()?.let {
+                    when (val result = imageService.getBitmap(profilePhotoUri, contentResolver)) {
+                        is ServiceResult.Success -> {
+                            firebaseStorageService.uploadProfileIcon(
+                                it.uid,
+                                imageService.getBytesFromBitmap(result.data)
+                            )
+                        }
+                        is ServiceResult.Failure -> {
+                            Log.e(TAG, result.error)
+                        }
+                    }
+                }
+            }
         }
     }
 
-    fun uploadProfileIcon(uri: Uri, contentResolver: ContentResolver) {
-        viewModelScope.launch {
-            firebaseUserService.getCurrentSignInUser()?.let {
-                when (val result = imageService.getBitmap(uri, contentResolver)) {
-                    is ServiceResult.Success -> {
-                        firebaseStorageService.uploadProfileIcon(
-                            it.uid,
-                            imageService.getBytesFromBitmap(result.data)
-                        )
-                    }
-                    is ServiceResult.Failure -> {
-                        Log.e(TAG, result.error)
-                    }
-                }
+    fun updateProfilePhoto(uri: Uri, contentResolver: ContentResolver) {
+        when (val result = imageService.getBitmap(uri, contentResolver)) {
+            is ServiceResult.Success -> {
+                profilePhotoBitmap.postValue(result.data)
+            }
+            is ServiceResult.Failure -> {
+                Log.e(TAG, result.error)
             }
         }
     }
