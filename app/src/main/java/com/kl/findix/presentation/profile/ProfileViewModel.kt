@@ -1,6 +1,8 @@
 package com.kl.findix.presentation.profile
 
+import android.content.ContentResolver
 import android.graphics.Bitmap
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -54,20 +56,19 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun uploadProfileIcon(imageUrl: String) {
+    fun uploadProfileIcon(uri: Uri, contentResolver: ContentResolver) {
         viewModelScope.launch {
             firebaseUserService.getCurrentSignInUser()?.let {
-                var bitmap: Bitmap? = null
-                when (val result = imageService.getBitmap(imageUrl)) {
-                    is ServiceResult.Success -> bitmap = result.data
-                    is ServiceResult.Failure -> Log.e(TAG, result.error)
-                }
-
-                bitmap?.let { bitmap ->
-                    firebaseStorageService.uploadProfileIcon(
-                        it.uid,
-                        imageService.getBytesFromBitmap(bitmap)
-                    )
+                when (val result = imageService.getBitmap(uri, contentResolver)) {
+                    is ServiceResult.Success -> {
+                        firebaseStorageService.uploadProfileIcon(
+                            it.uid,
+                            imageService.getBytesFromBitmap(result.data)
+                        )
+                    }
+                    is ServiceResult.Failure -> {
+                        Log.e(TAG, result.error)
+                    }
                 }
             }
         }

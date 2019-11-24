@@ -1,5 +1,7 @@
 package com.kl.findix.presentation.profile
 
+import android.app.Activity.RESULT_OK
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -16,14 +18,17 @@ import com.kl.findix.di.ViewModelFactory
 import com.kl.findix.navigation.ProfileNavigator
 import com.kl.findix.util.REQUEST_CODE_CHOOOSE_PROFILE_ICON
 import com.kl.findix.util.nonNullObserve
+import com.kl.findix.util.safeLet
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_profile.*
+import java.io.InputStream
 import javax.inject.Inject
 
 class ProfileFragment : Fragment() {
 
     companion object {
         private const val TAG = "MapsFragment"
+        private const val GALLERY_TYPE_IMAGE = "image/*"
     }
 
     @Inject
@@ -85,7 +90,9 @@ class ProfileFragment : Fragment() {
         context?.let {
             epoxyController = ProfileController(
                 onClickUserIcon = {
-                    val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                    val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+                    intent.addCategory(Intent.CATEGORY_OPENABLE)
+                    intent.type = GALLERY_TYPE_IMAGE
                     startActivityForResult(intent, REQUEST_CODE_CHOOOSE_PROFILE_ICON)
                 }
             ).also {
@@ -97,9 +104,11 @@ class ProfileFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_CHOOOSE_PROFILE_ICON) {
-            val bitmap = data?.extras?.get("data")
-            _viewModel.uploadProfileIcon(bitmap as String)
+        if (requestCode == REQUEST_CODE_CHOOOSE_PROFILE_ICON && resultCode == RESULT_OK) {
+            safeLet(data?.data, activity?.contentResolver) { uri, contentResolver ->
+                _viewModel.uploadProfileIcon(uri, contentResolver)
+            }
+//            _viewModel.uploadProfileIcon(bitmap as String)
         }
     }
 }
