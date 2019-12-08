@@ -51,40 +51,7 @@ class MapsActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
-//        if (ActivityCompat.checkSelfPermission(
-//                this,
-//                Manifest.permission.ACCESS_FINE_LOCATION
-//            ) == PackageManager.PERMISSION_GRANTED
-//        ) {
-//            getLastKnownPermission()
-//        } else {
-//            ActivityCompat.requestPermissions(
-//                this,
-//                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-//                REQUEST_CODE_PERMISSION
-//            )
-//        }
-
     }
-
-//    private fun getLastKnownPermission() {
-//        if (ActivityCompat.checkSelfPermission(
-//                this,
-//                Manifest.permission.ACCESS_FINE_LOCATION
-//            ) == PackageManager.PERMISSION_GRANTED
-//        ) {
-//            mFusedLocationProviderClient.lastLocation.addOnCompleteListener { task ->
-//                if (task.isSuccessful) {
-//                    val location = task.result
-//                    location?.let {
-//                        val geoPoint = GeoPoint(location.latitude, location.longitude)
-//                        Log.d(TAG, "onComplete: latitude: ${location.latitude}")
-//                        Log.d(TAG, "onComplete: longitude: ${location.longitude}")
-//                    }
-//                }
-//            }
-//        }
-//    }
 
     override fun onResume() {
         super.onResume()

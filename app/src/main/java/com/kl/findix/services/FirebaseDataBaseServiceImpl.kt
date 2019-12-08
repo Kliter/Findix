@@ -2,7 +2,6 @@ package com.kl.findix.services
 
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.type.LatLng
 import com.kl.findix.model.User
 import com.kl.findix.model.UserLocation
 import javax.inject.Inject
@@ -10,6 +9,7 @@ import javax.inject.Inject
 class FirebaseDataBaseServiceImpl @Inject constructor(
     private val database: FirebaseFirestore
 ): FirebaseDataBaseService {
+
     override suspend fun fetchProfileInfo(firebaseUser: FirebaseUser, fetchProfileInfoListener: (User) -> Unit) {
         database.collection("User").document(firebaseUser.uid).get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -32,5 +32,12 @@ class FirebaseDataBaseServiceImpl @Inject constructor(
                 }
             }
         }
+    }
+
+    override suspend fun updateUserLocation(
+        firebaseUser: FirebaseUser,
+        userLocation: UserLocation
+    ) {
+        database.collection("User").document(firebaseUser.uid).set(userLocation)
     }
 }

@@ -6,11 +6,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -32,10 +30,9 @@ import com.kl.findix.util.REQUEST_CODE_PERMISSION
 import com.kl.findix.util.nonNullObserve
 import com.kl.findix.util.safeLet
 import dagger.android.support.AndroidSupportInjection
-import kotlinx.android.synthetic.main.fragment_maps.*
 import javax.inject.Inject
 
-class MapsFragment : Fragment(), OnMapReadyCallback, SearchView.OnQueryTextListener {
+class MapsFragment : Fragment(), OnMapReadyCallback {
 
     companion object {
         fun newInstance() = MapsFragment()
@@ -51,7 +48,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, SearchView.OnQueryTextListe
 
     private lateinit var _viewModel: MapsViewModel
     private lateinit var binding: FragmentMapsBinding
-    private lateinit var mFusedLocationProviderClient: FusedLocationProviderClient
+    private lateinit var mLocationProviderClient: FusedLocationProviderClient
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -60,7 +57,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, SearchView.OnQueryTextListe
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mFusedLocationProviderClient =
+        mLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(activity as Activity)
     }
 
@@ -79,7 +76,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, SearchView.OnQueryTextListe
             lifecycleOwner = this@MapsFragment
             viewModel = _viewModel
             onClickGPSFixed =  View.OnClickListener {
-                _viewModel.updateUserLocation()
+                _viewModel.moveToCurrentLocation(requireContext(), mLocationProviderClient)
             }
         }
         setupMap()
@@ -108,8 +105,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, SearchView.OnQueryTextListe
                     ) == PackageManager.PERMISSION_GRANTED
                 ) {
                     map.isMyLocationEnabled = true
-                    _viewModel.getLastKnownPermission(it, mFusedLocationProviderClient)
-                    _viewModel.updateUserLocation()
+                    _viewModel.moveToCurrentLocation(it, mLocationProviderClient)
                 } else {
                     ActivityCompat.requestPermissions(
                         requireActivity(),
@@ -134,15 +130,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback, SearchView.OnQueryTextListe
         }
     }
 
-    override fun onQueryTextSubmit(text: String?): Boolean {
-        Log.d(TAG, "text is submitted")
-        return true
-    }
-
-    override fun onQueryTextChange(text: String?): Boolean {
-        return false
-    }
-
     private fun observeState() {
         _viewModel.run {
             this.userLocation.nonNullObserve(viewLifecycleOwner) {
@@ -162,7 +149,8 @@ class MapsFragment : Fragment(), OnMapReadyCallback, SearchView.OnQueryTextListe
     }
 
     private fun setupMap() {
-        val mapFragment: SupportMapFragment? = map as SupportMapFragment?
+        val mapFragment: SupportMapFragment? =
+            childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment?.getMapAsync(this)
     }
 
