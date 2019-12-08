@@ -2,8 +2,10 @@ package com.kl.findix.services
 
 import com.google.firebase.auth.FirebaseUser
 import com.kl.findix.model.User
+import com.kl.findix.model.UserLocation
 
 interface FirebaseDataBaseService {
-    fun fetchProfileInfo(firebaseUser: FirebaseUser,  fetchProfileInfoListener: (User) -> Unit)
-    fun updateProfileInfo(firebaseUser: FirebaseUser, user: User)
+    suspend fun fetchProfileInfo(firebaseUser: FirebaseUser,  fetchProfileInfoListener: (User) -> Unit)
+    suspend fun updateProfileInfo(firebaseUser: FirebaseUser, user: User)
+    suspend fun fetchUserLocation(firebaseUser: FirebaseUser,  fetchUserLocationListener: (UserLocation) -> Unit)
 }

@@ -30,6 +30,7 @@ import com.kl.findix.navigation.MapsNavigator
 import com.kl.findix.presentation.login.LoginActivity
 import com.kl.findix.util.REQUEST_CODE_PERMISSION
 import com.kl.findix.util.nonNullObserve
+import com.kl.findix.util.safeLet
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_maps.*
 import javax.inject.Inject
@@ -77,6 +78,9 @@ class MapsFragment : Fragment(), OnMapReadyCallback, SearchView.OnQueryTextListe
         ).apply {
             lifecycleOwner = this@MapsFragment
             viewModel = _viewModel
+            onClickGPSFixed =  View.OnClickListener {
+                _viewModel.updateUserLocation()
+            }
         }
         setupMap()
 
@@ -97,10 +101,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback, SearchView.OnQueryTextListe
     override fun onMapReady(googleMap: GoogleMap?) {
         mMap = googleMap
         mMap?.let { map ->
-            val sydney = LatLng(-34.0, 151.0)// Tmp implementation.
-            map.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-            map.moveCamera(CameraUpdateFactory.newLatLng(sydney))
-
             context?.let {
                 if (ActivityCompat.checkSelfPermission(
                         it,
@@ -109,6 +109,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback, SearchView.OnQueryTextListe
                 ) {
                     map.isMyLocationEnabled = true
                     _viewModel.getLastKnownPermission(it, mFusedLocationProviderClient)
+                    _viewModel.updateUserLocation()
                 } else {
                     ActivityCompat.requestPermissions(
                         requireActivity(),
@@ -143,7 +144,13 @@ class MapsFragment : Fragment(), OnMapReadyCallback, SearchView.OnQueryTextListe
     }
 
     private fun observeState() {
-        //Todo
+        _viewModel.run {
+            this.userLocation.nonNullObserve(viewLifecycleOwner) {
+                safeLet(it.latitude, it.longitude) { latitude, longitude ->
+                    moveToUserLocation(LatLng(latitude, longitude))
+                }
+            }
+        }
     }
 
     private fun observeEvent(viewModel: MapsViewModel) {
@@ -157,5 +164,12 @@ class MapsFragment : Fragment(), OnMapReadyCallback, SearchView.OnQueryTextListe
     private fun setupMap() {
         val mapFragment: SupportMapFragment? = map as SupportMapFragment?
         mapFragment?.getMapAsync(this)
+    }
+
+    private fun moveToUserLocation(latLng: LatLng) {
+        mMap?.let { map ->
+            map.addMarker(MarkerOptions().position(latLng).title("Your location."))
+            map.moveCamera(CameraUpdateFactory.newLatLng(latLng))
+        }
     }
 }

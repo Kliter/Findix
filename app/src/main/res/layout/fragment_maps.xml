@@ -52,6 +52,7 @@
                 app:borderWidth="0dp"
                 android:onClick="@{onClickGPSFixed}"
                 app:layout_constraintBottom_toBottomOf="parent"
+                android:foreground="@drawable/ripple_white"
                 app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
