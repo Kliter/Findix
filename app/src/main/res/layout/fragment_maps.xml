@@ -8,6 +8,10 @@
         <variable
                 name="viewModel"
                 type="com.kl.findix.presentation.map.MapsViewModel" />
+
+        <variable
+                name="onClickGPSFixed"
+                type="android.view.View.OnClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,6 +41,18 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/appbar_layout" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginEnd="@dimen/margin_x2"
+                android:layout_marginBottom="@dimen/margin_x2"
+                android:backgroundTint="@color/colorWhite"
+                android:src="@drawable/ic_gps_fixed"
+                app:borderWidth="0dp"
+                android:onClick="@{onClickGPSFixed}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
