@@ -1,6 +1,7 @@
 package com.kl.findix.presentation.map
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -14,6 +15,8 @@ import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -47,12 +50,18 @@ class MapsFragment : Fragment(), OnMapReadyCallback, SearchView.OnQueryTextListe
 
     private lateinit var _viewModel: MapsViewModel
     private lateinit var binding: FragmentMapsBinding
+    private lateinit var mFusedLocationProviderClient: FusedLocationProviderClient
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         AndroidSupportInjection.inject(this)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mFusedLocationProviderClient =
+            LocationServices.getFusedLocationProviderClient(activity as Activity)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -85,18 +94,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback, SearchView.OnQueryTextListe
         _viewModel.getCurrentSignInUser()
     }
 
-    private fun observeState() {
-        //Todo
-    }
-
-    private fun observeEvent(viewModel: MapsViewModel) {
-        viewModel.backToLoginCommand.nonNullObserve(viewLifecycleOwner) {
-            // _viewModel.signOut()
-            val intent = Intent(requireContext(), LoginActivity::class.java)
-            startActivity(intent)
-        }
-    }
-
     override fun onMapReady(googleMap: GoogleMap?) {
         mMap = googleMap
         mMap?.let { map ->
@@ -105,11 +102,19 @@ class MapsFragment : Fragment(), OnMapReadyCallback, SearchView.OnQueryTextListe
             map.moveCamera(CameraUpdateFactory.newLatLng(sydney))
 
             context?.let {
-                if (ActivityCompat.checkSelfPermission(it,
+                if (ActivityCompat.checkSelfPermission(
+                        it,
                         Manifest.permission.ACCESS_FINE_LOCATION
                     ) == PackageManager.PERMISSION_GRANTED
                 ) {
                     map.isMyLocationEnabled = true
+                    _viewModel.getLastKnownPermission(it, mFusedLocationProviderClient)
+                } else {
+                    ActivityCompat.requestPermissions(
+                        requireActivity(),
+                        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                        REQUEST_CODE_PERMISSION
+                    )
                 }
             }
         }
@@ -135,6 +140,18 @@ class MapsFragment : Fragment(), OnMapReadyCallback, SearchView.OnQueryTextListe
 
     override fun onQueryTextChange(text: String?): Boolean {
         return false
+    }
+
+    private fun observeState() {
+        //Todo
+    }
+
+    private fun observeEvent(viewModel: MapsViewModel) {
+        viewModel.backToLoginCommand.nonNullObserve(viewLifecycleOwner) {
+            // _viewModel.signOut()
+            val intent = Intent(requireContext(), LoginActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun setupMap() {
