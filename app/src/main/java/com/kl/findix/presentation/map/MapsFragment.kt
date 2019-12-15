@@ -159,7 +159,12 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private fun moveToUserLocation(latLng: LatLng) {
         mMap?.let { map ->
             val cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15f)
-            map.addMarker(MarkerOptions().position(latLng).title("Your location."))
+            map.addMarker(
+                MarkerOptions()
+                    .position(latLng)
+                    .title("Your location.")
+//                    .icon(BitmapDescriptorFactory.fromBitmap())
+            )
             map.moveCamera(cameraUpdate)
             map.animateCamera(cameraUpdate)
         }
