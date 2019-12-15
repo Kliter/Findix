@@ -141,10 +141,12 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun observeEvent(viewModel: MapsViewModel) {
-        viewModel.backToLoginCommand.nonNullObserve(viewLifecycleOwner) {
-            // _viewModel.signOut()
-            val intent = Intent(requireContext(), LoginActivity::class.java)
-            startActivity(intent)
+        viewModel.run {
+            this.backToLoginCommand.nonNullObserve(viewLifecycleOwner) {
+                // _viewModel.signOut()
+                val intent = Intent(requireContext(), LoginActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 
@@ -156,8 +158,10 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
     private fun moveToUserLocation(latLng: LatLng) {
         mMap?.let { map ->
+            val cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15f)
             map.addMarker(MarkerOptions().position(latLng).title("Your location."))
-            map.moveCamera(CameraUpdateFactory.newLatLng(latLng))
+            map.moveCamera(cameraUpdate)
+            map.animateCamera(cameraUpdate)
         }
     }
 }
