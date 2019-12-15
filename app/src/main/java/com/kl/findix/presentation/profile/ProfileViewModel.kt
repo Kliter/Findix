@@ -83,6 +83,7 @@ class ProfileViewModel @Inject constructor(
     fun updateProfilePhoto(uri: Uri, contentResolver: ContentResolver) {
         when (val result = imageService.getBitmap(uri, contentResolver)) {
             is ServiceResult.Success -> {
+                _profilePhotoUri = uri
                 profilePhotoBitmap.postValue(result.data)
             }
             is ServiceResult.Failure -> {
