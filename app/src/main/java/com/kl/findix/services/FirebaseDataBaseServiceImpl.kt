@@ -38,6 +38,6 @@ class FirebaseDataBaseServiceImpl @Inject constructor(
         firebaseUser: FirebaseUser,
         userLocation: UserLocation
     ) {
-        database.collection("User").document(firebaseUser.uid).set(userLocation)
+        database.collection("UserLocation").document(firebaseUser.uid).set(userLocation)
     }
 }
