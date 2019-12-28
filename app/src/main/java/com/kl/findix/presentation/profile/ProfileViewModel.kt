@@ -55,25 +55,27 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun saveProfileSettings(contentResolver: ContentResolver) {
-        viewModelScope.launch {
-            firebaseUser?.let {
-                firebaseDataBaseService.updateProfileInfo(it, _user)
+    fun saveProfile(contentResolver: ContentResolver) {
+        safeLet(firebaseUserService.getCurrentSignInUser(), _profilePhotoUri) { currentSignInUser, profilePhotoUri ->
+            viewModelScope.launch {
+                firebaseUser?.let {
+                    firebaseDataBaseService.updateProfileInfo(
+                        it,
+                        _user,
+                        _profilePhotoUri.toString()
+                    )
+                }
             }
-
-            // Profile Photo保存
-            safeLet(firebaseUserService.getCurrentSignInUser(), _profilePhotoUri) { currentSignInUser, profilePhotoUri ->
-                firebaseUserService.getCurrentSignInUser()?.let {
-                    when (val result = imageService.getBitmap(profilePhotoUri, contentResolver)) {
-                        is ServiceResult.Success -> {
-                            firebaseStorageService.uploadProfileIcon(
-                                it.uid,
-                                imageService.getBytesFromBitmap(result.data)
-                            )
-                        }
-                        is ServiceResult.Failure -> {
-                            Log.e(TAG, result.error)
-                        }
+            viewModelScope.launch {
+                when (val result = imageService.getBitmap(profilePhotoUri, contentResolver)) {
+                    is ServiceResult.Success -> {
+                        firebaseStorageService.uploadProfileIcon(
+                            currentSignInUser.uid,
+                            imageService.getBytesFromBitmap(result.data)
+                        )
+                    }
+                    is ServiceResult.Failure -> {
+                        Log.e(TAG, result.error)
                     }
                 }
             }

@@ -4,6 +4,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.kl.findix.model.User
 import com.kl.findix.model.UserLocation
+import com.kl.findix.util.getProfileStorageUrl
 import javax.inject.Inject
 
 class FirebaseDataBaseServiceImpl @Inject constructor(
@@ -20,8 +21,18 @@ class FirebaseDataBaseServiceImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateProfileInfo(firebaseUser: FirebaseUser, user: User) {
-        database.collection("User").document(firebaseUser.uid).set(user)
+    override suspend fun updateProfileInfo(
+        firebaseUser: FirebaseUser,
+        user: User,
+        profilePhotoUrl: String
+    ) {
+        database.collection("User")
+            .document(firebaseUser.uid)
+            .set(
+                user.apply {
+                    this.profilePhotoUrl = getProfileStorageUrl(firebaseUser.uid)
+                }
+            )
     }
 
     override suspend fun fetchUserLocation(firebaseUser: FirebaseUser, fetchUserLocationListener: (UserLocation) -> Unit) {

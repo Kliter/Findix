@@ -2,7 +2,7 @@ package com.kl.findix.services
 
 import android.util.Log
 import com.google.firebase.storage.FirebaseStorage
-import com.kl.findix.util.FIREBASE_IMAGE_STORAGE
+import com.kl.findix.util.getProfileStorageUrl
 
 class FirebaseStorageServiceImpl(
     private val storage: FirebaseStorage
@@ -13,8 +13,7 @@ class FirebaseStorageServiceImpl(
     }
 
     override fun uploadProfileIcon(userId: String, byteArray: ByteArray) {
-        val profilePhotoReference =
-            storage.reference.child("$FIREBASE_IMAGE_STORAGE/$userId/profile_photo")
+        val profilePhotoReference = storage.reference.child(getProfileStorageUrl(userId))
         profilePhotoReference.putBytes(byteArray).apply {
             this.addOnSuccessListener {
                 Log.d(TAG, "profile photo upload success")
@@ -22,5 +21,9 @@ class FirebaseStorageServiceImpl(
                 Log.d(TAG, "profile photo upload failure")
             }
         }
+    }
+
+    override fun getProfileImageRef(userId: String) {
+
     }
 }

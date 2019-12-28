@@ -62,7 +62,7 @@ class ProfileFragment : Fragment() {
             viewModel = _viewModel
             onClickSave = View.OnClickListener {
                 activity?.contentResolver?.let { contentResolver ->
-                    _viewModel.saveProfileSettings(contentResolver)
+                    _viewModel.saveProfile(contentResolver)
                 }
             }
         }
