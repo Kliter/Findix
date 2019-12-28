@@ -13,7 +13,8 @@ class User(): BaseObservable() {
         description: String? = "",
         website: String? = "",
         email: String? = "",
-        phone: String? = ""
+        phone: String? = "",
+        profilePhotoUrl: String? = ""
     ): this() {
         this.userName = userName
         this.userId = userId
@@ -22,6 +23,7 @@ class User(): BaseObservable() {
         this.website = website
         this.email = email
         this.phone = phone
+        this.profilePhotoUrl = profilePhotoUrl
     }
 
     @get:Bindable
@@ -66,5 +68,7 @@ class User(): BaseObservable() {
             field = value
             notifyPropertyChanged(BR.phone)
         }
+
+    var profilePhotoUrl: String? = ""
 
 }
