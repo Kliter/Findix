@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.storage.StorageReference
 import com.kl.findix.model.ServiceResult
 import com.kl.findix.model.User
 import com.kl.findix.services.FirebaseDataBaseService
@@ -32,7 +33,8 @@ class ProfileViewModel @Inject constructor(
     // State
     var user: MutableLiveData<User> = MutableLiveData()
 
-    var profilePhotoBitmap: MutableLiveData<Bitmap> = MutableLiveData()
+    var profileIconBitmap: MutableLiveData<Bitmap> = MutableLiveData()
+    var setProfileIconCommand: MutableLiveData<StorageReference> = MutableLiveData()
 
     var _user: User = User()
     private var _profilePhotoUri: Uri? = null
@@ -52,6 +54,9 @@ class ProfileViewModel @Inject constructor(
             }
 
             // ProfilePhoto 取得してデフォルトで表示したいけどだるいからここまで
+            firebaseUser?.let { firebaseUser ->
+
+            }
         }
     }
 
@@ -86,11 +91,17 @@ class ProfileViewModel @Inject constructor(
         when (val result = imageService.getBitmap(uri, contentResolver)) {
             is ServiceResult.Success -> {
                 _profilePhotoUri = uri
-                profilePhotoBitmap.postValue(result.data)
+                profileIconBitmap.postValue(result.data)
             }
             is ServiceResult.Failure -> {
                 Log.e(TAG, result.error)
             }
+        }
+    }
+
+    fun setProfileIcon() {
+        firebaseUser?.let { firebaseUser ->
+            setProfileIconCommand.postValue(firebaseStorageService.getProfileIconRef(firebaseUser.uid))
         }
     }
 }

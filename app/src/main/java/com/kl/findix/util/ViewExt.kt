@@ -21,4 +21,3 @@ fun ImageView.setBitmapSrc(bitmap: Bitmap?) {
         this.setImageBitmap(bitmap)
     }
 }
-

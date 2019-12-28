@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import com.bumptech.glide.Glide
 import com.kl.findix.R
 import com.kl.findix.databinding.FragmentProfileBinding
 import com.kl.findix.di.ViewModelFactory
@@ -65,8 +66,14 @@ class ProfileFragment : Fragment() {
                     _viewModel.saveProfile(contentResolver)
                 }
             }
+            onClickUserIcon = View.OnClickListener {
+                val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+                intent.addCategory(Intent.CATEGORY_OPENABLE)
+                intent.type = GALLERY_TYPE_IMAGE
+                startActivityForResult(intent, REQUEST_CODE_CHOOOSE_PROFILE_ICON)
+            }
         }
-
+        _viewModel.setProfileIcon()
         _viewModel.fetchUserInfo()
 
         return binding.root
@@ -84,9 +91,13 @@ class ProfileFragment : Fragment() {
                 epoxyController?.user = user
                 epoxyController?.requestModelBuild()
             }
-            profilePhotoBitmap.nonNullObserve(viewLifecycleOwner) { profilePhotoBitmap ->
-                epoxyController?.profilePhotoSrc = profilePhotoBitmap
-                epoxyController?.requestModelBuild()
+            profileIconBitmap.nonNullObserve(viewLifecycleOwner) { profileIconBitmap ->
+                binding.profileIconSrc = profileIconBitmap
+            }
+            setProfileIconCommand.nonNullObserve(viewLifecycleOwner) { storageReference ->
+                Glide.with(requireContext())
+                    .load(storageReference)
+                    .into(binding.profileIcon)
             }
         }
 
@@ -94,14 +105,7 @@ class ProfileFragment : Fragment() {
 
     private fun setController() {
         context?.let {
-            epoxyController = ProfileController(
-                onClickUserIcon = {
-                    val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
-                    intent.addCategory(Intent.CATEGORY_OPENABLE)
-                    intent.type = GALLERY_TYPE_IMAGE
-                    startActivityForResult(intent, REQUEST_CODE_CHOOOSE_PROFILE_ICON)
-                }
-            ).also {
+            epoxyController = ProfileController().also {
                 epoxyController?.user = _viewModel._user
                 binding.recyclerView.setControllerAndBuildModels(it)
             }

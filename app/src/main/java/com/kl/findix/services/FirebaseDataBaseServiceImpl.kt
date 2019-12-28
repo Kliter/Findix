@@ -4,7 +4,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.kl.findix.model.User
 import com.kl.findix.model.UserLocation
-import com.kl.findix.util.getProfileStorageUrl
+import com.kl.findix.util.getStorageProfileIconPath
 import javax.inject.Inject
 
 class FirebaseDataBaseServiceImpl @Inject constructor(
@@ -30,7 +30,7 @@ class FirebaseDataBaseServiceImpl @Inject constructor(
             .document(firebaseUser.uid)
             .set(
                 user.apply {
-                    this.profilePhotoUrl = getProfileStorageUrl(firebaseUser.uid)
+                    this.profilePhotoUrl = getStorageProfileIconPath(firebaseUser.uid)
                 }
             )
     }

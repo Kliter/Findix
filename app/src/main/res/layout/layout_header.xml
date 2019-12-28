@@ -6,7 +6,7 @@
         android:layout_height="150dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/iv_user_icon"
+            android:id="@+id/profile_icon"
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_marginTop="41dp"
@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             style="@style/TextAppearance.MaterialComponents.Headline5"
-            android:layout_below="@+id/iv_user_icon"
+            android:layout_below="@+id/profile_icon"
             android:text="Sample Text"/>
 
 </RelativeLayout>
