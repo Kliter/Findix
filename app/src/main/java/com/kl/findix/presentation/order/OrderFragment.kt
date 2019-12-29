@@ -28,6 +28,7 @@ class OrderFragment : Fragment() {
 
     private lateinit var _viewModel: OrderViewModel
     private lateinit var binding: FragmentOrderBinding
+    private var controller: OrderController? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -52,12 +53,21 @@ class OrderFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        setController()
 //        observeState(_viewModel)
 //        observeEvent(_viewModel)
     }
 
+    private fun setController() {
+        controller = OrderController(
+            onClickOrder = {
+//                navigator.toOrderDetail()
+            }
+        )
+    }
+
     private fun observeState(viewModel: OrderViewModel) {
-        TODO()
+
     }
 
     private fun observeEvent(viewModel: OrderViewModel) {

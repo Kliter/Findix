@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -12,7 +11,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/colorWhite">
 
         <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/appbar_layout"
@@ -27,15 +27,26 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Hello Order"
+        <com.airbnb.epoxy.EpoxyRecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/appbar_layout" />
+                app:layout_constraintTop_toBottomOf="@id/appbar_layout" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginEnd="@dimen/margin_x2"
+                android:layout_marginBottom="@dimen/margin_x2"
+                android:backgroundTint="@color/colorWhite"
+                android:foreground="@drawable/ripple_white"
+                android:src="@drawable/ic_gps_fixed"
+                app:borderWidth="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

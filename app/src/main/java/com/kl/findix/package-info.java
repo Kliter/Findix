@@ -5,6 +5,7 @@
         R.layout.item_profile_section_header_view,
         R.layout.item_profile_base_info_view,
         R.layout.item_profile_private_info_view,
+        R.layout.item_order_list,
 })
 
 package com.kl.findix;
