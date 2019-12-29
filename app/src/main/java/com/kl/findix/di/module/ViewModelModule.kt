@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.kl.findix.presentation.login.LoginViewModel
 import com.kl.findix.presentation.login.SignUpViewModel
 import com.kl.findix.presentation.map.MapsViewModel
+import com.kl.findix.presentation.order.OrderViewModel
 import com.kl.findix.presentation.profile.ProfileViewModel
 import dagger.Binds
 import dagger.Module
@@ -37,4 +38,9 @@ abstract class ViewModelModule {
     @ViewModelKey(ProfileViewModel::class)
     internal abstract fun provideProfileViewModel(profileViewModel: ProfileViewModel): ViewModel
 
+    @Binds
+    @IntoMap
+    @Singleton
+    @ViewModelKey(OrderViewModel::class)
+    internal abstract fun provideOrderViewModel(orderViewModel: OrderViewModel): ViewModel
 }

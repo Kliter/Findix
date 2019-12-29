@@ -83,6 +83,17 @@ class ProfileFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         setController()
         observeState(_viewModel)
+        observeEvent(_viewModel)
+    }
+
+    private fun observeEvent(viewModel: ProfileViewModel) {
+        viewModel.run {
+            setProfileIconCommand.nonNullObserve(viewLifecycleOwner) { storageReference ->
+                Glide.with(requireContext())
+                    .load(storageReference)
+                    .into(binding.profileIcon)
+            }
+        }
     }
 
     private fun observeState(viewModel: ProfileViewModel) {
@@ -93,11 +104,6 @@ class ProfileFragment : Fragment() {
             }
             profileIconBitmap.nonNullObserve(viewLifecycleOwner) { profileIconBitmap ->
                 binding.profileIconSrc = profileIconBitmap
-            }
-            setProfileIconCommand.nonNullObserve(viewLifecycleOwner) { storageReference ->
-                Glide.with(requireContext())
-                    .load(storageReference)
-                    .into(binding.profileIcon)
             }
         }
 
