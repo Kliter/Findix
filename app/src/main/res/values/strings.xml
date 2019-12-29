@@ -16,6 +16,7 @@
     <string name="action_profile">Profile</string>
     <string name="action_list">List</string>
     <string name="action_message">Message</string>
+    <string name="action_order">Order</string>
 
     <string name="search">Search</string>
     <string name="hint_username">User Name</string>
@@ -36,6 +37,16 @@
     <string name="succeed_sign_in">Succeed to sign in.</string>
     <string name="failed_sign_up">Failed to sign up.</string>
     <string name="failed_sign_in">Failed to sign in.</string>
-    <string name="action_order">Order</string>
+
+    // Locations
+    <string name="location_makindye">Makindye</string>
+    <string name="location_nsambya">Nsambya</string>
+    <string name="location_kabowa">Kabowa</string>
+    <string name="location_kisenyi">Kisenyi</string>
+    <string name="location_namirembe">Namirembe</string>
+    <string name="location_mengo">Mengo</string>
+    <string name="location_kabusu">Kabusu</string>
+    <string name="location_lubaga">Lubaga</string>
+    <string name="location_nakasero">Nakasero</string>
 
 </resources>
