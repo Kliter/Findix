@@ -1,7 +1,9 @@
 package com.kl.findix.services
 
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import com.kl.findix.model.Order
 import com.kl.findix.model.User
 import com.kl.findix.model.UserLocation
 import com.kl.findix.util.getStorageProfileIconPath
@@ -19,6 +21,26 @@ class FirebaseDataBaseServiceImpl @Inject constructor(
                 }
             }
         }
+    }
+
+    suspend fun fetchNearOrder(
+        latitude: Long,
+        longitude: Long,
+        fetchNearOrderListener: (List<Order>) -> Unit
+    ) {
+        database.collection("Order")
+            .whereGreaterThan("latitude", latitude - 0.005)
+            .whereLessThan("latitude", latitude + 0.05)
+            .whereGreaterThan("longitude", longitude - 0.005)
+            .whereLessThan("longitude", longitude + 0.05)
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    task.result?.toObjects(Order::class.java)?.let { orders ->
+                        fetchNearOrderListener.invoke(orders)
+                    }
+                }
+            }
     }
 
     override suspend fun updateProfileInfo(
@@ -50,5 +72,22 @@ class FirebaseDataBaseServiceImpl @Inject constructor(
         userLocation: UserLocation
     ) {
         database.collection("UserLocation").document(firebaseUser.uid).set(userLocation)
+    }
+
+    override suspend fun fetchNearOrder(latLng: LatLng) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override suspend fun fetchLast15Orders(fetchLast15OrdersListener: (List<Order>) -> Unit) {
+        database.collection("Order").orderBy("timeStamp").limit(15).get()
+            .addOnSuccessListener { result ->
+                result?.toObjects(Order::class.java)?.let { orders ->
+                    fetchLast15OrdersListener.invoke(orders)
+                }
+            }
+    }
+
+    override suspend fun createOrder(firebaseUser: FirebaseUser, order: Order) {
+        database.collection("Order").document().set(order)
     }
 }

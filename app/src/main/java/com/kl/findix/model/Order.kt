@@ -1,7 +1,11 @@
 package com.kl.findix.model
 
+import java.util.*
+
 data class Order(
-    val title: String,
-    val description: String,
-    val photoUrl: String
+    val userId: String = "",
+    val title: String = "",
+    val description: String = "",
+    val photoUrl: String = "",
+    val timeStamp: Date? = null
 )

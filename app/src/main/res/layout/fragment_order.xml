@@ -27,6 +27,80 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
+        <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/toggle_button_group"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/appbar_layout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/recycler_view">
+
+            <Button
+                    android:id="@+id/btn_makindye"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:text="@string/location_makindye"/>
+
+            <Button
+                    android:id="@+id/btn_nsambya"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:text="@string/location_nsambya"/>
+
+            <Button
+                    android:id="@+id/btn_kabowa"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:text="@string/location_kabowa"/>
+
+            <Button
+                    android:id="@+id/btn_kisenyi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:text="@string/location_kisenyi"/>
+
+            <Button
+                    android:id="@+id/btn_namirembe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:text="@string/location_namirembe"/>
+
+            <Button
+                    android:id="@+id/btn_mengo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:text="@string/location_mengo"/>
+
+            <Button
+                    android:id="@+id/btn_kabusu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:text="@string/location_kabusu"/>
+
+            <Button
+                    android:id="@+id/btn_lubaga"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:text="@string/location_lubaga"/>
+
+            <Button
+                    android:id="@+id/btn_nakasero"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:text="@string/location_nakasero"/>
+
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
         <com.airbnb.epoxy.EpoxyRecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="0dp"
@@ -34,7 +108,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/appbar_layout" />
+                app:layout_constraintTop_toBottomOf="@id/toggle_button_group" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:layout_width="56dp"

@@ -12,6 +12,7 @@ import com.kl.findix.R
 import com.kl.findix.databinding.FragmentOrderBinding
 import com.kl.findix.di.ViewModelFactory
 import com.kl.findix.navigation.OrderNavigator
+import com.kl.findix.util.nonNullObserve
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -47,14 +48,13 @@ class OrderFragment : Fragment() {
             lifecycleOwner = viewLifecycleOwner
             viewModel = _viewModel
         }
-
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setController()
-//        observeState(_viewModel)
+        observeState(_viewModel)
 //        observeEvent(_viewModel)
     }
 
@@ -67,10 +67,13 @@ class OrderFragment : Fragment() {
     }
 
     private fun observeState(viewModel: OrderViewModel) {
-
+        viewModel.run {
+            this.orders.nonNullObserve(viewLifecycleOwner) { orders ->
+                controller?.setData(orders)
+            }
+        }
     }
 
     private fun observeEvent(viewModel: OrderViewModel) {
-        TODO()
     }
 }

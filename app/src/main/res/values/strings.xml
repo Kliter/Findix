@@ -10,7 +10,6 @@
     <string name="open">Open</string>
     <string name="close">Close</string>
 
-
     // Action
     <string name="action_map">Map</string>
     <string name="action_profile">Profile</string>
@@ -48,5 +47,17 @@
     <string name="location_kabusu">Kabusu</string>
     <string name="location_lubaga">Lubaga</string>
     <string name="location_nakasero">Nakasero</string>
+
+    <string-array name="locations">
+        <item>Makindye</item>
+        <item>Nsambya</item>
+        <item>Kabowa</item>
+        <item>Kisenyi</item>
+        <item>Namirembe</item>
+        <item>Mengo</item>
+        <item>Kabusu</item>
+        <item>Lubaga</item>
+        <item>Nakasero</item>
+    </string-array>
 
 </resources>
