@@ -1,6 +1,7 @@
 package com.kl.findix.util
 
 import android.graphics.Bitmap
+import android.view.View
 import android.widget.ImageView
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
@@ -19,5 +20,16 @@ fun ImageView.setBitmapSrc(bitmap: Bitmap?) {
         )
     } else {
         this.setImageBitmap(bitmap)
+    }
+}
+
+@BindingAdapter("app:showPhotoIfExist")
+fun ImageView.showPhotoIfExist(url: String?) {
+    url?.isNotBlank()?.let {
+        if (it) {
+            this.visibility = View.VISIBLE
+        } else {
+            this.visibility = View.GONE
+        }
     }
 }

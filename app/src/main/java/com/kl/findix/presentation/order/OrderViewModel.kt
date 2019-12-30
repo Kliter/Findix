@@ -20,13 +20,6 @@ class OrderViewModel @Inject constructor(
     private var firebaseUser: FirebaseUser? = firebaseUserService.getCurrentSignInUser()
 
     init {
-//        createOrder(Order(
-//            userId = "xxx",
-//            title = "test",
-//            description = "test",
-//            photoUrl = "test",
-//            timeStamp = Date()
-//        ))
         fetchLast15Orders()
     }
 

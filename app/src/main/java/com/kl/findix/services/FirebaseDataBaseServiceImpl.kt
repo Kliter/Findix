@@ -7,6 +7,7 @@ import com.kl.findix.model.Order
 import com.kl.findix.model.User
 import com.kl.findix.model.UserLocation
 import com.kl.findix.util.getStorageProfileIconPath
+import java.util.*
 import javax.inject.Inject
 
 class FirebaseDataBaseServiceImpl @Inject constructor(
@@ -88,6 +89,10 @@ class FirebaseDataBaseServiceImpl @Inject constructor(
     }
 
     override suspend fun createOrder(firebaseUser: FirebaseUser, order: Order) {
-        database.collection("Order").document().set(order)
+        database.collection("Order")
+            .document()
+            .set(order.apply {
+                this.timeStamp = Date()
+            })
     }
 }

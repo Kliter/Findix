@@ -7,5 +7,5 @@ data class Order(
     val title: String = "",
     val description: String = "",
     val photoUrl: String = "",
-    val timeStamp: Date? = null
+    var timeStamp: Date? = null
 )

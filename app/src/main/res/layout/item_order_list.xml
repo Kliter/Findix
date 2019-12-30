@@ -7,6 +7,8 @@
 
         <import type="android.view.View" />
 
+        <import type="com.kl.findix.util.StringExtKt" />
+
         <variable
                 name="order"
                 type="com.kl.findix.model.Order" />
@@ -33,7 +35,7 @@
                     android:layout_width="0dp"
                     android:layout_height="160dp"
                     android:layout_margin="@dimen/margin_x1"
-                    android:visibility='@{order.photoUrl != "" ? View.VISIBLE : View.GONE }'
+                    app:showPhotoIfExist="@{order.photoUrl}"
                     app:layout_constraintBottom_toTopOf="@id/title"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.kl.findix.R
 import com.kl.findix.databinding.FragmentOrderBinding
 import com.kl.findix.di.ViewModelFactory
@@ -64,6 +65,10 @@ class OrderFragment : Fragment() {
 //                navigator.toOrderDetail()
             }
         )
+        binding.recyclerView?.let {
+            it.adapter = controller?.adapter
+            it.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        }
     }
 
     private fun observeState(viewModel: OrderViewModel) {
