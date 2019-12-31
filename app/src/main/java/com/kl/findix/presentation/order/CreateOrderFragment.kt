@@ -12,6 +12,9 @@ import com.kl.findix.R
 import com.kl.findix.databinding.FragmentCreateOrderBinding
 import com.kl.findix.di.ViewModelFactory
 import com.kl.findix.navigation.CreateOrderNavigator
+import com.kl.findix.util.nonNullObserve
+import com.kl.findix.util.safeLet
+import com.kl.findix.util.showToast
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -48,7 +51,47 @@ class CreateOrderFragment : Fragment() {
             onClickBack = View.OnClickListener {
                 navigator.toPrev()
             }
+            onClickSave = View.OnClickListener {
+                val isFilledTitle = binding.textInputLayoutTitle.editText?.text?.isNotBlank()
+                val isFilledDescription =
+                    binding.textInputLayoutDescription.editText?.text?.isNotBlank()
+                safeLet(isFilledTitle, isFilledDescription) { isFilledTitle, isFilledDescription ->
+                    createOrderIfEnable(isFilledTitle, isFilledDescription)
+                }
+            }
         }
+
         return binding.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        observeEvent(_viewModel)
+    }
+
+    private fun observeEvent(viewModel: CreateOrderViewModel) {
+        viewModel.run {
+            showToastCommand.nonNullObserve(viewLifecycleOwner) {
+                context?.let { context ->
+                    showToast(context, getString(it))
+                }
+            }
+        }
+    }
+
+    private fun createOrderIfEnable(isFilledTitle: Boolean, isFilledDescription: Boolean) {
+        if (!isFilledTitle) {
+            binding.textInputLayoutTitle.apply {
+                this.isErrorEnabled = true
+                this.error = getString(R.string.error_title_is_not_filled)
+            }
+        } else if (!isFilledDescription) {
+            binding.textInputLayoutDescription.apply {
+                this.isErrorEnabled = true
+                this.error = getString(R.string.error_description_is_not_filled)
+            }
+        } else {
+            _viewModel.createOrder()
+        }
     }
 }
