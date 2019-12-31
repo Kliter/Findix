@@ -8,6 +8,21 @@
     <fragment
             android:id="@+id/fragment_order"
             android:name="com.kl.findix.presentation.order.OrderFragment"
-            android:label="Order" />
+            android:label="Order">
+
+        <action
+                android:id="@+id/action_order_to_create_order"
+                app:destination="@id/fragment_create_order"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"
+                app:popUpTo="@id/fragment_order" />
+    </fragment>
+
+    <fragment
+            android:id="@+id/fragment_create_order"
+            android:name="com.kl.findix.presentation.order.CreateOrderFragment"
+            android:label="CreateOrder" />
 
 </navigation>

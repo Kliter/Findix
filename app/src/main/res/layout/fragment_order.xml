@@ -7,6 +7,10 @@
         <variable
                 name="viewModel"
                 type="com.kl.findix.presentation.order.OrderViewModel" />
+
+        <variable
+                name="onClickAddOrder"
+                type="android.view.View.OnClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -40,9 +44,9 @@
                 android:layout_height="56dp"
                 android:layout_marginEnd="@dimen/margin_x2"
                 android:layout_marginBottom="@dimen/margin_x2"
-                android:backgroundTint="@color/colorWhite"
                 android:foreground="@drawable/ripple_white"
-                android:src="@drawable/ic_gps_fixed"
+                android:onClick="@{onClickAddOrder}"
+                android:src="@drawable/ic_add"
                 app:borderWidth="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />

@@ -48,6 +48,9 @@ class OrderFragment : Fragment() {
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = _viewModel
+            onClickAddOrder = View.OnClickListener {
+                navigator.toCreateOrderFragment()
+            }
         }
         return binding.root
     }

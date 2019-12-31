@@ -1,5 +1,6 @@
 package com.kl.findix.di.module.order
 
+import com.kl.findix.presentation.order.CreateOrderFragment
 import com.kl.findix.presentation.order.OrderFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -9,5 +10,8 @@ abstract class OrderActivityModule {
 
     @ContributesAndroidInjector(modules = [OrderFragmentModule::class])
     internal abstract fun provideOrderFragment(): OrderFragment
+
+    @ContributesAndroidInjector(modules = [CreateOrderFrgamentModule::class])
+    internal abstract fun provideCreateOrderFragment(): CreateOrderFragment
 
 }
