@@ -19,6 +19,7 @@
 
     <string name="search">Search</string>
     <string name="hint_username">User Name</string>
+    <string name="base_information">Base Information</string>
     <string name="private_information">Private Information</string>
     <string name="hint_website">WebSite</string>
     <string name="hint_description">Description</string>

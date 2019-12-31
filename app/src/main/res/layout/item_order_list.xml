@@ -28,7 +28,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorCardWhite">
+                android:background="@color/colorWhite">
 
             <!-- Todo: src設定する -->
             <ImageView

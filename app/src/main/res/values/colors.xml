@@ -6,7 +6,7 @@
     <color name="colorPrimary_30">#4D008577</color>
     <color name="colorAccent">#D81B60</color>
     <color name="colorWhite">#FFFFFF</color>
-    <color name="colorCardWhite">#FAFAFA</color>
+    <color name="colorDarkWhite">#FAFAFA</color>
     <color name="colorBlack">#000000</color>
 
     <color name="colorBlack_90">#e6000000</color>
