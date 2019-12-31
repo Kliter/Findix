@@ -22,12 +22,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_x2"
-            android:background="@color/colorWhite">
+            android:foreground="@drawable/ripple_white"
+            android:onClick="@{onClickOrder}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorWhite">
+                android:background="@color/colorCardWhite">
 
             <!-- Todo: src設定する -->
             <ImageView
