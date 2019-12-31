@@ -45,6 +45,9 @@ class CreateOrderFragment : Fragment() {
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = _viewModel
+            onClickBack = View.OnClickListener {
+                navigator.toPrev()
+            }
         }
         return binding.root
     }

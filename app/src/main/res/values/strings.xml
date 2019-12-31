@@ -60,4 +60,6 @@
         <item>Nakasero</item>
     </string-array>
 
+    <string name="hint_title">Title</string>
+    <string name="register_order_location">Register current place to order. \nRegistering your location makes it easier for workers to find you.</string>
 </resources>

@@ -1,16 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
                 name="viewModel"
                 type="com.kl.findix.presentation.order.CreateOrderViewModel" />
+
+        <variable
+                name="onClickSave"
+                type="android.view.View.OnClickListener" />
+
+        <variable
+                name="onClickBack"
+                type="android.view.View.OnClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appbar_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    style="@style/Widget.Findix.Toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:elevation="4dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:foreground="@drawable/ripple_white"
+                            android:onClick="@{onClickBack}"
+                            android:src="@drawable/ic_back_arrow"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/margin_x2"
+                            android:foreground="@drawable/ripple_white"
+                            android:onClick="@{onClickSave}"
+                            android:src="@drawable/ic_checkmark"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.appcompat.widget.Toolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <ImageView
+                android:id="@+id/image"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:background="@color/colorPrimary_50"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/appbar_layout" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btn_edit"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="@dimen/margin_x2"
+                android:src="@drawable/ic_camera"
+                app:layout_constraintBottom_toBottomOf="@id/image"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/image" />
+
+        <ImageView
+                android:id="@+id/iv_title"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginTop="@dimen/margin_x2"
+                android:src="@drawable/ic_title"
+                app:layout_constraintEnd_toStartOf="@id/text_input_layout_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_edit" />
+
+        <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_layout_title"
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_x1"
+                android:layout_marginEnd="@dimen/margin_x1"
+                android:hint="@string/hint_title"
+                app:layout_constraintBottom_toBottomOf="@id/iv_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iv_title"
+                app:layout_constraintTop_toTopOf="@id/iv_title">
+
+            <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:text="@={viewModel.order.title}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageView
+                android:id="@+id/iv_description"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginTop="@dimen/margin_x2"
+                android:src="@drawable/ic_description"
+                app:layout_constraintEnd_toStartOf="@id/text_input_layout_description"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_title" />
+
+        <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_layout_description"
+                style="@style/TextAppearance.MaterialComponents.Headline6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_x1"
+                android:layout_marginEnd="@dimen/margin_x1"
+                android:hint="@string/hint_description"
+                app:layout_constraintBottom_toBottomOf="@id/iv_description"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iv_description"
+                app:layout_constraintTop_toTopOf="@id/iv_description">
+
+            <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:text="@={viewModel.order.description}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <CheckBox
+                android:id="@+id/checkbox_register_location"
+                style="@style/TextAppearance.MaterialComponents.Body2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_x3"
+                android:checked="false"
+                android:enabled="true"
+                android:text="@string/register_order_location"
+                app:layout_constraintTop_toBottomOf="@id/iv_description" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

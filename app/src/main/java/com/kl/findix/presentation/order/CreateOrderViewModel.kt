@@ -1,5 +1,6 @@
 package com.kl.findix.presentation.order
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
@@ -13,6 +14,9 @@ class CreateOrderViewModel @Inject constructor(
     private val firebaseUserService: FirebaseUserService,
     private val firebaseDataBaseService: FirebaseDataBaseService
 ): ViewModel() {
+
+    private var _order: MutableLiveData<Order> = MutableLiveData()
+    var order = _order.value
 
     private var firebaseUser: FirebaseUser? = firebaseUserService.getCurrentSignInUser()
 
