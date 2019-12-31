@@ -11,4 +11,9 @@ class OrderNavigator (
             OrderFragmentDirections.actionOrderToCreateOrder()
         )
     }
+
+    fun toSearchFragment() {
+//        navController.navigate(
+//        )
+    }
 }

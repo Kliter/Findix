@@ -51,6 +51,9 @@ class OrderFragment : Fragment() {
             onClickAddOrder = View.OnClickListener {
                 navigator.toCreateOrderFragment()
             }
+            onClickSearch = View.OnClickListener {
+                navigator.toSearchFragment()
+            }
         }
         return binding.root
     }
