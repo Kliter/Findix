@@ -76,6 +76,14 @@ class CreateOrderFragment : Fragment() {
                     showToast(context, getString(it))
                 }
             }
+            succeedCreateOrderCommand.nonNullObserve(viewLifecycleOwner) {
+                if (it) {
+                    context?.let { context ->
+                        showToast(context, getString(R.string.succeed_create_order))
+                    }
+                    navigator.toPrev()
+                }
+            }
         }
     }
 

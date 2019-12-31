@@ -88,11 +88,18 @@ class FirebaseDataBaseServiceImpl @Inject constructor(
             }
     }
 
-    override suspend fun createOrder(firebaseUser: FirebaseUser, order: Order) {
+    override suspend fun createOrder(
+        firebaseUser: FirebaseUser,
+        order: Order,
+        createOrderListener: () -> Unit
+    ) {
         database.collection("Order")
             .document()
             .set(order.apply {
                 this.timeStamp = Date()
             })
+            .addOnSuccessListener {
+                createOrderListener.invoke()
+            }
     }
 }

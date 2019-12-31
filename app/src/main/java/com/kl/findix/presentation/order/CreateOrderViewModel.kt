@@ -20,6 +20,7 @@ class CreateOrderViewModel @Inject constructor(
     var order = Order()
 
     var showToastCommand: MutableLiveData<Int> = MutableLiveData()
+    var succeedCreateOrderCommand: MutableLiveData<Boolean> = MutableLiveData()
 
     private var firebaseUser: FirebaseUser? = firebaseUserService.getCurrentSignInUser()
 
@@ -31,7 +32,10 @@ class CreateOrderViewModel @Inject constructor(
             if (isFilledTitle && isFilledDescription) {
                 firebaseUser?.let { firebaseUser ->
                     viewModelScope.launch {
-                        firebaseDataBaseService.createOrder(firebaseUser, order)
+                        firebaseDataBaseService.createOrder(
+                            firebaseUser,
+                            order
+                        ) { succeedCreateOrderCommand.postValue(true) }
                     }
                 }
             } else {

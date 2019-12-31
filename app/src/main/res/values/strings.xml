@@ -67,4 +67,6 @@
     <string name="error_title_is_not_filled">Please fill in title.</string>
     <string name="error_description_is_not_filled">Please fill in description.</string>
     <string name="error_order_info_not_filled">Please fill in title and description.</string>
+
+    <string name="succeed_create_order">Order created successfully.</string>
 </resources>
