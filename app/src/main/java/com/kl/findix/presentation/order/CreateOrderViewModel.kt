@@ -25,18 +25,23 @@ class CreateOrderViewModel @Inject constructor(
     private val firebaseDataBaseService: FirebaseDataBaseService
 ): ViewModel() {
 
-    var order = Order()
+    var order: Order? = null
 
     var showToastCommand: PublishLiveDataKtx<Int> = PublishLiveDataKtx()
     var succeedCreateOrderCommand: PublishLiveDataKtx<Boolean> = PublishLiveDataKtx()
 
     private var firebaseUser: FirebaseUser? = firebaseUserService.getCurrentSignInUser()
 
+    fun resetOrderInfo() {
+        order = Order()
+    }
+
     fun createOrder(context: Context, locationProviderClient: FusedLocationProviderClient) {
         safeLet(
-            order.title?.isNotBlank(),
-            order.description?.isNotBlank()
-        ) { isFilledTitle, isFilledDescription ->
+            order,
+            order?.title?.isNotBlank(),
+            order?.description?.isNotBlank()
+        ) { order, isFilledTitle, isFilledDescription ->
             if (isFilledTitle && isFilledDescription) {
                 firebaseUser?.let { firebaseUser ->
                     viewModelScope.launch {

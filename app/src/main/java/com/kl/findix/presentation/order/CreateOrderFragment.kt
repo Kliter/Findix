@@ -72,6 +72,8 @@ class CreateOrderFragment : Fragment() {
             }
         }
 
+        _viewModel.resetOrderInfo()
+
         return binding.root
     }
 
