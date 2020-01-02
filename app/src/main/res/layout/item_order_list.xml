@@ -21,7 +21,7 @@
     <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_x2"
+            android:layout_margin="@dimen/margin_x0_5"
             android:foreground="@drawable/ripple_white"
             android:onClick="@{onClickOrder}">
 

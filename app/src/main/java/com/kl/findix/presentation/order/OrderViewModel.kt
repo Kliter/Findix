@@ -19,11 +19,7 @@ class OrderViewModel @Inject constructor(
 
     private var firebaseUser: FirebaseUser? = firebaseUserService.getCurrentSignInUser()
 
-    init {
-        fetchLast15Orders()
-    }
-
-    private fun fetchLast15Orders() {
+    fun fetchLast15Orders() {
         viewModelScope.launch {
             firebaseDataBaseService.fetchLast15Orders(
                 fetchLast15OrdersListener = { result ->

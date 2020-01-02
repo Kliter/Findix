@@ -25,11 +25,16 @@ fun ImageView.setBitmapSrc(bitmap: Bitmap?) {
 
 @BindingAdapter("app:showPhotoIfExist")
 fun ImageView.showPhotoIfExist(url: String?) {
-    url?.isNotBlank()?.let {
-        if (it) {
-            this.visibility = View.VISIBLE
-        } else {
-            this.visibility = View.GONE
+    if (url == null) {
+        this.visibility = View.GONE
+    } else {
+        url.isNotEmpty().let {
+            if (it) {
+                this.visibility = View.VISIBLE
+            } else {
+                this.visibility = View.GONE
+            }
         }
     }
+
 }

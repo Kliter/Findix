@@ -55,6 +55,9 @@ class OrderFragment : Fragment() {
                 navigator.toSearchFragment()
             }
         }
+
+        _viewModel.fetchLast15Orders()
+
         return binding.root
     }
 
