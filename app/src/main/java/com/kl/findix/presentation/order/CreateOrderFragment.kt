@@ -1,5 +1,6 @@
 package com.kl.findix.presentation.order
 
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +9,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.kl.findix.R
 import com.kl.findix.databinding.FragmentCreateOrderBinding
 import com.kl.findix.di.ViewModelFactory
@@ -31,10 +34,18 @@ class CreateOrderFragment : Fragment() {
 
     private lateinit var _viewModel: CreateOrderViewModel
     private lateinit var binding: FragmentCreateOrderBinding
+    private lateinit var mLocationProviderClient: FusedLocationProviderClient
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         AndroidSupportInjection.inject(this)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mLocationProviderClient =
+            LocationServices.getFusedLocationProviderClient(activity as Activity)
     }
 
     override fun onCreateView(
@@ -99,7 +110,9 @@ class CreateOrderFragment : Fragment() {
                 this.error = getString(R.string.error_description_is_not_filled)
             }
         } else {
-            _viewModel.createOrder()
+            context?.let { context ->
+                _viewModel.createOrder(context, mLocationProviderClient)
+            }
         }
     }
 }
