@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -15,6 +14,7 @@ import com.kl.findix.model.UserLocation
 import com.kl.findix.services.FirebaseDataBaseService
 import com.kl.findix.services.FirebaseUserService
 import com.kl.findix.util.safeLet
+import com.shopify.livedataktx.PublishLiveDataKtx
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.coroutines.resume
@@ -27,8 +27,8 @@ class CreateOrderViewModel @Inject constructor(
 
     var order = Order()
 
-    var showToastCommand: MutableLiveData<Int> = MutableLiveData()
-    var succeedCreateOrderCommand: MutableLiveData<Boolean> = MutableLiveData()
+    var showToastCommand: PublishLiveDataKtx<Int> = PublishLiveDataKtx()
+    var succeedCreateOrderCommand: PublishLiveDataKtx<Boolean> = PublishLiveDataKtx()
 
     private var firebaseUser: FirebaseUser? = firebaseUserService.getCurrentSignInUser()
 
