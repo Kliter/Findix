@@ -9,7 +9,7 @@ import dagger.Module
 import dagger.Provides
 
 @Module
-abstract class CreateOrderFrgamentModule {
+abstract class CreateOrderFragmentModule {
 
     @Binds
     abstract fun bindsFragment(fragment: CreateOrderFragment): Fragment

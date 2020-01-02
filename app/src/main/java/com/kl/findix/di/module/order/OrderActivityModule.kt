@@ -11,7 +11,7 @@ abstract class OrderActivityModule {
     @ContributesAndroidInjector(modules = [OrderFragmentModule::class])
     internal abstract fun provideOrderFragment(): OrderFragment
 
-    @ContributesAndroidInjector(modules = [CreateOrderFrgamentModule::class])
+    @ContributesAndroidInjector(modules = [CreateOrderFragmentModule::class])
     internal abstract fun provideCreateOrderFragment(): CreateOrderFragment
 
 }
