@@ -45,6 +45,8 @@ class CreateOrderViewModel @Inject constructor(
                                 order.userLocation = getLocation(context, locationProviderClient)
                             }
                         }
+                    }
+                    viewModelScope.launch {
                         firebaseDataBaseService.createOrder(
                             firebaseUser,
                             order
