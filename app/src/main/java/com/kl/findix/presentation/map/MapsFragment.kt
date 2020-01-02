@@ -21,9 +21,11 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.maps.android.clustering.ClusterManager
 import com.kl.findix.R
 import com.kl.findix.databinding.FragmentMapsBinding
 import com.kl.findix.di.ViewModelFactory
+import com.kl.findix.model.ClusterItem
 import com.kl.findix.navigation.MapsNavigator
 import com.kl.findix.presentation.login.LoginActivity
 import com.kl.findix.util.REQUEST_CODE_PERMISSION
@@ -49,6 +51,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private lateinit var _viewModel: MapsViewModel
     private lateinit var binding: FragmentMapsBinding
     private lateinit var mLocationProviderClient: FusedLocationProviderClient
+    private lateinit var mClusterManager: ClusterManager<ClusterItem>
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -79,7 +82,11 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                 _viewModel.moveToCurrentLocation(requireContext(), mLocationProviderClient)
             }
         }
+
+//        _viewModel.fetchNearOrders(requireContext(), mLocationProviderClient)
+
         setupMap()
+        setupClusterer()
 
         return binding.root
     }
@@ -154,6 +161,19 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         val mapFragment: SupportMapFragment? =
             childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment?.getMapAsync(this)
+    }
+
+    private fun setupClusterer() {
+        mClusterManager = ClusterManager(context, mMap)
+        mMap.apply {
+            this?.setOnCameraIdleListener(mClusterManager)
+            this?.setOnMarkerClickListener(mClusterManager)
+        }
+        addItems()
+    }
+
+    private fun addItems() {
+
     }
 
     private fun moveToUserLocation(latLng: LatLng) {

@@ -6,6 +6,6 @@ class CreateOrderNavigator(
     private val navController: NavController
 ) {
     fun toPrev() {
-        navController.popBackStack()
+        navController.navigateUp()
     }
 }

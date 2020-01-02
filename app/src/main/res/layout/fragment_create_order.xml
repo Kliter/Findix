@@ -161,7 +161,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_x7"
-                    android:checked="@={viewModel.order.hasRegisterLocation}"
+                    android:checked="@={viewModel.order.shouldRegisterLocation}"
                     android:enabled="true"
                     android:text="@string/register_order_location"
                     app:layout_constraintTop_toBottomOf="@id/iv_description" />

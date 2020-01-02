@@ -8,7 +8,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseUser
+import com.kl.findix.model.Order
 import com.kl.findix.model.UserLocation
 import com.kl.findix.services.FirebaseDataBaseService
 import com.kl.findix.services.FirebaseUserServiceImpl
@@ -27,6 +29,7 @@ class MapsViewModel @Inject constructor(
     }
 
     var userLocation: MutableLiveData<UserLocation> = MutableLiveData()
+    var orders: MutableLiveData<List<Order>> = MutableLiveData()
 
     private var firebaseUser: FirebaseUser? = firebaseUserService.getCurrentSignInUser()
 
@@ -76,6 +79,36 @@ class MapsViewModel @Inject constructor(
                     firebaseUser,
                     UserLocation(latitude, longitude)
                 )
+            }
+        }
+    }
+
+    fun fetchNearOrders(
+        context: Context,
+        locationProviderClient: FusedLocationProviderClient
+    ) {
+        if (ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            locationProviderClient.lastLocation.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val location = task.result
+                    location?.let {
+                        viewModelScope.launch {
+                            firebaseDataBaseService.fetchNearOrders(
+                                LatLng(
+                                    location.latitude,
+                                    location.longitude
+                                )
+                            )
+                            {
+                                orders.postValue(it)
+                            }
+                        }
+                    }
+                }
             }
         }
     }
