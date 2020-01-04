@@ -12,6 +12,10 @@
         <variable
                 name="onClickGPSFixed"
                 type="android.view.View.OnClickListener" />
+
+        <variable
+                name="onClickSearch"
+                type="android.view.View.OnClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -28,7 +32,31 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-            <include layout="@layout/layout_toolbar" />
+            <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    style="@style/Widget.Findix.Toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:elevation="4dp">
+
+                <ImageView
+                        android:id="@+id/ic_search"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{onClickSearch}"
+                        android:src="@drawable/ic_search"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                        android:id="@+id/search_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/margin_x1"
+                        android:inputType="text" />
+
+            </androidx.appcompat.widget.Toolbar>
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -48,11 +76,11 @@
                 android:layout_marginEnd="@dimen/margin_x2"
                 android:layout_marginBottom="@dimen/margin_x2"
                 android:backgroundTint="@color/colorWhite"
+                android:foreground="@drawable/ripple_white"
+                android:onClick="@{onClickGPSFixed}"
                 android:src="@drawable/ic_gps_fixed"
                 app:borderWidth="0dp"
-                android:onClick="@{onClickGPSFixed}"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:foreground="@drawable/ripple_white"
                 app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

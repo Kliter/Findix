@@ -9,6 +9,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -78,7 +80,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         ).apply {
             lifecycleOwner = this@MapsFragment
             viewModel = _viewModel
-            onClickGPSFixed =  View.OnClickListener {
+            onClickGPSFixed = View.OnClickListener {
                 _viewModel.moveToCurrentLocation(requireContext(), mLocationProviderClient)
             }
         }
@@ -87,6 +89,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
         setupMap()
         setupClusterer()
+        setupSearchAutoComplete()
 
         return binding.root
     }
@@ -187,6 +190,31 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
             )
             map.moveCamera(cameraUpdate)
             map.animateCamera(cameraUpdate)
+        }
+    }
+
+
+    private fun setupSearchAutoComplete() {
+        val adapter =
+            object : ArrayAdapter<String>(
+                requireContext(),
+                android.R.layout.select_dialog_item,
+                resources.getStringArray(R.array.cities)
+            ) {
+                override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                    val view = super.getView(position, convertView, parent)
+                    (view as TextView).textSize = 14f
+                    return view
+                }
+            }
+        binding.searchText.run {
+            this.setAdapter(adapter)
+            this.threshold = 1
+            this.setOnFocusChangeListener { _, hasFocus ->
+                if (hasFocus) {
+                    this.showDropDown()
+                }
+            }
         }
     }
 }
