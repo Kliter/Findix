@@ -95,6 +95,7 @@
                     android:id="@+id/iv_title"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
+                    android:layout_marginStart="@dimen/margin_x1"
                     android:layout_marginTop="@dimen/margin_x7"
                     android:src="@drawable/ic_title"
                     app:layout_constraintEnd_toStartOf="@id/text_input_layout_title"
@@ -127,6 +128,7 @@
                     android:id="@+id/iv_description"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
+                    android:layout_marginStart="@dimen/margin_x1"
                     android:layout_marginTop="@dimen/margin_x7"
                     android:src="@drawable/ic_description"
                     app:layout_constraintEnd_toStartOf="@id/text_input_layout_description"
@@ -155,16 +157,50 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <ImageView
+                    android:id="@+id/iv_city"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="@dimen/margin_x1"
+                    android:layout_marginTop="@dimen/margin_x7"
+                    android:src="@drawable/ic_city"
+                    app:layout_constraintEnd_toStartOf="@id/city_spinner_container"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_description" />
+
+            <FrameLayout
+                    android:id="@+id/city_spinner_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_x1"
+                    android:background="@drawable/shape_spinner_border"
+                    android:padding="@dimen/margin_x1"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_city"
+                    app:layout_constraintStart_toEndOf="@id/iv_city"
+                    app:layout_constraintTop_toTopOf="@id/iv_city">
+
+                <Spinner
+                        android:id="@+id/city_spinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:spinnerMode="dropdown" />
+            </FrameLayout>
+
             <CheckBox
                     android:id="@+id/checkbox_register_location"
                     style="@style/TextAppearance.MaterialComponents.Body2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_x7"
+                    android:layout_marginTop="@dimen/margin_x6"
+                    android:layout_marginBottom="@dimen/margin_x2"
                     android:checked="@={viewModel.order.shouldRegisterLocation}"
                     android:enabled="true"
                     android:text="@string/register_order_location"
-                    app:layout_constraintTop_toBottomOf="@id/iv_description" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_city" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

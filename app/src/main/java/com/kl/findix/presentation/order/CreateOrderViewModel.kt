@@ -3,13 +3,8 @@ package com.kl.findix.presentation.order
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
-import android.provider.Settings
-import android.util.Log
 import androidx.core.app.ActivityCompat
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.firebase.auth.FirebaseUser
 import com.kl.findix.R
@@ -20,7 +15,6 @@ import com.kl.findix.services.FirebaseUserService
 import com.kl.findix.util.safeLet
 import com.shopify.livedataktx.PublishLiveDataKtx
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.coroutines.resume
@@ -51,7 +45,7 @@ class CreateOrderViewModel @Inject constructor(
         ) { order, isFilledTitle, isFilledDescription ->
             if (isFilledTitle && isFilledDescription) {
                 firebaseUser?.let { firebaseUser ->
-                    GlobalScope.launch {
+                    GlobalScope.launch { // viewModelScopeだとちゃんとScope破棄できなくて2回目createできない。
                         order.shouldRegisterLocation?.let {
                             if (it) {
                                 order.userLocation = getLocation(context, locationProviderClient)

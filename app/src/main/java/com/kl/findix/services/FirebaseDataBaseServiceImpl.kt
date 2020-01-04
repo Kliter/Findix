@@ -12,9 +12,12 @@ import javax.inject.Inject
 
 class FirebaseDataBaseServiceImpl @Inject constructor(
     private val database: FirebaseFirestore
-): FirebaseDataBaseService {
+) : FirebaseDataBaseService {
 
-    override suspend fun fetchProfileInfo(firebaseUser: FirebaseUser, fetchProfileInfoListener: (User) -> Unit) {
+    override suspend fun fetchProfileInfo(
+        firebaseUser: FirebaseUser,
+        fetchProfileInfoListener: (User) -> Unit
+    ) {
         database.collection("User").document(firebaseUser.uid).get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 task.result?.toObject(User::class.java)?.let { user ->
@@ -28,6 +31,12 @@ class FirebaseDataBaseServiceImpl @Inject constructor(
         latLng: LatLng,
         fetchNearOrderListener: (List<Order>) -> Unit
     ) {
+
+        /**
+         *
+         * 街名でクエリしよう
+         *
+         */
         database.collection("Order")
             .whereGreaterThan("latitude", latLng.latitude - 0.005)
             .whereLessThan("latitude", latLng.latitude + 0.05)
@@ -57,14 +66,18 @@ class FirebaseDataBaseServiceImpl @Inject constructor(
             )
     }
 
-    override suspend fun fetchUserLocation(firebaseUser: FirebaseUser, fetchUserLocationListener: (UserLocation) -> Unit) {
-        database.collection("UserLocation").document(firebaseUser.uid).get().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                task.result?.toObject(UserLocation::class.java)?.let { userLocation ->  
-                    fetchUserLocationListener.invoke(userLocation)
+    override suspend fun fetchUserLocation(
+        firebaseUser: FirebaseUser,
+        fetchUserLocationListener: (UserLocation) -> Unit
+    ) {
+        database.collection("UserLocation").document(firebaseUser.uid).get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    task.result?.toObject(UserLocation::class.java)?.let { userLocation ->
+                        fetchUserLocationListener.invoke(userLocation)
+                    }
                 }
             }
-        }
     }
 
     override suspend fun updateUserLocation(

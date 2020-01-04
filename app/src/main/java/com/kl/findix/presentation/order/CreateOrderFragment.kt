@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -53,9 +54,11 @@ class CreateOrderFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _viewModel = ViewModelProviders.of(this, mViewModelFactory).get(CreateOrderViewModel::class.java)
+        _viewModel =
+            ViewModelProviders.of(this, mViewModelFactory).get(CreateOrderViewModel::class.java)
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_order, container, false)
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_create_order, container, false)
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = _viewModel
@@ -73,6 +76,7 @@ class CreateOrderFragment : Fragment() {
         }
 
         _viewModel.resetOrderInfo()
+        setupSpinner()
 
         return binding.root
     }
@@ -117,4 +121,30 @@ class CreateOrderFragment : Fragment() {
             }
         }
     }
+
+    private fun setupSpinner() {
+        ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.cities,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.citySpinner.adapter = adapter
+        }
+    }
+
+//    private fun setupAutoComplete() {
+//        val cities = resources.getStringArray(R.array.cities)
+//        val adapter =
+//            ArrayAdapter<String>(requireContext(), android.R.layout.select_dialog_item, cities)
+//        binding.cityEditText.run {
+//            this.setAdapter(adapter)
+//            this.threshold = 1
+//            this.setOnFocusChangeListener { _, hasFocus ->
+//                if (hasFocus) {
+//                    this.showDropDown()
+//                }
+//            }
+//        }
+//    }
 }
