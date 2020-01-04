@@ -66,11 +66,11 @@ class CreateOrderFragment : Fragment() {
                 navigator.toPrev()
             }
             onClickSave = View.OnClickListener {
-                val isFilledTitle = binding.textInputLayoutTitle.editText?.text?.isNotBlank()
-                val isFilledDescription =
+                val isTitleFilled = binding.textInputLayoutTitle.editText?.text?.isNotBlank()
+                val isDescriptionFilled =
                     binding.textInputLayoutDescription.editText?.text?.isNotBlank()
-                safeLet(isFilledTitle, isFilledDescription) { isFilledTitle, isFilledDescription ->
-                    createOrderIfEnable(isFilledTitle, isFilledDescription)
+                safeLet(isTitleFilled, isDescriptionFilled) { isTitleFilled, isDescriptionFilled ->
+                    createOrderIfEnable(isTitleFilled, isDescriptionFilled)
                 }
             }
         }
@@ -104,13 +104,16 @@ class CreateOrderFragment : Fragment() {
         }
     }
 
-    private fun createOrderIfEnable(isFilledTitle: Boolean, isFilledDescription: Boolean) {
-        if (!isFilledTitle) {
+    private fun createOrderIfEnable(
+        isTitleFilled: Boolean,
+        isDescriptionFilled: Boolean
+    ) {
+        if (!isTitleFilled) {
             binding.textInputLayoutTitle.apply {
                 this.isErrorEnabled = true
                 this.error = getString(R.string.error_title_is_not_filled)
             }
-        } else if (!isFilledDescription) {
+        } else if (!isDescriptionFilled) {
             binding.textInputLayoutDescription.apply {
                 this.isErrorEnabled = true
                 this.error = getString(R.string.error_description_is_not_filled)
@@ -129,22 +132,6 @@ class CreateOrderFragment : Fragment() {
             android.R.layout.simple_spinner_item
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            binding.citySpinner.adapter = adapter
         }
     }
-
-//    private fun setupAutoComplete() {
-//        val cities = resources.getStringArray(R.array.cities)
-//        val adapter =
-//            ArrayAdapter<String>(requireContext(), android.R.layout.select_dialog_item, cities)
-//        binding.cityEditText.run {
-//            this.setAdapter(adapter)
-//            this.threshold = 1
-//            this.setOnFocusChangeListener { _, hasFocus ->
-//                if (hasFocus) {
-//                    this.showDropDown()
-//                }
-//            }
-//        }
-//    }
 }

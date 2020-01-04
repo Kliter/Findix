@@ -3,6 +3,7 @@ package com.kl.findix.util
 import android.graphics.Bitmap
 import android.view.View
 import android.widget.ImageView
+import android.widget.Spinner
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.databinding.BindingAdapter
@@ -36,5 +37,9 @@ fun ImageView.showPhotoIfExist(url: String?) {
             }
         }
     }
+}
 
+@BindingAdapter("android:selectedItemPosition")
+fun Spinner.selectedItemPosition(position: Int) {
+    this.setSelection(position)
 }

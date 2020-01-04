@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.firebase.auth.FirebaseUser
 import com.kl.findix.R
+import com.kl.findix.model.CityNumber
 import com.kl.findix.model.Order
 import com.kl.findix.model.UserLocation
 import com.kl.findix.services.FirebaseDataBaseService
@@ -32,9 +33,11 @@ class CreateOrderViewModel @Inject constructor(
     var succeedCreateOrderCommand: PublishLiveDataKtx<Boolean> = PublishLiveDataKtx()
 
     private var firebaseUser: FirebaseUser? = firebaseUserService.getCurrentSignInUser()
+    var cityNumber: CityNumber? = null // Spinnerのテキストバインドするために必要
 
     fun resetOrderInfo() {
         order = Order()
+        cityNumber = CityNumber()
     }
 
     fun createOrder(context: Context, locationProviderClient: FusedLocationProviderClient) {
@@ -44,8 +47,14 @@ class CreateOrderViewModel @Inject constructor(
             order?.description?.isNotBlank()
         ) { order, isFilledTitle, isFilledDescription ->
             if (isFilledTitle && isFilledDescription) {
+                cityNumber?.number?.let { number ->
+                    order.apply {
+                        this.city = context.resources.getStringArray(R.array.cities)[number]
+                    }
+                }
                 firebaseUser?.let { firebaseUser ->
-                    GlobalScope.launch { // viewModelScopeだとちゃんとScope破棄できなくて2回目createできない。
+                    GlobalScope.launch {
+                        // viewModelScopeだとちゃんとScope破棄できなくて2回目createできない。
                         order.shouldRegisterLocation?.let {
                             if (it) {
                                 order.userLocation = getLocation(context, locationProviderClient)

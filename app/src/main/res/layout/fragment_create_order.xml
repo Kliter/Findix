@@ -9,6 +9,10 @@
                 type="com.kl.findix.presentation.order.CreateOrderViewModel" />
 
         <variable
+                name="cityNumber"
+                type="com.kl.findix.model.CityNumber" />
+
+        <variable
                 name="onClickSave"
                 type="android.view.View.OnClickListener" />
 
@@ -174,7 +178,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_x1"
                     android:background="@drawable/shape_spinner_border"
-                    android:padding="@dimen/margin_x1"
+                    android:paddingStart="@dimen/margin_x0_5"
+                    android:paddingTop="@dimen/margin_x1"
+                    android:paddingEnd="@dimen/margin_x1"
+                    android:paddingBottom="@dimen/margin_x1"
                     app:layout_constraintBottom_toBottomOf="@id/iv_city"
                     app:layout_constraintStart_toEndOf="@id/iv_city"
                     app:layout_constraintTop_toTopOf="@id/iv_city">
@@ -184,7 +191,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
-                        android:spinnerMode="dropdown" />
+                        android:entries="@array/cities"
+                        android:selectedItemPosition="@={viewModel.cityNumber.number}"
+                        android:spinnerMode="dropdown"
+                        android:splitMotionEvents="false" />
             </FrameLayout>
 
             <CheckBox

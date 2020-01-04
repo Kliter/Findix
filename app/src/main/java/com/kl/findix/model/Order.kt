@@ -11,6 +11,7 @@ class Order(): BaseObservable() {
         userId: String? = "",
         title: String? = "",
         description: String? = "",
+        city: String? = "",
         userLocation: UserLocation? = null,
         photoUrl: String? = "",
         shouldRegisterLocation: Boolean = false,
@@ -19,6 +20,7 @@ class Order(): BaseObservable() {
         this.userId = userId
         this.title = title
         this.description = description
+        this.city = city
         this.userLocation = userLocation
         this.photoUrl = photoUrl
         this.shouldRegisterLocation = shouldRegisterLocation
@@ -44,6 +46,13 @@ class Order(): BaseObservable() {
         set(value) {
             field = value
             notifyPropertyChanged(BR.description)
+        }
+
+    @Bindable
+    var city: String? = null
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.city)
         }
 
     @Bindable
