@@ -8,7 +8,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseUser
 import com.kl.findix.model.Order
 import com.kl.findix.model.UserLocation
@@ -83,44 +82,10 @@ class MapsViewModel @Inject constructor(
         }
     }
 
-    fun fetchNearOrders(
-        context: Context,
-        locationProviderClient: FusedLocationProviderClient
-    ) {
-        if (ActivityCompat.checkSelfPermission(
-                context,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            locationProviderClient.lastLocation.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val location = task.result
-                    location?.let {
-                        viewModelScope.launch {
-                            firebaseDataBaseService.fetchNearOrders(
-                                LatLng(
-                                    location.latitude,
-                                    location.longitude
-                                )
-                            )
-                            {
-                                orders.postValue(it)
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    fun fetchUserLocation() {
-        firebaseUser?.let { firebaseUser ->
-            viewModelScope.launch {
-                firebaseDataBaseService.fetchUserLocation(
-                    firebaseUser,
-                    fetchUserLocationListener = {
-                        userLocation.postValue(it)
-                    })
+    fun fetchQueriedCityOrders(city: String) {
+        viewModelScope.launch {
+            firebaseDataBaseService.fetchQueriedCityOrders(city) {
+                orders.postValue(it)
             }
         }
     }

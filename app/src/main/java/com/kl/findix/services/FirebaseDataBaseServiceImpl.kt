@@ -27,31 +27,6 @@ class FirebaseDataBaseServiceImpl @Inject constructor(
         }
     }
 
-    override suspend fun fetchNearOrders(
-        latLng: LatLng,
-        fetchNearOrderListener: (List<Order>) -> Unit
-    ) {
-
-        /**
-         *
-         * 街名でクエリしよう
-         *
-         */
-        database.collection("Order")
-            .whereGreaterThan("latitude", latLng.latitude - 0.005)
-            .whereLessThan("latitude", latLng.latitude + 0.05)
-            .whereGreaterThan("longitude", latLng.longitude - 0.005)
-            .whereLessThan("longitude", latLng.longitude + 0.05)
-            .get()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    task.result?.toObjects(Order::class.java)?.let { orders ->
-                        fetchNearOrderListener.invoke(orders)
-                    }
-                }
-            }
-    }
-
     override suspend fun updateProfileInfo(
         firebaseUser: FirebaseUser,
         user: User,
@@ -108,6 +83,20 @@ class FirebaseDataBaseServiceImpl @Inject constructor(
             })
             .addOnSuccessListener {
                 createOrderListener.invoke()
+            }
+    }
+
+    override suspend fun fetchQueriedCityOrders(
+        city: String,
+        fetchQueriedCityOrdersListener: (List<Order>) -> Unit
+    ) {
+        database.collection("Order")
+            .whereEqualTo("city", city)
+            .get()
+            .addOnSuccessListener { results ->
+                results.toObjects(Order::class.java).let { orders ->
+                    fetchQueriedCityOrdersListener.invoke(orders)
+                }
             }
     }
 }

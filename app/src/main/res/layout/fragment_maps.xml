@@ -12,10 +12,6 @@
         <variable
                 name="onClickGPSFixed"
                 type="android.view.View.OnClickListener" />
-
-        <variable
-                name="onClickSearch"
-                type="android.view.View.OnClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,7 +27,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
-
             <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     style="@style/Widget.Findix.Toolbar"
@@ -43,7 +38,6 @@
                         android:id="@+id/ic_search"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:onClick="@{onClickSearch}"
                         android:src="@drawable/ic_search"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -53,6 +47,7 @@
                         android:id="@+id/search_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:hint="Order location."
                         android:layout_marginEnd="@dimen/margin_x1"
                         android:inputType="text" />
 

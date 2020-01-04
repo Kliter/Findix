@@ -4,9 +4,9 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.clustering.ClusterItem
 
 data class ClusterItem(
-    val latLng: LatLng = LatLng(0.0, 0.0),
-    val mainText: String = "", // Titleだとエラー出る
-    val subText: String = "" // Mainに対してSubにした
+    var mPosition: LatLng = LatLng(0.0, 0.0),
+    var mainText: String = "", // Titleだとエラー出る
+    var subText: String = "" // Mainに対してSubにした
 ) : ClusterItem {
 
     override fun getSnippet(): String {
@@ -18,7 +18,6 @@ data class ClusterItem(
     }
 
     override fun getPosition(): LatLng {
-        return latLng
+        return mPosition
     }
-
 }

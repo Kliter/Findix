@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,6 +29,7 @@ import com.kl.findix.R
 import com.kl.findix.databinding.FragmentMapsBinding
 import com.kl.findix.di.ViewModelFactory
 import com.kl.findix.model.ClusterItem
+import com.kl.findix.util.MarkerClusterRenderer
 import com.kl.findix.navigation.MapsNavigator
 import com.kl.findix.presentation.login.LoginActivity
 import com.kl.findix.util.REQUEST_CODE_PERMISSION
@@ -83,12 +85,16 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
             onClickGPSFixed = View.OnClickListener {
                 _viewModel.moveToCurrentLocation(requireContext(), mLocationProviderClient)
             }
+            searchText.setOnKeyListener { v, keyCode, event ->
+                if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                    _viewModel.fetchQueriedCityOrders(binding.searchText.text.toString())
+                    return@setOnKeyListener true
+                }
+                return@setOnKeyListener false
+            }
         }
 
-//        _viewModel.fetchNearOrders(requireContext(), mLocationProviderClient)
-
         setupMap()
-        setupClusterer()
         setupSearchAutoComplete()
 
         return binding.root
@@ -108,14 +114,19 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap?) {
         mMap = googleMap
         mMap?.let { map ->
-            context?.let {
+            mClusterManager = ClusterManager(context, map)
+            context?.let { context ->
                 if (ActivityCompat.checkSelfPermission(
-                        it,
+                        context,
                         Manifest.permission.ACCESS_FINE_LOCATION
                     ) == PackageManager.PERMISSION_GRANTED
                 ) {
+                    mClusterManager.renderer =
+                        MarkerClusterRenderer(context, map, mClusterManager)
                     map.isMyLocationEnabled = true
-                    _viewModel.moveToCurrentLocation(it, mLocationProviderClient)
+                    map.setOnCameraIdleListener(mClusterManager)
+                    map.setOnMarkerClickListener(mClusterManager)
+                    _viewModel.moveToCurrentLocation(context, mLocationProviderClient)
                 } else {
                     ActivityCompat.requestPermissions(
                         requireActivity(),
@@ -147,6 +158,20 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                     moveToUserLocation(LatLng(latitude, longitude))
                 }
             }
+            this.orders.nonNullObserve(viewLifecycleOwner) { orders ->
+                orders.forEach { order ->
+                    safeLet(
+                        order.userLocation?.latitude,
+                        order.userLocation?.longitude,
+                        order.title,
+                        order.description
+                    ) { latitude, longitude, title, description ->
+                        val clusterItem =
+                            ClusterItem(LatLng(latitude, longitude), title, description)
+                        mClusterManager.addItem(clusterItem)
+                    }
+                }
+            }
         }
     }
 
@@ -166,19 +191,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         mapFragment?.getMapAsync(this)
     }
 
-    private fun setupClusterer() {
-        mClusterManager = ClusterManager(context, mMap)
-        mMap.apply {
-            this?.setOnCameraIdleListener(mClusterManager)
-            this?.setOnMarkerClickListener(mClusterManager)
-        }
-        addItems()
-    }
-
-    private fun addItems() {
-
-    }
-
     private fun moveToUserLocation(latLng: LatLng) {
         mMap?.let { map ->
             val cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15f)
@@ -186,7 +198,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                 MarkerOptions()
                     .position(latLng)
                     .title("Your location.")
-//                    .icon(BitmapDescriptorFactory.fromBitmap())
             )
             map.moveCamera(cameraUpdate)
             map.animateCamera(cameraUpdate)
