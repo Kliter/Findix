@@ -11,14 +11,17 @@
                 type="com.kl.findix.model.Order" />
 
         <variable
+                name="dateTime"
+                type="String" />
+
+        <variable
                 name="onClickBack"
                 type="android.view.View.OnClickListener" />
     </data>
 
     <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
+            android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -73,7 +76,7 @@
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_marginStart="@dimen/margin_x1"
-                    android:layout_marginTop="@dimen/margin_x7"
+                    android:layout_marginTop="@dimen/margin_x5"
                     android:src="@drawable/ic_title"
                     app:layout_constraintEnd_toStartOf="@id/text_title"
                     app:layout_constraintStart_toStartOf="parent"
@@ -136,6 +139,16 @@
                     app:layout_constraintStart_toEndOf="@id/iv_city"
                     app:layout_constraintTop_toTopOf="@id/iv_city"
                     tools:text="@string/location_makindye" />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{dateTime}"
+                    android:layout_marginTop="@dimen/margin_x2"
+                    android:layout_marginEnd="@dimen/margin_x1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    tools:text="12:00, January 1, 2020" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

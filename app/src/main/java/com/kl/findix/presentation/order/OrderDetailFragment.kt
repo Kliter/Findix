@@ -13,8 +13,11 @@ import com.kl.findix.R
 import com.kl.findix.databinding.FragmentOrderDetailBinding
 import com.kl.findix.di.ViewModelFactory
 import com.kl.findix.navigation.OrderDetailNavigator
+import com.kl.findix.util.getDateTimeText
 import com.kl.findix.util.nonNullObserve
 import dagger.android.support.AndroidSupportInjection
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 class OrderDetailFragment: Fragment() {
@@ -69,6 +72,9 @@ class OrderDetailFragment: Fragment() {
         viewModel.run {
             this._order.nonNullObserve(viewLifecycleOwner) { order ->
                 binding.order = order
+                order.timeStamp?.let { date ->
+                    binding.dateTime = getDateTimeText(date)
+                }
             }
         }
     }
