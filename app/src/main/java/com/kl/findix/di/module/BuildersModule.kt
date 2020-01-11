@@ -6,7 +6,6 @@ import com.kl.findix.di.module.order.OrderActivityModule
 import com.kl.findix.di.module.profile.ProfileActivityModule
 import com.kl.findix.presentation.login.LoginActivity
 import com.kl.findix.presentation.map.MapsActivity
-import com.kl.findix.presentation.message.MessageActivity
 import com.kl.findix.presentation.order.OrderActivity
 import com.kl.findix.presentation.profile.ProfileActivity
 import dagger.Module
@@ -23,9 +22,6 @@ abstract class BuildersModule {
 
     @ContributesAndroidInjector(modules = [ProfileActivityModule::class])
     internal abstract fun provideProfileActivity(): ProfileActivity
-
-    @ContributesAndroidInjector
-    internal abstract fun provideMessageActivity(): MessageActivity
 
     @ContributesAndroidInjector(modules = [OrderActivityModule::class])
     internal abstract fun provideOrderActivity(): OrderActivity

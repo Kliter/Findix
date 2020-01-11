@@ -9,10 +9,6 @@
             android:icon="@drawable/ic_action_profile"
             android:title="@string/action_profile"/>
     <item
-            android:id="@+id/action_message"
-            android:icon="@drawable/ic_action_message"
-            android:title="@string/action_message"/>
-    <item
             android:id="@+id/action_order"
             android:icon="@drawable/ic_action_list"
             android:title="@string/action_order"/>

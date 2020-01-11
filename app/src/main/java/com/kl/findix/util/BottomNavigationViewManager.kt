@@ -6,7 +6,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.kl.findix.R
 import com.kl.findix.presentation.order.OrderActivity
 import com.kl.findix.presentation.map.MapsActivity
-import com.kl.findix.presentation.message.MessageActivity
 import com.kl.findix.presentation.profile.ProfileActivity
 
 fun setupBottomNavigationView(activity: AppCompatActivity, bottomNavigationView: BottomNavigationView) {
@@ -18,10 +17,6 @@ fun setupBottomNavigationView(activity: AppCompatActivity, bottomNavigationView:
             }
             R.id.action_profile -> {
                 intent.setClass(activity, ProfileActivity::class.java)
-            }
-            R.id.action_message -> {
-                intent.setClass(activity, MessageActivity::class.java)
-
             }
             R.id.action_order -> {
                 intent.setClass(activity, OrderActivity::class.java)
