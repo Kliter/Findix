@@ -12,6 +12,12 @@ class OrderNavigator (
         )
     }
 
+    fun toOrderDetailFragment(orderId: String) {
+        navController.navigate(
+            OrderFragmentDirections.actionOrderToOrderDetail(orderId)
+        )
+    }
+
     fun toSearchFragment() {
 //        navController.navigate(
 //        )

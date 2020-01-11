@@ -5,6 +5,7 @@ import com.kl.findix.presentation.login.LoginViewModel
 import com.kl.findix.presentation.login.SignUpViewModel
 import com.kl.findix.presentation.map.MapsViewModel
 import com.kl.findix.presentation.order.CreateOrderViewModel
+import com.kl.findix.presentation.order.OrderDetailViewModel
 import com.kl.findix.presentation.order.OrderViewModel
 import com.kl.findix.presentation.profile.ProfileViewModel
 import dagger.Binds
@@ -50,4 +51,10 @@ abstract class ViewModelModule {
     @Singleton
     @ViewModelKey(CreateOrderViewModel::class)
     internal abstract fun provideCreateOrderViewModel(createOrderViewModel: CreateOrderViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @Singleton
+    @ViewModelKey(OrderDetailViewModel::class)
+    internal abstract fun provideOrderDetailViewModel(orderDetailViewModel: OrderDetailViewModel): ViewModel
 }

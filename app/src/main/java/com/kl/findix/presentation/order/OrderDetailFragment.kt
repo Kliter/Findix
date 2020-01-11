@@ -1,0 +1,71 @@
+package com.kl.findix.presentation.order
+
+import android.content.Context
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
+import com.kl.findix.R
+import com.kl.findix.databinding.FragmentOrderDetailBinding
+import com.kl.findix.di.ViewModelFactory
+import com.kl.findix.navigation.OrderDetailNavigator
+import dagger.android.support.AndroidSupportInjection
+import javax.inject.Inject
+
+class OrderDetailFragment: Fragment() {
+
+    companion object {
+        private const val TAG = "OrderDetailFragment"
+    }
+
+
+    @Inject
+    lateinit var mViewModelFactory: ViewModelFactory
+    @Inject
+    lateinit var navigator: OrderDetailNavigator
+
+    private lateinit var _viewModel: OrderDetailViewModel
+    private lateinit var binding: FragmentOrderDetailBinding
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        AndroidSupportInjection.inject(this)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _viewModel = ViewModelProviders.of(this, mViewModelFactory).get(OrderDetailViewModel::class.java)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_order_detail, container, false)
+        binding.apply {
+            viewModel = _viewModel
+            lifecycleOwner = viewLifecycleOwner
+            lifecycle.addObserver(_viewModel)
+        }
+
+        return binding.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+//        observeEvent()
+//        observeState()
+    }
+
+    private fun observeState(viewModel: OrderDetailViewModel) {
+        viewModel.run {
+
+        }
+    }
+
+    private fun observeEvent(viewModel: OrderDetailViewModel) {
+        viewModel.run {
+
+        }
+    }
+}

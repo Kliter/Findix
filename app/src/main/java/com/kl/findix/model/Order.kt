@@ -27,6 +27,8 @@ class Order(): BaseObservable() {
         this.timeStamp = timeStamp
     }
 
+    var orderId: String = ""
+
     @Bindable
     var userId: String? = null
         set(value) {

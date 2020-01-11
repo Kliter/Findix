@@ -18,11 +18,30 @@
                 app:popEnterAnim="@anim/nav_default_pop_enter_anim"
                 app:popExitAnim="@anim/nav_default_pop_exit_anim"
                 app:popUpTo="@id/fragment_order" />
+
+        <action
+                android:id="@+id/action_order_to_order_detail"
+                app:destination="@id/fragment_order_detail"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"
+                app:popUpTo="@id/fragment_order" />
     </fragment>
 
     <fragment
             android:id="@+id/fragment_create_order"
             android:name="com.kl.findix.presentation.order.CreateOrderFragment"
             android:label="CreateOrder" />
+
+    <fragment
+            android:id="@+id/fragment_order_detail"
+            android:name="com.kl.findix.presentation.order.OrderDetailFragment"
+            android:label="OrderDetail">
+
+        <argument
+                android:name="orderId"
+                app:argType="string"/>
+    </fragment>
 
 </navigation>

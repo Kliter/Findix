@@ -1,6 +1,5 @@
 package com.kl.findix.services
 
-import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.kl.findix.model.Order
@@ -64,10 +63,13 @@ class FirebaseDataBaseServiceImpl @Inject constructor(
 
     override suspend fun fetchLast15Orders(fetchLast15OrdersListener: (List<Order>) -> Unit) {
         database.collection("Order").orderBy("timeStamp").limit(15).get()
-            .addOnSuccessListener { result ->
-                result?.toObjects(Order::class.java)?.let { orders ->
-                    fetchLast15OrdersListener.invoke(orders)
+            .addOnSuccessListener { results ->
+                val orders: List<Order> = results.map { result ->
+                    result.toObject(Order::class.java).apply {
+                        orderId = result.id
+                    }
                 }
+                fetchLast15OrdersListener.invoke(orders)
             }
     }
 
@@ -94,9 +96,12 @@ class FirebaseDataBaseServiceImpl @Inject constructor(
             .whereEqualTo("city", city)
             .get()
             .addOnSuccessListener { results ->
-                results.toObjects(Order::class.java).let { orders ->
-                    fetchQueriedCityOrdersListener.invoke(orders)
+                val orders: List<Order> = results.map { result ->
+                    result.toObject(Order::class.java).apply {
+                        orderId = result.id
+                    }
                 }
+                fetchQueriedCityOrdersListener.invoke(orders)
             }
     }
 }

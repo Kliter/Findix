@@ -70,8 +70,8 @@ class OrderFragment : Fragment() {
 
     private fun setController() {
         controller = OrderController(
-            onClickOrder = {
-//                navigator.toOrderDetail()
+            onClickOrder = { order ->
+                navigator.toOrderDetailFragment(order.orderId)
             }
         )
         binding.recyclerView?.let {
