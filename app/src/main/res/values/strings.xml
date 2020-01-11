@@ -70,4 +70,6 @@
     <string name="error_order_info_not_filled">Please fill in title and description.</string>
 
     <string name="succeed_create_order">Order created successfully.</string>
+
+    <string name="search_order_location">Search order location.</string>
 </resources>
