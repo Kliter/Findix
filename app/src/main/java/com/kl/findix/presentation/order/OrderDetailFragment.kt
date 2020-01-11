@@ -8,10 +8,12 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.navArgs
 import com.kl.findix.R
 import com.kl.findix.databinding.FragmentOrderDetailBinding
 import com.kl.findix.di.ViewModelFactory
 import com.kl.findix.navigation.OrderDetailNavigator
+import com.kl.findix.util.nonNullObserve
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -30,6 +32,8 @@ class OrderDetailFragment: Fragment() {
     private lateinit var _viewModel: OrderDetailViewModel
     private lateinit var binding: FragmentOrderDetailBinding
 
+    private val args: OrderDetailFragmentArgs by navArgs()
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         AndroidSupportInjection.inject(this)
@@ -43,10 +47,14 @@ class OrderDetailFragment: Fragment() {
         _viewModel = ViewModelProviders.of(this, mViewModelFactory).get(OrderDetailViewModel::class.java)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_order_detail, container, false)
         binding.apply {
-            viewModel = _viewModel
             lifecycleOwner = viewLifecycleOwner
             lifecycle.addObserver(_viewModel)
+            onClickBack = View.OnClickListener {
+                navigator.toPrev()
+            }
         }
+
+        _viewModel.fetchOrderDetail(args.orderId)
 
         return binding.root
     }
@@ -54,12 +62,14 @@ class OrderDetailFragment: Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 //        observeEvent()
-//        observeState()
+        observeState(_viewModel)
     }
 
     private fun observeState(viewModel: OrderDetailViewModel) {
         viewModel.run {
-
+            this._order.nonNullObserve(viewLifecycleOwner) { order ->
+                binding.order = order
+            }
         }
     }
 

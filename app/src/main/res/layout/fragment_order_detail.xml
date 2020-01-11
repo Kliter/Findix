@@ -1,19 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
-
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
-                name="viewModel"
-                type="com.kl.findix.presentation.order.OrderDetailViewModel" />
+                name="order"
+                type="com.kl.findix.model.Order" />
+
+        <variable
+                name="onClickBack"
+                type="android.view.View.OnClickListener" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <com.google.android.material.appbar.AppBarLayout
+                    android:id="@+id/appbar_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.Toolbar
+                        android:id="@+id/toolbar"
+                        style="@style/Widget.Findix.Toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        android:elevation="4dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                        <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:foreground="@drawable/ripple_white"
+                                android:onClick="@{onClickBack}"
+                                android:src="@drawable/ic_back_arrow"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.appcompat.widget.Toolbar>
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <ImageView
+                    android:id="@+id/image"
+                    android:layout_width="0dp"
+                    android:layout_height="200dp"
+                    android:background="@color/colorPrimary_50"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/appbar_layout" />
+
+            <ImageView
+                    android:id="@+id/iv_title"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="@dimen/margin_x1"
+                    android:layout_marginTop="@dimen/margin_x7"
+                    android:src="@drawable/ic_title"
+                    app:layout_constraintEnd_toStartOf="@id/text_title"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/image" />
+
+            <TextView
+                    android:id="@+id/text_title"
+                    style="@style/TextAppearance.MaterialComponents.Headline5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_x1"
+                    android:text="@{order.title}"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_title"
+                    app:layout_constraintStart_toEndOf="@id/iv_title"
+                    app:layout_constraintTop_toTopOf="@id/iv_title"
+                    tools:text="Title" />
+
+            <ImageView
+                    android:id="@+id/iv_description"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="@dimen/margin_x1"
+                    android:layout_marginTop="@dimen/margin_x7"
+                    android:src="@drawable/ic_description"
+                    app:layout_constraintEnd_toStartOf="@id/text_description"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_title" />
+
+            <TextView
+                    android:id="@+id/text_description"
+                    style="@style/TextAppearance.MaterialComponents.Body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_x1"
+                    android:text="@{order.description}"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_description"
+                    app:layout_constraintStart_toEndOf="@id/iv_description"
+                    app:layout_constraintTop_toTopOf="@id/iv_description"
+                    tools:text="Description" />
+
+            <ImageView
+                    android:id="@+id/iv_city"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="@dimen/margin_x1"
+                    android:layout_marginTop="@dimen/margin_x7"
+                    android:src="@drawable/ic_city"
+                    app:layout_constraintEnd_toStartOf="@id/text_city"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_description" />
+
+            <TextView
+                    android:id="@+id/text_city"
+                    style="@style/TextAppearance.MaterialComponents.Body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_x1"
+                    android:text="@{order.city}"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_city"
+                    app:layout_constraintStart_toEndOf="@id/iv_city"
+                    app:layout_constraintTop_toTopOf="@id/iv_city"
+                    tools:text="@string/location_makindye" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </layout>
-

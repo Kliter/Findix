@@ -2,6 +2,7 @@ package com.kl.findix.services
 
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.kl.findix.model.Order
 import com.kl.findix.model.User
 import com.kl.findix.model.UserLocation
@@ -12,7 +13,6 @@ import javax.inject.Inject
 class FirebaseDataBaseServiceImpl @Inject constructor(
     private val database: FirebaseFirestore
 ) : FirebaseDataBaseService {
-
     override suspend fun fetchProfileInfo(
         firebaseUser: FirebaseUser,
         fetchProfileInfoListener: (User) -> Unit
@@ -62,7 +62,7 @@ class FirebaseDataBaseServiceImpl @Inject constructor(
     }
 
     override suspend fun fetchLast15Orders(fetchLast15OrdersListener: (List<Order>) -> Unit) {
-        database.collection("Order").orderBy("timeStamp").limit(15).get()
+        database.collection("Order").orderBy("timeStamp", Query.Direction.DESCENDING).limit(15).get()
             .addOnSuccessListener { results ->
                 val orders: List<Order> = results.map { result ->
                     result.toObject(Order::class.java).apply {
@@ -102,6 +102,23 @@ class FirebaseDataBaseServiceImpl @Inject constructor(
                     }
                 }
                 fetchQueriedCityOrdersListener.invoke(orders)
+            }
+    }
+
+    override suspend fun fetchOrderDetail(
+        orderId: String,
+        fetchOrderDetailListener: (Order) -> Unit
+    ) {
+        database.collection("Order")
+            .document(orderId)
+            .get()
+            .addOnSuccessListener { result ->
+                val order = result.toObject(Order::class.java).also {
+                    it?.orderId = result.id
+                }
+                order?.let {
+                    fetchOrderDetailListener.invoke(order)
+                }
             }
     }
 }
