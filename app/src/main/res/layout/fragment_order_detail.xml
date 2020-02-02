@@ -99,7 +99,7 @@
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_marginStart="@dimen/margin_x1"
-                    android:layout_marginTop="@dimen/margin_x7"
+                    android:layout_marginTop="@dimen/margin_x6"
                     android:src="@drawable/ic_description"
                     app:layout_constraintEnd_toStartOf="@id/text_description"
                     app:layout_constraintStart_toStartOf="parent"
@@ -118,15 +118,38 @@
                     tools:text="Description" />
 
             <ImageView
+                    android:id="@+id/iv_username_icon"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="@dimen/margin_x1"
+                    android:layout_marginTop="@dimen/margin_x6"
+                    android:src="@drawable/ic_user"
+                    app:layout_constraintEnd_toStartOf="@id/text_username"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_description" />
+
+            <TextView
+                    android:id="@+id/text_username"
+                    style="@style/TextAppearance.MaterialComponents.Body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_x1"
+                    android:text="@{order.userName}"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_username_icon"
+                    app:layout_constraintStart_toEndOf="@id/iv_username_icon"
+                    app:layout_constraintTop_toTopOf="@id/iv_username_icon"
+                    tools:text="Name" />
+
+            <ImageView
                     android:id="@+id/iv_city"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_marginStart="@dimen/margin_x1"
-                    android:layout_marginTop="@dimen/margin_x7"
+                    android:layout_marginTop="@dimen/margin_x6"
                     android:src="@drawable/ic_city"
                     app:layout_constraintEnd_toStartOf="@id/text_city"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/iv_description" />
+                    app:layout_constraintTop_toBottomOf="@id/iv_username_icon" />
 
             <TextView
                     android:id="@+id/text_city"

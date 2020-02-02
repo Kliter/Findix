@@ -40,19 +40,19 @@
                     android:layout_width="0dp"
                     android:layout_height="160dp"
                     android:layout_margin="@dimen/margin_x0_5"
-                    app:showPhotoIfExist="@{order.photoUrl}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:showPhotoIfExist="@{order.photoUrl}" />
 
             <TextView
                     android:id="@+id/title"
                     style="@style/TextAppearance.MaterialComponents.Headline4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_x0_5"
                     android:ellipsize="end"
                     android:maxLines="2"
-                    android:layout_margin="@dimen/margin_x0_5"
                     android:text="@{order.title}"
                     android:textColor="@color/colorBlack"
                     android:textStyle="bold"
@@ -67,15 +67,27 @@
                     style="@style/TextAppearance.MaterialComponents.Body1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_x0_5"
                     android:ellipsize="end"
                     android:maxLines="3"
-                    android:layout_margin="@dimen/margin_x0_5"
                     android:text="@{order.description}"
                     android:textColor="@color/colorBlack_70"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/title"
                     tools:text="DescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescription" />
+
+            <TextView
+                    android:id="@+id/text_user_name"
+                    style="@style/TextAppearance.MaterialComponents.Body2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_x0_5"
+                    android:text="@{order.userName}"
+                    android:textColor="@color/colorBlack_70"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/description"
+                    tools:text="Katsumi Kusumi" />
 
             <TextView
                     android:id="@+id/date_time"
@@ -85,7 +97,7 @@
                     android:text="@{dateTime}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/description"
+                    app:layout_constraintTop_toBottomOf="@id/text_user_name"
                     tools:text="12:00, 01/01, 2020" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

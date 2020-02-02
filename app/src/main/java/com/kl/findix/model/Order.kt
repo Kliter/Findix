@@ -9,6 +9,7 @@ class Order(): BaseObservable() {
 
     constructor(
         userId: String? = "",
+        userName: String? = "",
         title: String? = "",
         description: String? = "",
         city: String? = "",
@@ -18,6 +19,7 @@ class Order(): BaseObservable() {
         timeStamp: Date? = null
     ): this() {
         this.userId = userId
+        this.userName = userName
         this.title = title
         this.description = description
         this.city = city
@@ -34,6 +36,13 @@ class Order(): BaseObservable() {
         set(value) {
             field = value
             notifyPropertyChanged(BR.userId)
+        }
+
+    @Bindable
+    var userName: String? = null
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.userName)
         }
 
     @Bindable
