@@ -66,7 +66,7 @@
                     android:id="@+id/image"
                     android:layout_width="0dp"
                     android:layout_height="200dp"
-                    android:background="@color/colorPrimary_50"
+                    android:background="@color/colorBlack_10"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/appbar_layout" />
@@ -143,11 +143,11 @@
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{dateTime}"
                     android:layout_marginTop="@dimen/margin_x2"
                     android:layout_marginEnd="@dimen/margin_x1"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:text="@{dateTime}"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     tools:text="12:00, January 1, 2020" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
