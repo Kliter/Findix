@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.bumptech.glide.Glide
 import com.kl.findix.R
 import com.kl.findix.databinding.FragmentProfileBinding
@@ -72,7 +73,10 @@ class ProfileFragment : Fragment() {
                 intent.type = GALLERY_TYPE_IMAGE
                 startActivityForResult(intent, REQUEST_CODE_CHOOOSE_PROFILE_ICON)
             }
+
+            toolbar.setTitle(R.string.action_profile)
         }
+
         _viewModel.setProfileIcon()
         _viewModel.fetchUserInfo()
 

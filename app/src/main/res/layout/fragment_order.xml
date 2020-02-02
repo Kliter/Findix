@@ -33,6 +33,7 @@
 
             <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
+                    app:title="Order"
                     style="@style/Widget.Findix.Toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
@@ -74,6 +75,7 @@
                 android:layout_marginEnd="@dimen/margin_x2"
                 android:layout_marginBottom="@dimen/margin_x2"
                 android:foreground="@drawable/ripple_white"
+                android:backgroundTint="@color/colorPrimary"
                 android:onClick="@{onClickAddOrder}"
                 android:src="@drawable/ic_add"
                 app:borderWidth="0dp"

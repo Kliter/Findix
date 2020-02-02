@@ -9,6 +9,7 @@ class User(): BaseObservable() {
     constructor(
         userName: String? = "",
         userId: String? = "",
+        company: String? = "",
         major: String? = "",
         description: String? = "",
         website: String? = "",
@@ -18,6 +19,7 @@ class User(): BaseObservable() {
     ): this() {
         this.userName = userName
         this.userId = userId
+        this.company = company
         this.major = major
         this.description = description
         this.website = website
@@ -38,6 +40,14 @@ class User(): BaseObservable() {
             field = value
             notifyPropertyChanged(BR.userId)
         }
+
+    @Bindable
+    var company: String? = null
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.company)
+        }
+
     @Bindable
     var major: String? = null
         set(value) {

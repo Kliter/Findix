@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+                name="viewModel"
+                type="com.kl.findix.presentation.profile.ProfileViewModel" />
+
+        <variable
+                name="profileIconSrc"
+                type="android.graphics.Bitmap" />
+
+        <variable
+                name="onClickSave"
+                type="android.view.View.OnClickListener" />
+
+        <variable
+                name="onClickUserIcon"
+                type="android.view.View.OnClickListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorDarkWhite">
+
+        <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appbar_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:elevation="4dp"/>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.cardview.widget.CardView
+                android:id="@+id/profile_icon_container"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/appbar_layout">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhite">
+
+                <ImageView
+                        android:id="@+id/profile_icon"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:background="@color/colorBlack_10"
+                        android:foreground="@drawable/ripple_white"
+                        android:onClick="@{onClickUserIcon}"
+                        app:bitmapSrc="@{profileIconSrc}"
+                        app:civ_border_color="@color/colorBlack"
+                        app:civ_border_width="2dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                        android:id="@+id/ic_camera"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/ic_camera"
+                        app:layout_constraintBottom_toBottomOf="@id/profile_icon"
+                        app:layout_constraintEnd_toEndOf="@id/profile_icon"
+                        app:layout_constraintStart_toStartOf="@id/profile_icon"
+                        app:layout_constraintTop_toTopOf="@id/profile_icon" />
+
+                <TextView
+                        android:id="@+id/text_user_name"
+                        style="@style/TextAppearance.MaterialComponents.Body1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_x2"
+                        android:layout_marginTop="@dimen/margin_x2"
+                        android:text="@{viewModel.user.userName}"
+                        android:textColor="@color/colorBlack"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/profile_icon"
+                        tools:text="Katsumi Kusumi" />
+
+                <TextView
+                        android:id="@+id/text_profile"
+                        style="@style/TextAppearance.MaterialComponents.Body2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text='@{"Working at " + viewModel.user.company}'
+                        android:textColor="@color/colorBlack_70"
+                        app:layout_constraintStart_toStartOf="@id/text_user_name"
+                        app:layout_constraintTop_toBottomOf="@id/text_user_name"
+                        tools:text="Working at AF" />
+
+                <View
+                        android:id="@+id/horizontal_divider1"
+                        android:layout_width="0dp"
+                        android:layout_height="0.5dp"
+                        android:layout_marginStart="@dimen/margin_x2"
+                        android:layout_marginTop="@dimen/margin_x1"
+                        android:layout_marginEnd="@dimen/margin_x2"
+                        android:background="@color/colorBlack_10"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/text_profile" />
+
+                <LinearLayout
+                        android:id="@+id/major_container"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_x2"
+                        android:layout_marginTop="@dimen/margin_x1"
+                        android:layout_marginBottom="@dimen/margin_x1"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toTopOf="@id/horizontal_divider2"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/horizontal_divider1">
+
+                    <TextView
+                            android:id="@+id/text_major_label"
+                            style="@style/TextAppearance.MaterialComponents.Body1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Major"
+                            tools:text="Major" />
+
+                    <TextView
+                            android:id="@+id/text_major"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{viewModel.user.major}"
+                            tools:text="cycle" />
+
+                </LinearLayout>
+
+                <View
+                        android:id="@+id/vertical_divider"
+                        android:layout_width="0.5dp"
+                        android:layout_height="0dp"
+                        android:background="@color/colorBlack_10"
+                        app:layout_constraintBottom_toBottomOf="@id/major_container"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/major_container" />
+
+                <LinearLayout
+                        android:id="@+id/phone_number_container"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_x2"
+                        android:layout_marginBottom="@dimen/margin_x1"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toTopOf="@id/description_container"
+                        app:layout_constraintStart_toEndOf="@id/vertical_divider"
+                        app:layout_constraintTop_toBottomOf="@id/horizontal_divider1">
+
+                    <TextView
+                            android:id="@+id/text_phone_number_label"
+                            style="@style/TextAppearance.MaterialComponents.Body1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Phone Number"
+                            tools:text="Phone Number" />
+
+                    <TextView
+                            android:id="@+id/text_phone_number"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{viewModel.user.phone}"
+                            tools:text="000-0000-0000" />
+
+                </LinearLayout>
+
+                <View
+                        android:id="@+id/horizontal_divider2"
+                        android:layout_width="0dp"
+                        android:layout_height="0.5dp"
+                        android:layout_marginStart="@dimen/margin_x2"
+                        android:layout_marginTop="@dimen/margin_x1"
+                        android:layout_marginEnd="@dimen/margin_x2"
+                        android:background="@color/colorBlack_10"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/major_container" />
+
+                <LinearLayout
+                        android:id="@+id/description_container"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_x2"
+                        android:layout_marginTop="@dimen/margin_x1"
+                        android:layout_marginEnd="@dimen/margin_x2"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/horizontal_divider2">
+
+                    <TextView
+                            android:id="@+id/text_description_label"
+                            style="@style/TextAppearance.MaterialComponents.Body1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text='@{"About " + viewModel.user.userName}'
+                            tools:text="About Katsumi Kusumi " />
+
+                    <TextView
+                            android:id="@+id/text_description"
+                            style="@style/TextAppearance.MaterialComponents.Body2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="@{viewModel.user.description}"
+                            android:textColor="@color/colorBlack_70"
+                            tools:text="abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz" />
+
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

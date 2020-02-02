@@ -99,6 +99,7 @@
                     android:layout_height="56dp"
                     android:layout_marginStart="@dimen/margin_x2"
                     android:src="@drawable/ic_camera"
+                    android:backgroundTint="@color/colorPrimary"
                     android:onClick="@{onClickSetPhoto}"
                     app:layout_constraintBottom_toBottomOf="@id/image"
                     app:layout_constraintStart_toStartOf="parent"

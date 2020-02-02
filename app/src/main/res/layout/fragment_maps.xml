@@ -70,7 +70,7 @@
                 android:layout_height="56dp"
                 android:layout_marginEnd="@dimen/margin_x2"
                 android:layout_marginBottom="@dimen/margin_x2"
-                android:backgroundTint="@color/colorWhite"
+                android:backgroundTint="@color/colorPrimary"
                 android:foreground="@drawable/ripple_white"
                 android:onClick="@{onClickGPSFixed}"
                 android:src="@drawable/ic_gps_fixed"

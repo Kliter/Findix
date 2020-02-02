@@ -23,6 +23,8 @@
 
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
+                app:itemIconTint="@drawable/bottom_navigation_item_state"
+                app:itemTextColor="@drawable/bottom_navigation_item_state"
                 android:id="@+id/bottom_navigation_view"
                 android:layout_width="0dp"
                 android:layout_height="?attr/actionBarSize"

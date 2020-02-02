@@ -15,17 +15,6 @@
             android:background="@color/colorWhite"
             android:padding="8dp">
 
-        <TextView
-                android:id="@+id/tv_base_info"
-                style="@style/TextAppearance.MaterialComponents.Headline4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_x1"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:text="@string/base_information" />
-
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_username"
                 android:layout_width="0dp"
@@ -33,7 +22,7 @@
                 android:layout_marginTop="@dimen/margin_x4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_base_info">
+                app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                     android:id="@+id/iv_username_icon"

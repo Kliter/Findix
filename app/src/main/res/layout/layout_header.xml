@@ -15,7 +15,7 @@
             android:src="@mipmap/ic_launcher"/>
 
     <TextView
-            android:id="@+id/tv_user_name"
+            android:id="@+id/text_user_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
