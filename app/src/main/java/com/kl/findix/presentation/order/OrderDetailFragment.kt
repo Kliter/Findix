@@ -52,6 +52,9 @@ class OrderDetailFragment: Fragment() {
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             lifecycle.addObserver(_viewModel)
+            onClickUserName = View.OnClickListener {
+                
+            }
             onClickBack = View.OnClickListener {
                 navigator.toPrev()
             }

@@ -15,6 +15,10 @@
                 type="String" />
 
         <variable
+                name="onClickUserName"
+                type="android.view.View.OnClickListener" />
+
+        <variable
                 name="onClickBack"
                 type="android.view.View.OnClickListener" />
     </data>
@@ -123,6 +127,7 @@
                     android:layout_height="32dp"
                     android:layout_marginStart="@dimen/margin_x1"
                     android:layout_marginTop="@dimen/margin_x6"
+                    android:onClick="@{onClickUserName}"
                     android:src="@drawable/ic_user"
                     app:layout_constraintEnd_toStartOf="@id/text_username"
                     app:layout_constraintStart_toStartOf="parent"
@@ -131,11 +136,13 @@
             <TextView
                     android:id="@+id/text_username"
                     style="@style/TextAppearance.MaterialComponents.Body1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_x1"
+                    android:onClick="@{onClickUserName}"
                     android:text="@{order.userName}"
                     app:layout_constraintBottom_toBottomOf="@id/iv_username_icon"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/iv_username_icon"
                     app:layout_constraintTop_toTopOf="@id/iv_username_icon"
                     tools:text="Name" />

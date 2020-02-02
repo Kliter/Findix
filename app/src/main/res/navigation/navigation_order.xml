@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        app:startDestination="@id/fragment_order"
-        android:id="@+id/navigation_order">
+        android:id="@+id/navigation_order"
+        app:startDestination="@id/fragment_order">
 
     <fragment
             android:id="@+id/fragment_order"
@@ -41,7 +40,26 @@
 
         <argument
                 android:name="orderId"
-                app:argType="string"/>
+                app:argType="string" />
+
+        <action
+                android:id="@+id/action_order_detail_to_profile_detail"
+                app:destination="@id/fragment_profile_detail"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"
+                app:popUpTo="@id/fragment_order_detail" />
+    </fragment>
+
+    <fragment
+            android:id="@+id/fragment_profile_detail"
+            android:name="com.kl.findix.presentation.order.ProfileDetailFragment"
+            android:label="ProfileDetail">
+
+        <argument
+                android:name="userId"
+                app:argType="string" />
     </fragment>
 
 </navigation>

@@ -7,7 +7,7 @@
 
         <variable
                 name="viewModel"
-                type="com.kl.findix.presentation.profile.ProfileViewModel" />
+                type="com.kl.findix.presentation.order.ProfileDetailViewModel" />
 
         <variable
                 name="profileIconSrc"
