@@ -15,6 +15,7 @@ import com.kl.findix.R
 import com.kl.findix.databinding.FragmentProfileBinding
 import com.kl.findix.di.ViewModelFactory
 import com.kl.findix.navigation.ProfileNavigator
+import com.kl.findix.util.GALLERY_TYPE_IMAGE
 import com.kl.findix.util.REQUEST_CODE_CHOOOSE_PROFILE_ICON
 import com.kl.findix.util.nonNullObserve
 import com.kl.findix.util.safeLet
@@ -26,7 +27,6 @@ class ProfileFragment : Fragment() {
 
     companion object {
         private const val TAG = "MapsFragment"
-        private const val GALLERY_TYPE_IMAGE = "image/*"
     }
 
     @Inject

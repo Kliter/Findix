@@ -1,18 +1,26 @@
 package com.kl.findix.presentation.order
 
 import android.Manifest
+import android.content.ContentResolver
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.net.Uri
+import android.util.Log
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.storage.StorageReference
 import com.kl.findix.R
 import com.kl.findix.model.CityNumber
 import com.kl.findix.model.Order
+import com.kl.findix.model.ServiceResult
 import com.kl.findix.model.UserLocation
 import com.kl.findix.services.FirebaseDataBaseService
 import com.kl.findix.services.FirebaseUserService
+import com.kl.findix.services.ImageService
 import com.kl.findix.util.safeLet
 import com.shopify.livedataktx.PublishLiveDataKtx
 import kotlinx.coroutines.GlobalScope
@@ -24,13 +32,22 @@ import kotlin.coroutines.suspendCoroutine
 
 class CreateOrderViewModel @Inject constructor(
     private val firebaseUserService: FirebaseUserService,
-    private val firebaseDataBaseService: FirebaseDataBaseService
+    private val firebaseDataBaseService: FirebaseDataBaseService,
+    private val imageService: ImageService
 ) : ViewModel() {
 
+    companion object {
+        private const val TAG = "CreateOrderViewModel"
+    }
+
     var order: Order? = null
+    var _orderPhotoUri: Uri? = null
+
+    var orderPhotoBitmap: MutableLiveData<Bitmap> = MutableLiveData()
 
     var showToastCommand: PublishLiveDataKtx<Int> = PublishLiveDataKtx()
     var succeedCreateOrderCommand: PublishLiveDataKtx<Boolean> = PublishLiveDataKtx()
+    var setOrderPhotoCommand: PublishLiveDataKtx<StorageReference> = PublishLiveDataKtx()
 
     private var firebaseUser: FirebaseUser? = firebaseUserService.getCurrentSignInUser()
     var cityNumber: CityNumber? = null // Spinnerのテキストバインドするために必要
@@ -68,6 +85,18 @@ class CreateOrderViewModel @Inject constructor(
                 }
             } else {
                 showToastCommand.postValue(R.string.error_order_info_not_filled)
+            }
+        }
+    }
+
+    fun updateOrderPhoto(uri: Uri, contentResolver: ContentResolver) {
+        when (val result = imageService.getBitmap(uri, contentResolver)) {
+            is ServiceResult.Success -> {
+                _orderPhotoUri = uri
+                orderPhotoBitmap.postValue(result.data)
+            }
+            is ServiceResult.Failure -> {
+                Log.e(TAG, result.error)
             }
         }
     }

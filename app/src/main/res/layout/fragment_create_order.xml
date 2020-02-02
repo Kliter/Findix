@@ -13,6 +13,14 @@
                 type="com.kl.findix.model.CityNumber" />
 
         <variable
+                name="orderPhotoSrc"
+                type="android.graphics.Bitmap" />
+
+        <variable
+                name="onClickSetPhoto"
+                type="android.view.View.OnClickListener" />
+
+        <variable
                 name="onClickSave"
                 type="android.view.View.OnClickListener" />
 
@@ -79,6 +87,7 @@
                     android:id="@+id/image"
                     android:layout_width="0dp"
                     android:layout_height="200dp"
+                    app:bitmapSrc="@{orderPhotoSrc}"
                     android:background="@color/colorPrimary_50"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -90,6 +99,7 @@
                     android:layout_height="56dp"
                     android:layout_marginStart="@dimen/margin_x2"
                     android:src="@drawable/ic_camera"
+                    android:onClick="@{onClickSetPhoto}"
                     app:layout_constraintBottom_toBottomOf="@id/image"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/image" />

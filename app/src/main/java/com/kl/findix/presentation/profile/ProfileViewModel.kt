@@ -16,6 +16,7 @@ import com.kl.findix.services.FirebaseStorageService
 import com.kl.findix.services.FirebaseUserService
 import com.kl.findix.services.ImageService
 import com.kl.findix.util.safeLet
+import com.shopify.livedataktx.PublishLiveDataKtx
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -34,7 +35,7 @@ class ProfileViewModel @Inject constructor(
     var user: MutableLiveData<User> = MutableLiveData()
 
     var profileIconBitmap: MutableLiveData<Bitmap> = MutableLiveData()
-    var setProfileIconCommand: MutableLiveData<StorageReference> = MutableLiveData()
+    var setProfileIconCommand: PublishLiveDataKtx<StorageReference> = PublishLiveDataKtx()
 
     var _user: User = User()
     private var _profilePhotoUri: Uri? = null

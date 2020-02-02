@@ -2,6 +2,7 @@ package com.kl.findix.presentation.order
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,12 +11,15 @@ import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import com.bumptech.glide.Glide
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.kl.findix.R
 import com.kl.findix.databinding.FragmentCreateOrderBinding
 import com.kl.findix.di.ViewModelFactory
 import com.kl.findix.navigation.CreateOrderNavigator
+import com.kl.findix.util.GALLERY_TYPE_IMAGE
+import com.kl.findix.util.REQUEST_CODE_CHOOOSE_PROFILE_ICON
 import com.kl.findix.util.nonNullObserve
 import com.kl.findix.util.safeLet
 import com.kl.findix.util.showToast
@@ -62,6 +66,12 @@ class CreateOrderFragment : Fragment() {
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = _viewModel
+            onClickSetPhoto = View.OnClickListener {
+                val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+                intent.addCategory(Intent.CATEGORY_OPENABLE)
+                intent.type = GALLERY_TYPE_IMAGE
+                startActivityForResult(intent, REQUEST_CODE_CHOOOSE_PROFILE_ICON)
+            }
             onClickBack = View.OnClickListener {
                 navigator.toPrev()
             }
@@ -84,10 +94,34 @@ class CreateOrderFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         observeEvent(_viewModel)
+        observeState(_viewModel)
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_CHOOOSE_PROFILE_ICON && resultCode == Activity.RESULT_OK) {
+            safeLet(data?.data, activity?.contentResolver) { uri, contentResolver ->
+                _viewModel.updateOrderPhoto(uri, contentResolver)
+            }
+        }
+    }
+
+    private fun observeState(viewModel: CreateOrderViewModel) {
+        viewModel.run {
+            this.orderPhotoBitmap.nonNullObserve(viewLifecycleOwner) { orderPhotoBitmap ->
+                binding.orderPhotoSrc = orderPhotoBitmap
+            }
+        }
+    }
+
 
     private fun observeEvent(viewModel: CreateOrderViewModel) {
         viewModel.run {
+            setOrderPhotoCommand.nonNullObserve(viewLifecycleOwner) { storageReference ->
+                Glide.with(requireContext())
+                    .load(storageReference)
+                    .into(binding.image)
+            }
             showToastCommand.nonNullObserve(viewLifecycleOwner) {
                 context?.let { context ->
                     showToast(context, getString(it))
