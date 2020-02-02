@@ -13,14 +13,14 @@ import javax.inject.Inject
 class FirebaseDataBaseServiceImpl @Inject constructor(
     private val database: FirebaseFirestore
 ) : FirebaseDataBaseService {
-    override suspend fun fetchProfileInfo(
+    override suspend fun fetchOwnProfileInfo(
         firebaseUser: FirebaseUser,
-        fetchProfileInfoListener: (User) -> Unit
+        fetchOwnProfileInfoListener: (User) -> Unit
     ) {
         database.collection("User").document(firebaseUser.uid).get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 task.result?.toObject(User::class.java)?.let { user ->
-                    fetchProfileInfoListener.invoke(user)
+                    fetchOwnProfileInfoListener.invoke(user)
                 }
             }
         }

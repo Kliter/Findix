@@ -45,9 +45,9 @@ class ProfileViewModel @Inject constructor(
     fun fetchUserInfo() {
         viewModelScope.launch {
             firebaseUser?.let { firebaseUser ->
-                firebaseDataBaseService.fetchProfileInfo(
+                firebaseDataBaseService.fetchOwnProfileInfo(
                     firebaseUser = firebaseUser,
-                    fetchProfileInfoListener = { user ->
+                    fetchOwnProfileInfoListener = { user ->
                         this@ProfileViewModel._user = user
                         this@ProfileViewModel.user.postValue(user)
                     }

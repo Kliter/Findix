@@ -6,9 +6,9 @@ import com.kl.findix.model.User
 import com.kl.findix.model.UserLocation
 
 interface FirebaseDataBaseService {
-    suspend fun fetchProfileInfo(
+    suspend fun fetchOwnProfileInfo(
         firebaseUser: FirebaseUser,
-        fetchProfileInfoListener: (User) -> Unit
+        fetchOwnProfileInfoListener: (User) -> Unit
     )
 
     suspend fun updateProfileInfo(firebaseUser: FirebaseUser, user: User, profilePhotoUrl: String)
