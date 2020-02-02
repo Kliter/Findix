@@ -13,6 +13,7 @@ import javax.inject.Inject
 class FirebaseDataBaseServiceImpl @Inject constructor(
     private val database: FirebaseFirestore
 ) : FirebaseDataBaseService {
+
     override suspend fun fetchOwnProfileInfo(
         firebaseUser: FirebaseUser,
         fetchOwnProfileInfoListener: (User) -> Unit
@@ -118,6 +119,18 @@ class FirebaseDataBaseServiceImpl @Inject constructor(
                 }
                 order?.let {
                     fetchOrderDetailListener.invoke(order)
+                }
+            }
+    }
+
+    override suspend fun fetchUserInfo(userId: String, fetchUserInfoListener: (User) -> Unit) {
+        database.collection("User")
+            .document(userId)
+            .get()
+            .addOnSuccessListener { result ->
+                val user = result.toObject(User::class.java)
+                user?.let {
+                    fetchUserInfoListener.invoke(it)
                 }
             }
     }
