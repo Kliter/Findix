@@ -178,7 +178,7 @@
                     android:layout_height="32dp"
                     android:layout_marginStart="@dimen/margin_x1"
                     android:layout_marginTop="@dimen/margin_x7"
-                    android:src="@drawable/ic_description"
+                    android:src="@drawable/ic_user"
                     app:layout_constraintEnd_toStartOf="@id/text_input_layout_description"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/iv_description" />
