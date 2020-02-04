@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.navArgs
 import com.kl.findix.databinding.FragmentProfileDetailBinding
 import com.kl.findix.di.ViewModelFactory
 import com.kl.findix.navigation.ProfileDetailNavigator
@@ -27,6 +28,8 @@ class ProfileDetailFragment : Fragment() {
     private lateinit var _viewModel: ProfileDetailViewModel
     private lateinit var binding: FragmentProfileDetailBinding
 
+    private val args: ProfileDetailFragmentArgs by navArgs()
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         AndroidSupportInjection.inject(this)
@@ -43,7 +46,7 @@ class ProfileDetailFragment : Fragment() {
             viewModel = _viewModel
         }
 
-        _viewModel
+        _viewModel.fetchUserInfo(args.userId)
 
         return binding.root
     }
@@ -55,7 +58,6 @@ class ProfileDetailFragment : Fragment() {
     }
 
     private fun observeState(_viewModel: ProfileDetailViewModel) {
-        //
     }
 
     private fun observeEvent(_viewModel: ProfileDetailViewModel) {

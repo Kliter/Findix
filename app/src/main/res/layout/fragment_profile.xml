@@ -21,92 +21,87 @@
                 type="android.view.View.OnClickListener" />
     </data>
 
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorDarkWhite">
+            android:layout_height="wrap_content"
+            android:background="@color/colorDarkWhite">
 
 
-            <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="0dp"
-                    android:layout_height="?attr/actionBarSize"
-                    android:elevation="4dp"
-                    android:background="@color/colorPrimary"
+        <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="0dp"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/colorPrimary"
+                android:elevation="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:title="Profile">
+
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="@dimen/margin_x2"
+                    android:foreground="@drawable/ripple_white"
+                    android:onClick="@{onClickSave}"
+                    android:src="@drawable/ic_checkmark"
+                    app:layout_constraintBottom_toBottomOf="@id/toolbar"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:title="Profile">
+                    app:layout_constraintTop_toTopOf="@id/toolbar" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <androidx.cardview.widget.CardView
+                android:id="@+id/profile_icon_container"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/icon_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorWhite">
 
                 <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:layout_marginEnd="@dimen/margin_x2"
-                        android:foreground="@drawable/ripple_white"
-                        android:onClick="@{onClickSave}"
-                        android:src="@drawable/ic_checkmark"
-                        app:layout_constraintBottom_toBottomOf="@id/toolbar"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/toolbar" />
-
-            </androidx.appcompat.widget.Toolbar>
-
-            <androidx.cardview.widget.CardView
-                    android:id="@+id/profile_icon_container"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/toolbar">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/icon_container"
+                        android:id="@+id/profile_icon"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/colorWhite">
+                        android:layout_height="200dp"
+                        android:background="@color/colorBlack_10"
+                        android:foreground="@drawable/ripple_white"
+                        android:onClick="@{onClickUserIcon}"
+                        app:bitmapSrc="@{profileIconSrc}"
+                        app:civ_border_color="@color/colorBlack"
+                        app:civ_border_width="2dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                    <ImageView
-                            android:id="@+id/profile_icon"
-                            android:layout_width="match_parent"
-                            android:layout_height="200dp"
-                            android:background="@color/colorBlack_10"
-                            android:foreground="@drawable/ripple_white"
-                            android:onClick="@{onClickUserIcon}"
-                            app:bitmapSrc="@{profileIconSrc}"
-                            app:civ_border_color="@color/colorBlack"
-                            app:civ_border_width="2dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                <ImageView
+                        android:id="@+id/ic_camera"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/ic_camera"
+                        app:layout_constraintBottom_toBottomOf="@id/profile_icon"
+                        app:layout_constraintEnd_toEndOf="@id/profile_icon"
+                        app:layout_constraintStart_toStartOf="@id/profile_icon"
+                        app:layout_constraintTop_toTopOf="@id/profile_icon" />
 
-                    <ImageView
-                            android:id="@+id/ic_camera"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:src="@drawable/ic_camera"
-                            app:layout_constraintBottom_toBottomOf="@id/profile_icon"
-                            app:layout_constraintEnd_toEndOf="@id/profile_icon"
-                            app:layout_constraintStart_toStartOf="@id/profile_icon"
-                            app:layout_constraintTop_toTopOf="@id/profile_icon" />
+                <com.airbnb.epoxy.EpoxyRecyclerView
+                        android:id="@+id/recycler_view"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/profile_icon" />
 
-                    <com.airbnb.epoxy.EpoxyRecyclerView
-                            android:id="@+id/recycler_view"
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/profile_icon" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

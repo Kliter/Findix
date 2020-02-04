@@ -10,7 +10,7 @@ class OrderDetailNavigator(
         navController.navigateUp()
     }
 
-    fun toCreateProfileDetailFragment(userId: String) {
+    fun toProfileDetailFragment(userId: String) {
         navController.navigate(
             OrderDetailFragmentDirections.actionOrderDetailToProfileDetail(userId)
         )

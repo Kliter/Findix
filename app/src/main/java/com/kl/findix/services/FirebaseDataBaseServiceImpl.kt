@@ -82,6 +82,7 @@ class FirebaseDataBaseServiceImpl @Inject constructor(
         database.collection("Order")
             .document()
             .set(order.apply {
+                this.userId = firebaseUser.uid
                 this.timeStamp = Date()
             })
             .addOnSuccessListener {

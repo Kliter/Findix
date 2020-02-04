@@ -5,7 +5,6 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.FirebaseUser
 import com.kl.findix.model.User
 import com.kl.findix.services.FirebaseDataBaseService
 import kotlinx.coroutines.launch
@@ -21,7 +20,9 @@ class ProfileDetailViewModel @Inject constructor(
 
     fun fetchUserInfo(userId: String) {
         viewModelScope.launch {
-
+            firebaseDataBaseService.fetchUserInfo(userId) {
+                _user.postValue(it)
+            }
         }
     }
 }

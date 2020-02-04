@@ -16,8 +16,6 @@ import com.kl.findix.navigation.OrderDetailNavigator
 import com.kl.findix.util.getDateTimeText
 import com.kl.findix.util.nonNullObserve
 import dagger.android.support.AndroidSupportInjection
-import java.text.SimpleDateFormat
-import java.util.*
 import javax.inject.Inject
 
 class OrderDetailFragment: Fragment() {
@@ -53,7 +51,7 @@ class OrderDetailFragment: Fragment() {
             lifecycleOwner = viewLifecycleOwner
             lifecycle.addObserver(_viewModel)
             onClickUserName = View.OnClickListener {
-                
+                _viewModel.toProfileDetailFragment()
             }
             onClickBack = View.OnClickListener {
                 navigator.toPrev()
@@ -67,7 +65,7 @@ class OrderDetailFragment: Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-//        observeEvent()
+        observeEvent(_viewModel)
         observeState(_viewModel)
     }
 
@@ -84,7 +82,11 @@ class OrderDetailFragment: Fragment() {
 
     private fun observeEvent(viewModel: OrderDetailViewModel) {
         viewModel.run {
-
+            this.toProfileDetailEvent.nonNullObserve(viewLifecycleOwner) { userId ->
+                userId?.let {
+                    navigator.toProfileDetailFragment(it)
+                }
+            }
         }
     }
 }

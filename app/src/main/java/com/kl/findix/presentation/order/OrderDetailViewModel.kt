@@ -15,6 +15,8 @@ class OrderDetailViewModel @Inject constructor(
 
     var _order: MutableLiveData<Order> = MutableLiveData()
 
+    var toProfileDetailEvent: MutableLiveData<String> = MutableLiveData()
+
     fun fetchOrderDetail(orderId: String) {
         viewModelScope.launch {
             firebaseDataBaseService.fetchOrderDetail(
@@ -24,5 +26,9 @@ class OrderDetailViewModel @Inject constructor(
                 }
             )
         }
+    }
+
+    fun toProfileDetailFragment() {
+        toProfileDetailEvent.postValue(_order.value?.userId)
     }
 }
