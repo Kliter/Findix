@@ -46,8 +46,10 @@ class OrderActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     override fun onResume() {
         super.onResume()
-        bottom_navigation_view.selectedItemId = R.id.action_order
-        setupBottomNavigationView(this, bottom_navigation_view)
+        if (bottom_navigation_view.selectedItemId != R.id.action_order) {
+            bottom_navigation_view.selectedItemId = R.id.action_order
+            setupBottomNavigationView(this, bottom_navigation_view)
+        }
     }
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = fragmentInjector
