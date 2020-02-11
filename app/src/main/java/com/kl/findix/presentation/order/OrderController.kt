@@ -14,7 +14,7 @@ class OrderController(
         data?.let { orders ->
             orders.forEach { order ->
                 itemOrderList {
-                    id(modelCountBuiltSoFar)
+                    id("order_${order.orderId}")
                     order(order)
                     order.timeStamp?.let {
                         dateTime(getDateTimeText(it))

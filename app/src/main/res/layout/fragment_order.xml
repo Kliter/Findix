@@ -26,56 +26,63 @@
                 android:id="@+id/appbar_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@+id/recycler_view"
+                app:layout_constraintBottom_toTopOf="@+id/swipe_refresh"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
-                    app:title="Order"
                     style="@style/Widget.Findix.Toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    android:elevation="4dp">
+                    android:elevation="4dp"
+                    app:title="Order">
 
-<!--                <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="match_parent">-->
+                <!--                <androidx.constraintlayout.widget.ConstraintLayout-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="match_parent">-->
 
-<!--                    <ImageView-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_marginEnd="@dimen/margin_x2"-->
-<!--                            android:src="@drawable/ic_search"-->
-<!--                            android:foreground="@drawable/ripple_white"-->
-<!--                            android:onClick="@{onClickSearch}"-->
-<!--                            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                            app:layout_constraintEnd_toEndOf="parent"-->
-<!--                            app:layout_constraintTop_toTopOf="parent" />-->
+                <!--                    <ImageView-->
+                <!--                            android:layout_width="wrap_content"-->
+                <!--                            android:layout_height="wrap_content"-->
+                <!--                            android:layout_marginEnd="@dimen/margin_x2"-->
+                <!--                            android:src="@drawable/ic_search"-->
+                <!--                            android:foreground="@drawable/ripple_white"-->
+                <!--                            android:onClick="@{onClickSearch}"-->
+                <!--                            app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--                            app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                            app:layout_constraintTop_toTopOf="parent" />-->
 
-<!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
+                <!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
 
             </androidx.appcompat.widget.Toolbar>
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <com.airbnb.epoxy.EpoxyRecyclerView
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipe_refresh"
                 android:layout_width="match_parent"
-                android:id="@+id/recycler_view"
-                android:paddingBottom="?attr/actionBarSize"
                 android:layout_height="wrap_content"
+                android:paddingBottom="?attr/actionBarSize"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/appbar_layout" />
+                app:layout_constraintTop_toBottomOf="@id/appbar_layout">
+
+            <com.airbnb.epoxy.EpoxyRecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:layout_width="56dp"
                 android:layout_height="56dp"
                 android:layout_marginEnd="@dimen/margin_x2"
                 android:layout_marginBottom="@dimen/margin_x2"
-                android:foreground="@drawable/ripple_white"
                 android:backgroundTint="@color/colorPrimary"
+                android:foreground="@drawable/ripple_white"
                 android:onClick="@{onClickAddOrder}"
                 android:src="@drawable/ic_add"
                 app:borderWidth="0dp"

@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.airbnb.epoxy.EpoxyController
 import com.kl.findix.R
 import com.kl.findix.databinding.FragmentOrderBinding
 import com.kl.findix.di.ViewModelFactory
@@ -48,6 +49,9 @@ class OrderFragment : Fragment() {
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = _viewModel
+            swipeRefresh.setOnRefreshListener {
+                _viewModel.fetchLast15Orders()
+            }
             onClickAddOrder = View.OnClickListener {
                 navigator.toCreateOrderFragment()
             }
@@ -55,8 +59,6 @@ class OrderFragment : Fragment() {
                 navigator.toSearchFragment()
             }
         }
-
-        _viewModel.fetchLast15Orders()
 
         return binding.root
     }
@@ -75,7 +77,7 @@ class OrderFragment : Fragment() {
             }
         )
         binding.recyclerView?.let {
-            it.adapter = controller?.adapter
+            it.setController(controller as EpoxyController)
             it.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         }
     }
@@ -84,6 +86,9 @@ class OrderFragment : Fragment() {
         viewModel.run {
             this.orders.nonNullObserve(viewLifecycleOwner) { orders ->
                 controller?.setData(orders)
+                if (binding.swipeRefresh.isRefreshing) {
+                    binding.swipeRefresh.isRefreshing = false
+                }
             }
         }
     }

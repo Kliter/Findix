@@ -1,5 +1,6 @@
 package com.kl.findix.presentation.order
 
+import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,11 +14,15 @@ import javax.inject.Inject
 class OrderViewModel @Inject constructor(
     private val firebaseUserService: FirebaseUserService,
     private val firebaseDataBaseService: FirebaseDataBaseService
-): ViewModel() {
+) : ViewModel(), LifecycleObserver {
 
     val orders: MutableLiveData<List<Order>> = MutableLiveData()
 
     private var firebaseUser: FirebaseUser? = firebaseUserService.getCurrentSignInUser()
+
+    init {
+        fetchLast15Orders()
+    }
 
     fun fetchLast15Orders() {
         viewModelScope.launch {
