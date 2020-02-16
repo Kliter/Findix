@@ -9,10 +9,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
 import com.kl.findix.R
 import com.kl.findix.databinding.FragmentProfileDetailBinding
 import com.kl.findix.di.ViewModelFactory
 import com.kl.findix.navigation.ProfileDetailNavigator
+import com.kl.findix.util.nonNullObserve
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -60,10 +62,17 @@ class ProfileDetailFragment : Fragment() {
         observeEvent(_viewModel)
     }
 
-    private fun observeState(_viewModel: ProfileDetailViewModel) {
+    private fun observeState(viewModel: ProfileDetailViewModel) {
+        //
     }
 
-    private fun observeEvent(_viewModel: ProfileDetailViewModel) {
-        //
+    private fun observeEvent(viewModel: ProfileDetailViewModel) {
+        viewModel.run {
+            this.setProfilePhotoCommand.nonNullObserve(viewLifecycleOwner) { storageReference ->
+                Glide.with(requireContext())
+                    .load(storageReference)
+                    .into(binding.profilePhoto)
+            }
+        }
     }
 }
