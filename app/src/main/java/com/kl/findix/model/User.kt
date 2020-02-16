@@ -54,12 +54,14 @@ class User(): BaseObservable() {
             field = value
             notifyPropertyChanged(BR.major)
         }
+
     @Bindable
     var description: String? = ""
         set(value) {
             field = value
             notifyPropertyChanged(BR.description)
         }
+
     @Bindable
     var website: String? = ""
         set(value) {
@@ -72,6 +74,7 @@ class User(): BaseObservable() {
             field = value
             notifyPropertyChanged(BR.email)
         }
+
     @Bindable
     var phone: String? = ""
         set(value) {

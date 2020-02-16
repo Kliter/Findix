@@ -34,7 +34,6 @@ class ProfileFragment : Fragment() {
     @Inject
     lateinit var mViewModelFactory: ViewModelFactory
 
-    private var epoxyController: ProfileController? = null
     private lateinit var _viewModel: ProfileViewModel
     private val binding: FragmentProfileBinding by lazy {
         DataBindingUtil.inflate<FragmentProfileBinding>(
@@ -84,7 +83,6 @@ class ProfileFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        setController()
         observeState(_viewModel)
         observeEvent(_viewModel)
     }
@@ -101,22 +99,8 @@ class ProfileFragment : Fragment() {
 
     private fun observeState(viewModel: ProfileViewModel) {
         viewModel.run {
-            user.nonNullObserve(viewLifecycleOwner) { user ->
-                epoxyController?.user = user
-                epoxyController?.requestModelBuild()
-            }
             profileIconBitmap.nonNullObserve(viewLifecycleOwner) { profileIconBitmap ->
                 binding.profileIconSrc = profileIconBitmap
-            }
-        }
-
-    }
-
-    private fun setController() {
-        context?.let {
-            epoxyController = ProfileController().also {
-                epoxyController?.user = _viewModel._user
-                binding.recyclerView.setControllerAndBuildModels(it)
             }
         }
     }

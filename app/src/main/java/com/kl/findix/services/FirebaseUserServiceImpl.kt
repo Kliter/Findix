@@ -80,7 +80,7 @@ class FirebaseUserServiceImpl @Inject constructor(
                     user.userName = email.let {
                         it.substring(0, it.indexOf("@"))
                     }
-                    user.userId = FirebaseAuth.getInstance().uid
+                    user.userId = FirebaseAuth.getInstance().uid ?: ""
 
                     val newUserReference: DocumentReference = firestore
                         .collection(context.getString(R.string.collection_users))

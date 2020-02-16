@@ -4,6 +4,7 @@ import android.content.ContentResolver
 import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -25,19 +26,20 @@ class ProfileViewModel @Inject constructor(
     private val firebaseUserService: FirebaseUserService,
     private val firebaseStorageService: FirebaseStorageService,
     private val imageService: ImageService
-): ViewModel() {
+) : ViewModel() {
 
     companion object {
         private const val TAG = "ProfileViewModel"
     }
 
     // State
-    var user: MutableLiveData<User> = MutableLiveData()
+    private val _user: MediatorLiveData<User> = MediatorLiveData()
+    val user: MutableLiveData<User>
+        get() = _user
 
     var profileIconBitmap: MutableLiveData<Bitmap> = MutableLiveData()
     var setProfileIconCommand: PublishLiveDataKtx<StorageReference> = PublishLiveDataKtx()
 
-    var _user: User = User()
     private var _profilePhotoUri: Uri? = null
 
     private var firebaseUser: FirebaseUser? = firebaseUserService.getCurrentSignInUser()
@@ -48,8 +50,7 @@ class ProfileViewModel @Inject constructor(
                 firebaseDataBaseService.fetchOwnProfileInfo(
                     firebaseUser = firebaseUser,
                     fetchOwnProfileInfoListener = { user ->
-                        this@ProfileViewModel._user = user
-                        this@ProfileViewModel.user.postValue(user)
+                        _user.postValue(user)
                     }
                 )
             }
@@ -62,16 +63,22 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun saveProfile(contentResolver: ContentResolver) {
-        safeLet(firebaseUserService.getCurrentSignInUser(), _profilePhotoUri) { currentSignInUser, profilePhotoUri ->
+        user.value?.let { user ->
             viewModelScope.launch {
                 firebaseUser?.let {
                     firebaseDataBaseService.updateProfileInfo(
                         it,
-                        _user,
+                        user,
                         _profilePhotoUri.toString()
                     )
                 }
             }
+        }
+
+        safeLet(
+            firebaseUserService.getCurrentSignInUser(),
+            _profilePhotoUri
+        ) { currentSignInUser, profilePhotoUri ->
             viewModelScope.launch {
                 when (val result = imageService.getBitmap(profilePhotoUri, contentResolver)) {
                     is ServiceResult.Success -> {

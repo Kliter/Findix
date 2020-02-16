@@ -20,9 +20,8 @@ class FirebaseDataBaseServiceImpl @Inject constructor(
     ) {
         database.collection("User").document(firebaseUser.uid).get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                task.result?.toObject(User::class.java)?.let { user ->
-                    fetchOwnProfileInfoListener.invoke(user)
-                }
+                val user = task.result?.toObject(User::class.java) ?: User()
+                fetchOwnProfileInfoListener.invoke(user)
             }
         }
     }

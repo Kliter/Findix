@@ -24,9 +24,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@color/colorDarkWhite">
-
 
         <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -53,20 +52,17 @@
 
         </androidx.appcompat.widget.Toolbar>
 
-        <androidx.cardview.widget.CardView
-                android:id="@+id/profile_icon_container"
-                android:layout_width="0dp"
+        <ScrollView
+                android:layout_width="match_parent"
                 android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/toolbar">
+                app:layout_constraintTop_toBottomOf="@id/toolbar"
+                app:layout_constraintBottom_toBottomOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/icon_container"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorWhite">
+                    android:layout_height="0dp">
 
                 <ImageView
                         android:id="@+id/profile_icon"
@@ -92,16 +88,32 @@
                         app:layout_constraintStart_toStartOf="@id/profile_icon"
                         app:layout_constraintTop_toTopOf="@id/profile_icon" />
 
-                <com.airbnb.epoxy.EpoxyRecyclerView
-                        android:id="@+id/recycler_view"
+                <androidx.cardview.widget.CardView
+                        android:id="@+id/profile_icon_container"
                         android:layout_width="0dp"
-                        android:layout_height="0dp"
+                        android:layout_height="match_parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/profile_icon" />
+                        app:layout_constraintTop_toBottomOf="@id/profile_icon">
 
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/icon_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/colorWhite">
+
+                        <include
+                                layout="@layout/item_profile_base_info_view"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:user="@={viewModel.user}" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
+        </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
