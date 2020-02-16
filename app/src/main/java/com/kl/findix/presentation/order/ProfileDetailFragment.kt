@@ -49,6 +49,9 @@ class ProfileDetailFragment : Fragment() {
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = _viewModel
+            onClickBack = View.OnClickListener {
+                navigator.toPrev()
+            }
         }
 
         _viewModel.fetchUserInfo(args.userId)
