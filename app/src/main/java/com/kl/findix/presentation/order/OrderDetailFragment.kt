@@ -83,7 +83,7 @@ class OrderDetailFragment: Fragment() {
     private fun observeEvent(viewModel: OrderDetailViewModel) {
         viewModel.run {
             this.toProfileDetailCommand.nonNullObserve(viewLifecycleOwner) { userId ->
-                userId?.let {
+                userId.let {
                     navigator.toProfileDetailFragment(it)
                 }
             }
