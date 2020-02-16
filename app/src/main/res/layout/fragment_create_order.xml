@@ -189,7 +189,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_x1"
-                    android:hint="@string/hint_username"
+                    android:hint="@string/hint_your_name"
                     app:layout_constraintBottom_toBottomOf="@id/iv_username_icon"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/iv_username_icon"
