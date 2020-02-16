@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kl.findix.model.Order
 import com.kl.findix.services.FirebaseDataBaseService
+import com.shopify.livedataktx.PublishLiveDataKtx
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -15,7 +16,7 @@ class OrderDetailViewModel @Inject constructor(
 
     var _order: MutableLiveData<Order> = MutableLiveData()
 
-    var toProfileDetailEvent: MutableLiveData<String> = MutableLiveData()
+    var toProfileDetailCommand: PublishLiveDataKtx<String> = PublishLiveDataKtx()
 
     fun fetchOrderDetail(orderId: String) {
         viewModelScope.launch {
@@ -29,6 +30,8 @@ class OrderDetailViewModel @Inject constructor(
     }
 
     fun toProfileDetailFragment() {
-        toProfileDetailEvent.postValue(_order.value?.userId)
+        _order.value?.userId?.let {
+            toProfileDetailCommand.postValue(it)
+        }
     }
 }
