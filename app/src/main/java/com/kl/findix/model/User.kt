@@ -29,51 +29,51 @@ class User(): BaseObservable() {
     }
 
     @get:Bindable
-    var userName: String? = null
+    var userName: String? = ""
         set(value) {
             field = value
             notifyPropertyChanged(BR.userName)
         }
     @Bindable
-    var userId: String? = null
+    var userId: String? = ""
         set(value) {
             field = value
             notifyPropertyChanged(BR.userId)
         }
 
     @Bindable
-    var company: String? = null
+    var company: String? = ""
         set(value) {
             field = value
             notifyPropertyChanged(BR.company)
         }
 
     @Bindable
-    var major: String? = null
+    var major: String? = ""
         set(value) {
             field = value
             notifyPropertyChanged(BR.major)
         }
     @Bindable
-    var description: String? = null
+    var description: String? = ""
         set(value) {
             field = value
             notifyPropertyChanged(BR.description)
         }
     @Bindable
-    var website: String? = null
+    var website: String? = ""
         set(value) {
             field = value
             notifyPropertyChanged(BR.website)
         }
     @Bindable
-    var email: String? = null
+    var email: String? = ""
         set(value) {
             field = value
             notifyPropertyChanged(BR.email)
         }
     @Bindable
-    var phone: String? = null
+    var phone: String? = ""
         set(value) {
             field = value
             notifyPropertyChanged(BR.phone)

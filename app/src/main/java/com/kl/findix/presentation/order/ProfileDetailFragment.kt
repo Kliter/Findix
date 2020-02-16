@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
+import com.kl.findix.R
 import com.kl.findix.databinding.FragmentProfileDetailBinding
 import com.kl.findix.di.ViewModelFactory
 import com.kl.findix.navigation.ProfileDetailNavigator
@@ -41,6 +43,7 @@ class ProfileDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _viewModel = ViewModelProviders.of(this, mViewModelFactory).get(ProfileDetailViewModel::class.java)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile_detail, container, false)
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = _viewModel

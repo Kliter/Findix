@@ -16,10 +16,6 @@
         <variable
                 name="onClickSave"
                 type="android.view.View.OnClickListener" />
-
-        <variable
-                name="onClickUserIcon"
-                type="android.view.View.OnClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -63,24 +59,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
                         android:background="@color/colorBlack_10"
-                        android:foreground="@drawable/ripple_white"
-                        android:onClick="@{onClickUserIcon}"
                         app:bitmapSrc="@{profileIconSrc}"
                         app:civ_border_color="@color/colorBlack"
                         app:civ_border_width="2dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                        android:id="@+id/ic_camera"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/ic_camera"
-                        app:layout_constraintBottom_toBottomOf="@id/profile_icon"
-                        app:layout_constraintEnd_toEndOf="@id/profile_icon"
-                        app:layout_constraintStart_toStartOf="@id/profile_icon"
-                        app:layout_constraintTop_toTopOf="@id/profile_icon" />
 
                 <TextView
                         android:id="@+id/text_user_name"
