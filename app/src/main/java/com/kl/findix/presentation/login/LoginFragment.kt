@@ -73,7 +73,6 @@ class LoginFragment : Fragment() {
             _viewModel.signInInfo,
             onClickGoogleSignIn = {
                 googleSignIn()
-                _viewModel.isSignedIn()
             },
             onClickEmailSignIn = {
                 _viewModel.signInWithEmail()

@@ -40,54 +40,44 @@ class FirebaseUserServiceImpl @Inject constructor(
         googleSignInSuccessListener: () -> Unit,
         googleSignInFailedListener: () -> Unit
     ) {
-        coroutineScope {
-            launch {
-                try {
-                    val credential = GoogleAuthProvider.getCredential(googleSignInAccount.idToken, null)
-                    mAuth.signInWithCredential(credential).addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            Log.d(TAG, "Google signin is succeed.")
-                            val user = mAuth.currentUser
-                            user?.let {
-                                launch {
-                                    signUpGoogleAccount(user)
-                                }
-                            }
-                            googleSignInSuccessListener.invoke()
-                        }
-                        else {
-                            Log.d(TAG, "Google signin is failed.")
-                            googleSignInFailedListener.invoke()
-                        }
+        try {
+            val credential = GoogleAuthProvider.getCredential(googleSignInAccount.idToken, null)
+            mAuth.signInWithCredential(credential).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d(TAG, "Google signin is succeed.")
+                    val user = mAuth.currentUser
+                    user?.let {
+                        signUpGoogleAccount(user)
                     }
-                } catch (e: ApiException) {
-                    e.printStackTrace()
+                    googleSignInSuccessListener.invoke()
+                }
+                else {
+                    Log.d(TAG, "Google signin is failed.")
                     googleSignInFailedListener.invoke()
                 }
             }
+        } catch (e: ApiException) {
+            e.printStackTrace()
+            googleSignInFailedListener.invoke()
         }
     }
 
     override suspend fun getUserLiveData(): MutableLiveData<User> = mUserData
 
-    private suspend fun signUpGoogleAccount(firebaseUser: FirebaseUser) {
-        coroutineScope {
-            launch {
-                val email = firebaseUser.email.toString()
-                if (email.isNotEmpty()) {
-                    val user = User()
-                    user.email = email
-                    user.userName = email.let {
-                        it.substring(0, it.indexOf("@"))
-                    }
-                    user.userId = FirebaseAuth.getInstance().uid ?: ""
-
-                    val newUserReference: DocumentReference = firestore
-                        .collection(context.getString(R.string.collection_users))
-                        .document(FirebaseAuth.getInstance().uid!!)
-                    newUserReference.set(user)
-                }
+    private fun signUpGoogleAccount(firebaseUser: FirebaseUser) {
+        val email = firebaseUser.email.toString()
+        if (email.isNotEmpty()) {
+            val user = User()
+            user.email = email
+            user.userName = email.let {
+                it.substring(0, it.indexOf("@"))
             }
+            user.userId = FirebaseAuth.getInstance().uid ?: ""
+
+            val newUserReference: DocumentReference = firestore
+                .collection(context.getString(R.string.collection_users))
+                .document(FirebaseAuth.getInstance().uid!!)
+            newUserReference.set(user)
         }
     }
 

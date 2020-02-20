@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.kl.findix.model.SignInInfo
 import com.kl.findix.services.FirebaseUserService
 import com.kl.findix.util.safeLet
+import com.shopify.livedataktx.PublishLiveDataKtx
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -16,7 +17,7 @@ class LoginViewModel @Inject constructor(
     private val firebaseUserService: FirebaseUserService
 ): ViewModel() {
 
-    val signInResult: MutableLiveData<Boolean> = MutableLiveData()
+    val signInResult: PublishLiveDataKtx<Boolean> = PublishLiveDataKtx()
     var signInInfo: SignInInfo = SignInInfo("", "")
 
     fun signOut() {

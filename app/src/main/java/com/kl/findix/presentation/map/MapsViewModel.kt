@@ -43,13 +43,6 @@ class MapsViewModel @Inject constructor(
         }
     }
 
-    // 仮
-    fun signOut() {
-        viewModelScope.launch {
-            firebaseUserService.signOut()
-        }
-    }
-
     fun moveToCurrentLocation(
         context: Context,
         locationProviderClient: FusedLocationProviderClient

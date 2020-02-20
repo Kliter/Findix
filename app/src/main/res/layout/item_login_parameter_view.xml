@@ -4,6 +4,7 @@
         xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
                 name="signInInfo"
                 type="com.kl.findix.model.SignInInfo" />
@@ -42,8 +43,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
-                    android:text="@={signInInfo.email}"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    android:text="@={signInInfo.email}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -64,8 +65,8 @@
                     android:id="@+id/password_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@={signInInfo.password}"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"
+                    android:text="@={signInInfo.password}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -99,12 +100,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:foreground="@drawable/ripple_white"
                     android:onClick="@{onClickSignUp}"
                     android:text="@string/sign_up"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/colorLinkBlue"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/btn_email_sign_in"
-                    android:foreground="@drawable/ripple_white"
                     tools:text="Sign Up" />
 
             <TextView

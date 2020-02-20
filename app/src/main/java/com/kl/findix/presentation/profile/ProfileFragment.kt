@@ -1,6 +1,7 @@
 package com.kl.findix.presentation.profile
 
 import android.app.Activity.RESULT_OK
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -15,6 +16,7 @@ import com.kl.findix.R
 import com.kl.findix.databinding.FragmentProfileBinding
 import com.kl.findix.di.ViewModelFactory
 import com.kl.findix.navigation.ProfileNavigator
+import com.kl.findix.presentation.login.LoginActivity
 import com.kl.findix.util.GALLERY_TYPE_IMAGE
 import com.kl.findix.util.REQUEST_CODE_CHOOOSE_PROFILE_ICON
 import com.kl.findix.util.nonNullObserve
@@ -71,9 +73,21 @@ class ProfileFragment : Fragment() {
                 intent.type = GALLERY_TYPE_IMAGE
                 startActivityForResult(intent, REQUEST_CODE_CHOOOSE_PROFILE_ICON)
             }
+            onClickSignOut = View.OnClickListener {
+                _viewModel.signOut()
+                AlertDialog.Builder(context)
+                    .setTitle(R.string.sign_out_dialog_title)
+                    .setMessage(R.string.sign_out_dialog_message)
+                    .setPositiveButton(R.string.ok) { _, _ ->
+                        val intent = Intent(context, LoginActivity::class.java)
+                        startActivity(intent)
+                    }
+                    .show()
+            }
 
             toolbar.setTitle(R.string.action_profile)
         }
+        lifecycle.addObserver(_viewModel)
 
         _viewModel.setProfileIcon()
         _viewModel.fetchUserInfo()

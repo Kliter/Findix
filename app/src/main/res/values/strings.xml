@@ -74,4 +74,9 @@
     <string name="succeed_create_order">Order created successfully.</string>
 
     <string name="search_order_location">Search order location.</string>
+    <string name="sign_out">Sign Out</string>
+
+    <string name="sign_out_dialog_title">Sign Out</string>
+    <string name="sign_out_dialog_message">Are you sure to Sign Out?</string>
+    <string name="ok">OK</string>
 </resources>

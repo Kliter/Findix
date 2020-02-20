@@ -4,6 +4,7 @@ import android.content.ContentResolver
 import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
+import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -26,7 +27,7 @@ class ProfileViewModel @Inject constructor(
     private val firebaseUserService: FirebaseUserService,
     private val firebaseStorageService: FirebaseStorageService,
     private val imageService: ImageService
-) : ViewModel() {
+) : ViewModel(), LifecycleObserver {
 
     companion object {
         private const val TAG = "ProfileViewModel"
@@ -110,6 +111,12 @@ class ProfileViewModel @Inject constructor(
     fun setProfileIcon() {
         firebaseUser?.let { firebaseUser ->
             setProfileIconCommand.postValue(firebaseStorageService.getProfileIconRef(firebaseUser.uid))
+        }
+    }
+
+    fun signOut() {
+        viewModelScope.launch {
+            firebaseUserService.signOut()
         }
     }
 }
