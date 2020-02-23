@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.kl.findix.model.Order
 import com.kl.findix.services.FirebaseDataBaseService
 import com.shopify.livedataktx.PublishLiveDataKtx
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,7 +20,7 @@ class OrderDetailViewModel @Inject constructor(
     var toProfileDetailCommand: PublishLiveDataKtx<String> = PublishLiveDataKtx()
 
     fun fetchOrderDetail(orderId: String) {
-        viewModelScope.launch {
+        GlobalScope.launch {
             firebaseDataBaseService.fetchOrderDetail(
                 orderId = orderId,
                 fetchOrderDetailListener = { order ->
