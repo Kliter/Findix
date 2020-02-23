@@ -17,6 +17,10 @@
         <variable
                 name="onClickSignUp"
                 type="android.view.View.OnClickListener" />
+
+        <variable
+                name="onClickBack"
+                type="android.view.View.OnClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -48,6 +52,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_x5"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_title">
@@ -95,16 +100,40 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_email_sign_in"
+            <TextView
+                    android:id="@+id/btn_sign_up"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_x3"
+                    android:layout_marginTop="@dimen/margin_x1"
+                    android:layout_marginEnd="@dimen/margin_x3"
+                    android:background="@drawable/shape_login_button"
+                    android:elevation="2dp"
+                    android:foreground="@drawable/ripple_white"
+                    android:gravity="center"
+                    android:onClick="@{onClickSignUp}"
+                    android:paddingTop="@dimen/margin_x1_5"
+                    android:paddingBottom="@dimen/margin_x1_5"
+                    android:text="@string/sign_up"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/til_password" />
+
+            <TextView
+                    android:id="@+id/text_back"
+                    style="@style/TextAppearance.MaterialComponents.Body2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_x2"
                     android:layout_marginTop="@dimen/margin_x2"
-                    android:layout_marginEnd="@dimen/margin_x2"
-                    android:onClick="@{onClickSignUp}"
-                    android:text="@string/button_sign_up"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/til_password" />
+                    android:foreground="@drawable/ripple_white"
+                    android:onClick="@{onClickBack}"
+                    android:text="@string/back_to_sign_in"
+                    android:textColor="@color/colorLinkBlue"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_sign_up"
+                    tools:text="@string/back_to_sign_in" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

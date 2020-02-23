@@ -140,7 +140,6 @@
                     app:layout_constraintTop_toBottomOf="@id/btn_email_sign_in"
                     tools:text="@string/sign_up" />
 
-
             <TextView
                     android:id="@+id/text_forgot_password"
                     style="@style/TextAppearance.MaterialComponents.Body2"

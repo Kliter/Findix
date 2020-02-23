@@ -11,7 +11,7 @@ abstract class LoginActivityModule {
     @ContributesAndroidInjector(modules = [LoginFragmentModule::class])
     internal abstract fun provideLoginFragment(): LoginFragment
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [SignUpFragmentModule::class])
     internal abstract fun provideSignUpFragment(): SignUpFragment
 
 }

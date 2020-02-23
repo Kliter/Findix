@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.kl.findix.R
 import com.kl.findix.databinding.FragmentSignupBinding
 import com.kl.findix.di.ViewModelFactory
+import com.kl.findix.navigation.SignUpNavigator
 import com.kl.findix.presentation.map.MapsActivity
 import com.kl.findix.util.nonNullObserve
 import com.kl.findix.util.showToast
@@ -23,6 +24,8 @@ class SignUpFragment : Fragment() {
     private lateinit var _viewModel: SignUpViewModel
     @Inject
     lateinit var mViewModelFactory: ViewModelFactory
+    @Inject
+    lateinit var navigator: SignUpNavigator
 
     private lateinit var binding: FragmentSignupBinding
 
@@ -44,6 +47,9 @@ class SignUpFragment : Fragment() {
             onClickSignUp = View.OnClickListener {
                 _viewModel.signUpWithEmail()
             }
+            onClickBack = View.OnClickListener {
+                navigator.toPrev()
+            }
         }
         return binding.root
     }
@@ -64,7 +70,7 @@ class SignUpFragment : Fragment() {
                 context?.let { context ->
                     if (result) {
                         this.signInWithEmail()
-                    } else{
+                    } else {
                         showToast(context, context.getString(R.string.failed_sign_up))
                     }
                 }
