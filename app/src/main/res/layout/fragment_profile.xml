@@ -130,6 +130,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginEnd="@dimen/margin_x1"
                                     android:layout_marginBottom="@dimen/margin_x2"
+                                    android:foreground="@drawable/ripple_white"
                                     android:onClick="@{onClickSignOut}"
                                     android:text="@string/sign_out"
                                     android:textColor="@color/colorLinkBlue"
