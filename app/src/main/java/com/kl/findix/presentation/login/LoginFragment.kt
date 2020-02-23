@@ -36,7 +36,6 @@ class LoginFragment : Fragment() {
     lateinit var navigator: LoginNavigator
 
     private lateinit var _viewModel: LoginViewModel
-    private lateinit var epoxyController: LoginController
     private lateinit var binding: FragmentLoginBinding
 
     override fun onCreateView(
@@ -53,6 +52,15 @@ class LoginFragment : Fragment() {
         ).apply {
             lifecycleOwner = this@LoginFragment
             viewModel = _viewModel
+            onClickGoogleSign = View.OnClickListener {
+                googleSignIn()
+            }
+            onClickEmailSignIn = View.OnClickListener {
+                _viewModel.signInWithEmail()
+            }
+            onClickSignUp = View.OnClickListener {
+                navigator.toSignUpFragment()
+            }
         }
         return binding.root
     }
@@ -65,24 +73,6 @@ class LoginFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         observeState(_viewModel)
-        setController()
-    }
-
-    private fun setController() {
-        epoxyController = LoginController(
-            _viewModel.signInInfo,
-            onClickGoogleSignIn = {
-                googleSignIn()
-            },
-            onClickEmailSignIn = {
-                _viewModel.signInWithEmail()
-            },
-            onClickSignUp = {
-                navigator.toSignUpFragment()
-            }
-        ).also {
-            binding.recyclerView.setControllerAndBuildModels(it)
-        }
     }
 
     private fun observeState(viewModel: LoginViewModel) {

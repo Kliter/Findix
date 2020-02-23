@@ -24,7 +24,6 @@ class SignUpFragment : Fragment() {
     @Inject
     lateinit var mViewModelFactory: ViewModelFactory
 
-    private lateinit var epoxyController: SignUpController
     private lateinit var binding: FragmentSignupBinding
 
     override fun onCreateView(
@@ -42,30 +41,21 @@ class SignUpFragment : Fragment() {
         ).apply {
             lifecycleOwner = this@SignUpFragment
             viewModel = _viewModel
+            onClickSignUp = View.OnClickListener {
+                _viewModel.signUpWithEmail()
+            }
         }
         return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        setController()
         observeEvent(_viewModel)
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         AndroidSupportInjection.inject(this)
-    }
-
-    private fun setController() {
-        epoxyController = SignUpController(
-            _viewModel.signInInfo,
-            onClickSignUp = {
-                _viewModel.signUpWithEmail()
-            }
-        ).also {
-            binding.recyclerView.setControllerAndBuildModels(it)
-        }
     }
 
     private fun observeEvent(viewModel: SignUpViewModel) {
