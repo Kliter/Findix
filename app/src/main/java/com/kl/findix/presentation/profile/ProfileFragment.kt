@@ -15,7 +15,6 @@ import com.kl.findix.di.ViewModelFactory
 import com.kl.findix.navigation.ProfileNavigator
 import com.kl.findix.util.nonNullObserve
 import dagger.android.support.AndroidSupportInjection
-import kotlinx.android.synthetic.main.fragment_profile.*
 import javax.inject.Inject
 
 class ProfileFragment : Fragment() {
@@ -30,14 +29,7 @@ class ProfileFragment : Fragment() {
     lateinit var mViewModelFactory: ViewModelFactory
 
     private lateinit var _viewModel: ProfileViewModel
-    private val binding: FragmentProfileBinding by lazy {
-        DataBindingUtil.inflate<FragmentProfileBinding>(
-            layoutInflater,
-            R.layout.fragment_profile,
-            container,
-            false
-        )
-    }
+    private lateinit var binding: FragmentProfileBinding
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -52,7 +44,12 @@ class ProfileFragment : Fragment() {
         _viewModel =
             ViewModelProviders.of(this, mViewModelFactory).get(ProfileViewModel::class.java)
 
-        binding.apply {
+        binding = DataBindingUtil.inflate<FragmentProfileBinding>(
+            layoutInflater,
+            R.layout.fragment_profile,
+            container,
+            false
+        ).apply {
             lifecycleOwner = this@ProfileFragment
             viewModel = _viewModel
             toolbar.setTitle(R.string.action_profile)
