@@ -35,14 +35,6 @@ class MapsViewModel @Inject constructor(
     // Event
     val backToLoginCommand: MutableLiveData<Boolean> = MutableLiveData()
 
-    fun getCurrentSignInUser() {
-        viewModelScope.launch {
-            if (firebaseUserService.getCurrentSignInUser() == null) {
-                backToLoginCommand.postValue(true)
-            }
-        }
-    }
-
     fun moveToCurrentLocation(
         context: Context,
         locationProviderClient: FusedLocationProviderClient

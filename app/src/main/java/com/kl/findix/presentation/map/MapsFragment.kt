@@ -106,11 +106,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         observeEvent(_viewModel)
     }
 
-    override fun onStart() {
-        super.onStart()
-        _viewModel.getCurrentSignInUser()
-    }
-
     override fun onMapReady(googleMap: GoogleMap?) {
         mMap = googleMap
         mMap?.let { map ->
