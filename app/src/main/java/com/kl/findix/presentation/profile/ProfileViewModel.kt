@@ -1,9 +1,6 @@
 package com.kl.findix.presentation.profile
 
-import android.content.ContentResolver
 import android.graphics.Bitmap
-import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,13 +8,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.storage.StorageReference
-import com.kl.findix.model.ServiceResult
 import com.kl.findix.model.User
 import com.kl.findix.services.FirebaseDataBaseService
 import com.kl.findix.services.FirebaseStorageService
 import com.kl.findix.services.FirebaseUserService
-import com.kl.findix.services.ImageService
-import com.kl.findix.util.safeLet
 import com.shopify.livedataktx.PublishLiveDataKtx
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,8 +19,7 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val firebaseDataBaseService: FirebaseDataBaseService,
     private val firebaseUserService: FirebaseUserService,
-    private val firebaseStorageService: FirebaseStorageService,
-    private val imageService: ImageService
+    private val firebaseStorageService: FirebaseStorageService
 ) : ViewModel(), LifecycleObserver {
 
     companion object {
@@ -40,9 +33,6 @@ class ProfileViewModel @Inject constructor(
 
     var profileIconBitmap: MutableLiveData<Bitmap> = MutableLiveData()
     var setProfileIconCommand: PublishLiveDataKtx<StorageReference> = PublishLiveDataKtx()
-    var hideRefreshCommand: PublishLiveDataKtx<Boolean> = PublishLiveDataKtx()
-
-    private var _profilePhotoUri: Uri? = null
 
     private var firebaseUser: FirebaseUser? = firebaseUserService.getCurrentSignInUser()
 
@@ -53,59 +43,8 @@ class ProfileViewModel @Inject constructor(
                     firebaseUser = firebaseUser,
                     fetchOwnProfileInfoListener = { user ->
                         _user.postValue(user)
-                        hideRefreshCommand.postValue(true)
                     }
                 )
-            }
-
-            // ProfilePhoto 取得してデフォルトで表示したいけどだるいからここまで
-            firebaseUser?.let { firebaseUser ->
-
-            }
-        }
-    }
-
-    fun saveProfile(contentResolver: ContentResolver) {
-        user.value?.let { user ->
-            viewModelScope.launch {
-                firebaseUser?.let {
-                    firebaseDataBaseService.updateProfileInfo(
-                        it,
-                        user,
-                        _profilePhotoUri.toString()
-                    )
-                }
-            }
-        }
-
-        safeLet(
-            firebaseUserService.getCurrentSignInUser(),
-            _profilePhotoUri
-        ) { currentSignInUser, profilePhotoUri ->
-            viewModelScope.launch {
-                when (val result = imageService.getBitmap(profilePhotoUri, contentResolver)) {
-                    is ServiceResult.Success -> {
-                        firebaseStorageService.uploadProfileIcon(
-                            currentSignInUser.uid,
-                            imageService.getBytesFromBitmap(result.data)
-                        )
-                    }
-                    is ServiceResult.Failure -> {
-                        Log.e(TAG, result.error)
-                    }
-                }
-            }
-        }
-    }
-
-    fun updateProfilePhoto(uri: Uri, contentResolver: ContentResolver) {
-        when (val result = imageService.getBitmap(uri, contentResolver)) {
-            is ServiceResult.Success -> {
-                _profilePhotoUri = uri
-                profileIconBitmap.postValue(result.data)
-            }
-            is ServiceResult.Failure -> {
-                Log.e(TAG, result.error)
             }
         }
     }

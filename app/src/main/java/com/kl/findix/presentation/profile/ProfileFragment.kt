@@ -1,9 +1,6 @@
 package com.kl.findix.presentation.profile
 
-import android.app.Activity.RESULT_OK
-import android.app.AlertDialog
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,11 +13,7 @@ import com.kl.findix.R
 import com.kl.findix.databinding.FragmentProfileBinding
 import com.kl.findix.di.ViewModelFactory
 import com.kl.findix.navigation.ProfileNavigator
-import com.kl.findix.presentation.login.LoginActivity
-import com.kl.findix.util.GALLERY_TYPE_IMAGE
-import com.kl.findix.util.REQUEST_CODE_CHOOOSE_PROFILE_ICON
 import com.kl.findix.util.nonNullObserve
-import com.kl.findix.util.safeLet
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_profile.*
 import javax.inject.Inject
@@ -62,32 +55,6 @@ class ProfileFragment : Fragment() {
         binding.apply {
             lifecycleOwner = this@ProfileFragment
             viewModel = _viewModel
-            swipeRefresh.setOnRefreshListener {
-                _viewModel.fetchUserInfo()
-            }
-            onClickSave = View.OnClickListener {
-                activity?.contentResolver?.let { contentResolver ->
-                    _viewModel.saveProfile(contentResolver)
-                }
-            }
-            onClickUserIcon = View.OnClickListener {
-                val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
-                intent.addCategory(Intent.CATEGORY_OPENABLE)
-                intent.type = GALLERY_TYPE_IMAGE
-                startActivityForResult(intent, REQUEST_CODE_CHOOOSE_PROFILE_ICON)
-            }
-            onClickSignOut = View.OnClickListener {
-                AlertDialog.Builder(context)
-                    .setTitle(R.string.sign_out_dialog_title)
-                    .setMessage(R.string.sign_out_dialog_message)
-                    .setPositiveButton(R.string.ok) { _, _ ->
-                        _viewModel.signOut()
-                        val intent = Intent(context, LoginActivity::class.java)
-                        startActivity(intent)
-                    }
-                    .show()
-            }
-
             toolbar.setTitle(R.string.action_profile)
         }
         lifecycle.addObserver(_viewModel)
@@ -109,14 +76,7 @@ class ProfileFragment : Fragment() {
             setProfileIconCommand.nonNullObserve(viewLifecycleOwner) { storageReference ->
                 Glide.with(requireContext())
                     .load(storageReference)
-                    .into(binding.profileIcon)
-            }
-            hideRefreshCommand.nonNullObserve(viewLifecycleOwner) {
-                if (it) {
-                    if (binding.swipeRefresh.isRefreshing) {
-                        binding.swipeRefresh.isRefreshing = false
-                    }
-                }
+                    .into(binding.profilePhoto)
             }
         }
     }
@@ -125,15 +85,6 @@ class ProfileFragment : Fragment() {
         viewModel.run {
             profileIconBitmap.nonNullObserve(viewLifecycleOwner) { profileIconBitmap ->
                 binding.profileIconSrc = profileIconBitmap
-            }
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_CHOOOSE_PROFILE_ICON && resultCode == RESULT_OK) {
-            safeLet(data?.data, activity?.contentResolver) { uri, contentResolver ->
-                _viewModel.updateProfilePhoto(uri, contentResolver)
             }
         }
     }
