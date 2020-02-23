@@ -77,11 +77,11 @@ class ProfileFragment : Fragment() {
                 startActivityForResult(intent, REQUEST_CODE_CHOOOSE_PROFILE_ICON)
             }
             onClickSignOut = View.OnClickListener {
-                _viewModel.signOut()
                 AlertDialog.Builder(context)
                     .setTitle(R.string.sign_out_dialog_title)
                     .setMessage(R.string.sign_out_dialog_message)
                     .setPositiveButton(R.string.ok) { _, _ ->
+                        _viewModel.signOut()
                         val intent = Intent(context, LoginActivity::class.java)
                         startActivity(intent)
                     }
