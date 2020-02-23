@@ -41,23 +41,7 @@ class LoginActivity : AppCompatActivity(), HasSupportFragmentInjector {
             viewModel = _viewModel
         }
 
-//        observeState(_viewModel)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        _viewModel.isSignedIn()
-    }
-
-    private fun observeState(viewModel: LoginViewModel) {
-        viewModel.run {
-            this.signInResult.nonNullObserve(this@LoginActivity) {
-                if (it) {
-                    val intent = Intent(this@LoginActivity, MapsActivity::class.java)
-                    startActivity(intent)
-                }
-            }
-        }
+        _viewModel.isAlreadySignedIn()
     }
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = fragmentInjector

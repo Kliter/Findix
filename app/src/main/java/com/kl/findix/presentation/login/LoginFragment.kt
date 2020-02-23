@@ -86,6 +86,13 @@ class LoginFragment : Fragment() {
                 }
             }
         }
+        viewModel.isAlreadySignedIn.nonNullObserve(viewLifecycleOwner) {
+            if (it) {
+                context?.let { context ->
+                    startActivity(MapsActivity.newInstance(context))
+                }
+            }
+        }
     }
 
     private fun googleSignIn() {

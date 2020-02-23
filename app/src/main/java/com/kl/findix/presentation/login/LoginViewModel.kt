@@ -18,13 +18,8 @@ class LoginViewModel @Inject constructor(
 ): ViewModel() {
 
     val signInResult: PublishLiveDataKtx<Boolean> = PublishLiveDataKtx()
+    val isAlreadySignedIn: PublishLiveDataKtx<Boolean> = PublishLiveDataKtx()
     var signInInfo: SignInInfo = SignInInfo("", "")
-
-    fun signOut() {
-        viewModelScope.launch {
-            firebaseUserService.signOut()
-        }
-    }
 
     fun signInWithGoogle(googleSignInAccount: GoogleSignInAccount?) {
         viewModelScope.launch {
@@ -59,9 +54,9 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun isSignedIn() {
+    fun isAlreadySignedIn() {
         viewModelScope.launch {
-            signInResult.postValue(firebaseUserService.getCurrentSignInUser() != null)
+            isAlreadySignedIn.postValue(firebaseUserService.getCurrentSignInUser() != null)
         }
     }
 }
