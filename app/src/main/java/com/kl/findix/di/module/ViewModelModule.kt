@@ -8,6 +8,7 @@ import com.kl.findix.presentation.order.CreateOrderViewModel
 import com.kl.findix.presentation.order.OrderDetailViewModel
 import com.kl.findix.presentation.order.OrderViewModel
 import com.kl.findix.presentation.order.ProfileDetailViewModel
+import com.kl.findix.presentation.profile.ProfileEditViewModel
 import com.kl.findix.presentation.profile.ProfileViewModel
 import dagger.Binds
 import dagger.Module
@@ -64,4 +65,10 @@ abstract class ViewModelModule {
     @Singleton
     @ViewModelKey(ProfileDetailViewModel::class)
     internal abstract fun provideProfileDetailViewModel(profileDetailViewModel: ProfileDetailViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @Singleton
+    @ViewModelKey(ProfileEditViewModel::class)
+    internal abstract fun provideProfileEditViewModel(profileEditViewModel: ProfileEditViewModel): ViewModel
 }
