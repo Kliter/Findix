@@ -15,7 +15,15 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/colorWhite">
+
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/login_background"
+                android:scaleType="center"
+                android:alpha="0.23"/>
 
         <com.airbnb.epoxy.EpoxyRecyclerView
                 android:id="@+id/recycler_view"
