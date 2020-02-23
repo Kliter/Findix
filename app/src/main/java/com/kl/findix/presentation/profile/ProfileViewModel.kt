@@ -40,6 +40,7 @@ class ProfileViewModel @Inject constructor(
 
     var profileIconBitmap: MutableLiveData<Bitmap> = MutableLiveData()
     var setProfileIconCommand: PublishLiveDataKtx<StorageReference> = PublishLiveDataKtx()
+    var hideRefreshCommand: PublishLiveDataKtx<Boolean> = PublishLiveDataKtx()
 
     private var _profilePhotoUri: Uri? = null
 
@@ -52,6 +53,7 @@ class ProfileViewModel @Inject constructor(
                     firebaseUser = firebaseUser,
                     fetchOwnProfileInfoListener = { user ->
                         _user.postValue(user)
+                        hideRefreshCommand.postValue(true)
                     }
                 )
             }

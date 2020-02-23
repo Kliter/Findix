@@ -62,6 +62,9 @@ class ProfileFragment : Fragment() {
         binding.apply {
             lifecycleOwner = this@ProfileFragment
             viewModel = _viewModel
+            swipeRefresh.setOnRefreshListener {
+                _viewModel.fetchUserInfo()
+            }
             onClickSave = View.OnClickListener {
                 activity?.contentResolver?.let { contentResolver ->
                     _viewModel.saveProfile(contentResolver)
@@ -107,6 +110,13 @@ class ProfileFragment : Fragment() {
                 Glide.with(requireContext())
                     .load(storageReference)
                     .into(binding.profileIcon)
+            }
+            hideRefreshCommand.nonNullObserve(viewLifecycleOwner) {
+                if (it) {
+                    if (binding.swipeRefresh.isRefreshing) {
+                        binding.swipeRefresh.isRefreshing = false
+                    }
+                }
             }
         }
     }

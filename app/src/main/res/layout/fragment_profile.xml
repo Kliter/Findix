@@ -57,7 +57,8 @@
 
         </androidx.appcompat.widget.Toolbar>
 
-        <ScrollView
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipe_refresh"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -65,76 +66,81 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/toolbar">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="0dp">
+                    android:layout_height="wrap_content">
 
-                <ImageView
-                        android:id="@+id/profile_icon"
+                <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:background="@color/colorBlack_10"
-                        android:foreground="@drawable/ripple_white"
-                        android:onClick="@{onClickUserIcon}"
-                        app:bitmapSrc="@{profileIconSrc}"
-                        app:civ_border_color="@color/colorBlack"
-                        app:civ_border_width="2dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:layout_height="0dp">
 
-                <ImageView
-                        android:id="@+id/ic_camera"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/ic_camera"
-                        app:layout_constraintBottom_toBottomOf="@id/profile_icon"
-                        app:layout_constraintEnd_toEndOf="@id/profile_icon"
-                        app:layout_constraintStart_toStartOf="@id/profile_icon"
-                        app:layout_constraintTop_toTopOf="@id/profile_icon" />
-
-                <androidx.cardview.widget.CardView
-                        android:id="@+id/profile_icon_container"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/profile_icon">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/icon_container"
+                    <ImageView
+                            android:id="@+id/profile_icon"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/colorWhite">
+                            android:layout_height="200dp"
+                            android:background="@color/colorBlack_10"
+                            android:foreground="@drawable/ripple_white"
+                            android:onClick="@{onClickUserIcon}"
+                            app:bitmapSrc="@{profileIconSrc}"
+                            app:civ_border_color="@color/colorBlack"
+                            app:civ_border_width="2dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                        <include
-                                layout="@layout/item_profile_base_info_view"
-                                android:layout_width="0dp"
+                    <ImageView
+                            android:id="@+id/ic_camera"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/ic_camera"
+                            app:layout_constraintBottom_toBottomOf="@id/profile_icon"
+                            app:layout_constraintEnd_toEndOf="@id/profile_icon"
+                            app:layout_constraintStart_toStartOf="@id/profile_icon"
+                            app:layout_constraintTop_toTopOf="@id/profile_icon" />
+
+                    <androidx.cardview.widget.CardView
+                            android:id="@+id/profile_icon_container"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/profile_icon">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/icon_container"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="@dimen/margin_x1"
-                                app:layout_constraintBottom_toTopOf="@id/text_sign_out"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:user="@={viewModel.user}" />
+                                android:background="@color/colorWhite">
 
-                        <TextView
-                                android:id="@+id/text_sign_out"
-                                style="@style/TextAppearance.MaterialComponents.Body2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="@dimen/margin_x1"
-                                android:layout_marginBottom="@dimen/margin_x2"
-                                android:onClick="@{onClickSignOut}"
-                                android:text="@string/sign_out"
-                                android:textColor="@color/colorLinkBlue"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                tools:text="@string/sign_out" />
+                            <include
+                                    layout="@layout/item_profile_base_info_view"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="@dimen/margin_x1"
+                                    app:layout_constraintBottom_toTopOf="@id/text_sign_out"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:user="@={viewModel.user}" />
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.cardview.widget.CardView>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </ScrollView>
+                            <TextView
+                                    android:id="@+id/text_sign_out"
+                                    style="@style/TextAppearance.MaterialComponents.Body2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="@dimen/margin_x1"
+                                    android:layout_marginBottom="@dimen/margin_x2"
+                                    android:onClick="@{onClickSignOut}"
+                                    android:text="@string/sign_out"
+                                    android:textColor="@color/colorLinkBlue"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    tools:text="@string/sign_out" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.cardview.widget.CardView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </ScrollView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
