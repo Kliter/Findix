@@ -62,7 +62,10 @@ class FirebaseDataBaseServiceImpl @Inject constructor(
     }
 
     override suspend fun fetchLast15Orders(fetchLast15OrdersListener: (List<Order>) -> Unit) {
-        database.collection("Order").orderBy("timeStamp", Query.Direction.DESCENDING).limit(15).get()
+        database.collection("Order")
+            .orderBy("timeStamp", Query.Direction.DESCENDING)
+            .limit(15)
+            .get()
             .addOnSuccessListener { results ->
                 val orders: List<Order> = results.map { result ->
                     result.toObject(Order::class.java).apply {
@@ -132,6 +135,28 @@ class FirebaseDataBaseServiceImpl @Inject constructor(
                 user?.let {
                     fetchUserInfoListener.invoke(it)
                 }
+            }
+    }
+
+    override suspend fun fetchOwnOrders(
+        userId: String,
+        index: Int,
+        fetchOwnOrdersListener: (List<Order>) -> Unit
+    ) {
+        val limit = ((index + 1) * 10).toLong()
+
+        database.collection("Order")
+            .whereEqualTo("userId", userId)
+            .orderBy("timeStamp", Query.Direction.DESCENDING)
+            .limit(limit)
+            .get()
+            .addOnSuccessListener { results ->
+                val orders: List<Order> = results.map { result ->
+                    result.toObject(Order::class.java).apply {
+                        orderId = result.id
+                    }
+                }
+                fetchOwnOrdersListener.invoke(orders)
             }
     }
 }
