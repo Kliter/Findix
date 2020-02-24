@@ -17,6 +17,10 @@
                 name="onClickBack"
                 type="android.view.View.OnClickListener" />
 
+        <variable
+                name="onClickEdit"
+                type="android.view.View.OnClickListener" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -42,8 +46,7 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.cardview.widget.CardView
-                android:id="@+id/profile_icon_container"
+        <ScrollView
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -53,7 +56,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:background="@color/colorWhite">
 
                 <ImageView
@@ -95,7 +98,7 @@
                 <View
                         android:id="@+id/horizontal_divider1"
                         android:layout_width="0dp"
-                        android:layout_height="0.5dp"
+                        android:layout_height="1dp"
                         android:layout_marginStart="@dimen/margin_x2"
                         android:layout_marginTop="@dimen/margin_x1"
                         android:layout_marginEnd="@dimen/margin_x2"
@@ -135,7 +138,7 @@
 
                 <View
                         android:id="@+id/vertical_divider"
-                        android:layout_width="0.5dp"
+                        android:layout_width="1dp"
                         android:layout_height="0dp"
                         android:background="@color/colorBlack_10"
                         app:layout_constraintBottom_toBottomOf="@id/major_container"
@@ -148,9 +151,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_x2"
+                        android:layout_marginTop="@dimen/margin_x1"
                         android:layout_marginBottom="@dimen/margin_x1"
                         android:orientation="vertical"
-                        app:layout_constraintBottom_toTopOf="@id/description_container"
+                        app:layout_constraintBottom_toTopOf="@id/horizontal_divider2"
                         app:layout_constraintStart_toEndOf="@id/vertical_divider"
                         app:layout_constraintTop_toBottomOf="@id/horizontal_divider1">
 
@@ -174,7 +178,7 @@
                 <View
                         android:id="@+id/horizontal_divider2"
                         android:layout_width="0dp"
-                        android:layout_height="0.5dp"
+                        android:layout_height="1dp"
                         android:layout_marginStart="@dimen/margin_x2"
                         android:layout_marginTop="@dimen/margin_x1"
                         android:layout_marginEnd="@dimen/margin_x2"
@@ -191,7 +195,6 @@
                         android:layout_marginTop="@dimen/margin_x1"
                         android:layout_marginEnd="@dimen/margin_x2"
                         android:orientation="vertical"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/horizontal_divider2">
@@ -214,7 +217,45 @@
                             tools:text="abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz" />
 
                 </LinearLayout>
+
+                <View
+                        android:id="@+id/horizontal_divider3"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="@dimen/margin_x2"
+                        android:layout_marginTop="@dimen/margin_x1"
+                        android:layout_marginEnd="@dimen/margin_x2"
+                        android:background="@color/colorBlack_10"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/description_container" />
+
+                <com.airbnb.epoxy.EpoxyRecyclerView
+                        android:id="@+id/recycler_view"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_x1"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/horizontal_divider3" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
+
+        </ScrollView>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginEnd="@dimen/margin_x2"
+                android:layout_marginBottom="@dimen/margin_x2"
+                android:backgroundTint="@color/colorPrimary"
+                android:foreground="@drawable/ripple_white"
+                android:onClick="@{onClickEdit}"
+                android:src="@drawable/ic_edit"
+                app:borderWidth="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
