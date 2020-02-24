@@ -140,15 +140,18 @@ class FirebaseDataBaseServiceImpl @Inject constructor(
 
     override suspend fun fetchOwnOrders(
         userId: String,
-        index: Int,
+        lastOrder: Order?,
         fetchOwnOrdersListener: (List<Order>) -> Unit
     ) {
-        val limit = ((index + 1) * 10).toLong()
+        // lastOrder受け取った時だけそこから10件取得するためにstartAfter設定する。
+        val query = database.collection("Order")
+        if (lastOrder != null) {
+            query.startAfter(lastOrder)
+        }
 
-        database.collection("Order")
-            .whereEqualTo("userId", userId)
+        query.whereEqualTo("userId", userId)
             .orderBy("timeStamp", Query.Direction.DESCENDING)
-            .limit(limit)
+            .limit(10)
             .get()
             .addOnSuccessListener { results ->
                 val orders: List<Order> = results.map { result ->

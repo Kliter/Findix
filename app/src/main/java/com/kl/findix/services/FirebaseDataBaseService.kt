@@ -34,7 +34,7 @@ interface FirebaseDataBaseService {
     suspend fun fetchUserInfo(userId: String, fetchUserInfoListener: (User) -> Unit)
     suspend fun fetchOwnOrders(
         userId: String,
-        index: Int,
+        lastOrder: Order? = null,
         fetchOwnOrdersListener: (List<Order>) -> Unit
     )
 }
