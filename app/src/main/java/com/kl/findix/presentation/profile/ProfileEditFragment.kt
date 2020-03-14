@@ -87,8 +87,9 @@ class ProfileEditFragment : Fragment() {
                     }
                     .show()
             }
-
-            toolbar.setTitle(R.string.action_profile)
+            this.toolbar.setNavigationOnClickListener {
+                navigator.toPrev()
+            }
         }
         lifecycle.addObserver(_viewModel)
 

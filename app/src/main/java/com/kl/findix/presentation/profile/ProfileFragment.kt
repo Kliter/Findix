@@ -58,6 +58,9 @@ class ProfileFragment : Fragment() {
             lifecycleOwner = this@ProfileFragment
             viewModel = _viewModel
             toolbar.setTitle(R.string.action_profile)
+            this.setOnClickEdit {
+                navigator.toProfileEdit()
+            }
         }
         lifecycle.addObserver(_viewModel)
 

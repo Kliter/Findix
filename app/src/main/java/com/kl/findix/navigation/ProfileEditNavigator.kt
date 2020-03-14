@@ -6,4 +6,7 @@ class ProfileEditNavigator (
     private val navController: NavController
 ) {
 
+    fun toPrev() {
+        navController.popBackStack()
+    }
 }

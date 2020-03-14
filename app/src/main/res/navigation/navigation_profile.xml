@@ -1,13 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        app:startDestination="@id/fragment_profile"
-        android:id="@+id/navigation_profile">
+        android:id="@+id/navigation_profile"
+        app:startDestination="@id/fragment_profile">
 
     <fragment
             android:id="@+id/fragment_profile"
             android:name="com.kl.findix.presentation.profile.ProfileFragment"
-            android:label="Profile" />
+            android:label="Profile">
+
+        <action
+                android:id="@+id/to_profile_edit"
+                app:destination="@id/fragment_profile_edit"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"
+                app:popUpTo="@id/fragment_profile" />
+    </fragment>
+
+    <fragment
+            android:id="@+id/fragment_profile_edit"
+            android:name="com.kl.findix.presentation.profile.ProfileEditFragment"
+            android:label="ProfileEdit" />
 
 </navigation>
