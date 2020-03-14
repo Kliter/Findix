@@ -10,6 +10,7 @@ import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.storage.StorageReference
@@ -19,6 +20,7 @@ import com.kl.findix.model.Order
 import com.kl.findix.model.ServiceResult
 import com.kl.findix.model.UserLocation
 import com.kl.findix.services.FirebaseDataBaseService
+import com.kl.findix.services.FirebaseStorageService
 import com.kl.findix.services.FirebaseUserService
 import com.kl.findix.services.ImageService
 import com.kl.findix.util.safeLet
@@ -33,6 +35,7 @@ import kotlin.coroutines.suspendCoroutine
 class CreateOrderViewModel @Inject constructor(
     private val firebaseUserService: FirebaseUserService,
     private val firebaseDataBaseService: FirebaseDataBaseService,
+    private val firebaseStorageService: FirebaseStorageService,
     private val imageService: ImageService
 ) : ViewModel() {
 
@@ -40,24 +43,27 @@ class CreateOrderViewModel @Inject constructor(
         private const val TAG = "CreateOrderViewModel"
     }
 
-    var order: Order? = null
-    var _orderPhotoUri: Uri? = null
-
     var orderPhotoBitmap: MutableLiveData<Bitmap> = MutableLiveData()
 
     var showToastCommand: PublishLiveDataKtx<Int> = PublishLiveDataKtx()
     var succeedCreateOrderCommand: PublishLiveDataKtx<Boolean> = PublishLiveDataKtx()
     var setOrderPhotoCommand: PublishLiveDataKtx<StorageReference> = PublishLiveDataKtx()
 
-    private var firebaseUser: FirebaseUser? = firebaseUserService.getCurrentSignInUser()
+    var order: Order? = null
+    var _orderPhotoUri: Uri? = null
     var cityNumber: CityNumber? = null // Spinnerのテキストバインドするために必要
+    private var firebaseUser: FirebaseUser? = firebaseUserService.getCurrentSignInUser()
 
     fun resetOrderInfo() {
         order = Order()
         cityNumber = CityNumber()
     }
 
-    fun createOrder(context: Context, locationProviderClient: FusedLocationProviderClient) {
+    fun createOrder(
+        context: Context,
+        locationProviderClient: FusedLocationProviderClient,
+        contentResolver: ContentResolver
+    ) {
         safeLet(
             order,
             order?.title?.isNotBlank(),
@@ -80,11 +86,35 @@ class CreateOrderViewModel @Inject constructor(
                         firebaseDataBaseService.createOrder(
                             firebaseUser,
                             order
-                        ) { succeedCreateOrderCommand.postValue(true) }
+                        ) { orderId ->
+                            succeedCreateOrderCommand.postValue(true)
+                            uploadOrderPhoto(orderId, contentResolver)
+                        }
                     }
                 }
             } else {
                 showToastCommand.postValue(R.string.error_order_info_not_filled)
+            }
+        }
+    }
+
+    private fun uploadOrderPhoto(orderId: String, contentResolver: ContentResolver) {
+        GlobalScope.launch {
+            safeLet(firebaseUserService.getCurrentSignInUser(), _orderPhotoUri) { currentSignInUser, orderPhotoUri ->
+                GlobalScope.launch {
+                    when (val result = imageService.getBitmap(orderPhotoUri, contentResolver)) {
+                        is ServiceResult.Success -> {
+                            firebaseStorageService.uploadOrderPhoto(
+                                userId = currentSignInUser.uid,
+                                orderId = orderId,
+                                byteArray = imageService.getBytesFromBitmap(result.data)
+                            )
+                        }
+                        is ServiceResult.Failure -> {
+                            Log.e(TAG, result.error)
+                        }
+                    }
+                }
             }
         }
     }

@@ -24,7 +24,6 @@ class OrderDetailFragment: Fragment() {
         private const val TAG = "OrderDetailFragment"
     }
 
-
     @Inject
     lateinit var mViewModelFactory: ViewModelFactory
     @Inject

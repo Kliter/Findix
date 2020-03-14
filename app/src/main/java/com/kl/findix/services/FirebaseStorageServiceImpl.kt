@@ -2,6 +2,7 @@ package com.kl.findix.services
 
 import android.util.Log
 import com.google.firebase.storage.FirebaseStorage
+import com.kl.findix.util.getStorageOrderPhotoPath
 import com.kl.findix.util.getStorageProfileIconPath
 
 class FirebaseStorageServiceImpl(
@@ -24,4 +25,11 @@ class FirebaseStorageServiceImpl(
     }
 
     override fun getProfileIconRef(userId: String) = storage.reference.child(getStorageProfileIconPath(userId))
+
+    override fun uploadOrderPhoto(userId: String, orderId: String, byteArray: ByteArray) {
+        val orderPhotoReference = storage.reference.child(getStorageOrderPhotoPath(userId, orderId))
+        orderPhotoReference.putBytes(byteArray).addOnSuccessListener {
+            Log.d(TAG, "Order photo is uploaded successfully.")
+        }
+    }
 }

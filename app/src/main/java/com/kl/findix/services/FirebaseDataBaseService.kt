@@ -21,7 +21,7 @@ interface FirebaseDataBaseService {
     suspend fun createOrder(
         firebaseUser: FirebaseUser,
         order: Order,
-        createOrderListener: () -> Unit
+        createOrderListener: (String) -> Unit
     )
 
     suspend fun fetchLast15Orders(fetchLast15OrdersListener: (List<Order>) -> Unit)

@@ -13,3 +13,5 @@ fun getDateTimeText(timeStamp: Date): String {
     val format = SimpleDateFormat("HH:mm, MM/dd, yyyy")
     return format.format(timeStamp)
 }
+
+fun getStorageOrderPhotoPath(userId: String, orderId: String) = "$FIREBASE_IMAGE_STORAGE/$userId/$orderId"

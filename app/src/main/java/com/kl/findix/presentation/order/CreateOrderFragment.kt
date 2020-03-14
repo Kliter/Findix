@@ -153,8 +153,8 @@ class CreateOrderFragment : Fragment() {
                 this.error = getString(R.string.error_description_is_not_filled)
             }
         } else {
-            context?.let { context ->
-                _viewModel.createOrder(context, mLocationProviderClient)
+            safeLet(context, activity) { context, activity ->
+                _viewModel.createOrder(context, mLocationProviderClient, activity.contentResolver)
             }
         }
     }
