@@ -79,23 +79,13 @@ class ProfileFragment : Fragment() {
     private fun setController() {
         controller = ProfileController(
             onClickMenu = {
-
+                val dialog = ProfileBottomSheetDialog.newInstance()
+                dialog.show(childFragmentManager, "Delete")
             }
         )
-        binding.recyclerView?.let {
+        binding.recyclerView.let {
             it.setController(controller as EpoxyController)
-            it.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            it.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
-                override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
-                override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
-                    return true
-                }
-                override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
-            })
-            it.setOnTouchListener { _, motionEvent ->
-                (container as ViewGroup).onTouchEvent(motionEvent)
-                true
-            }
+            it.layoutManager = ProfileLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         }
     }
 
@@ -117,6 +107,14 @@ class ProfileFragment : Fragment() {
             orders.nonNullObserve(viewLifecycleOwner) { orders ->
                 controller?.setData(orders)
             }
+        }
+    }
+
+    class ProfileLayoutManager(context: Context?, orientation: Int, reverseLayout: Boolean) :
+        LinearLayoutManager(context, orientation, reverseLayout) {
+
+        override fun canScrollVertically(): Boolean {
+            return false
         }
     }
 }

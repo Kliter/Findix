@@ -77,6 +77,10 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
+    fun showDeleteOrderConfirm() {
+
+    }
+
     fun signOut() {
         viewModelScope.launch {
             firebaseUserService.signOut()

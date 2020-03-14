@@ -21,9 +21,10 @@ class ProfileController(
                 order.timeStamp?.let {
                     dateTime(getDateTimeText(it))
                 }
+                onClickMenu { _ ->
+                    onClickMenu?.invoke()
+                }
             }
         }
     }
-
-
 }

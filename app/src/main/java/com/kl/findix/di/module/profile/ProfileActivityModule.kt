@@ -1,5 +1,6 @@
 package com.kl.findix.di.module.profile
 
+import com.kl.findix.presentation.profile.ProfileBottomSheetDialog
 import com.kl.findix.presentation.profile.ProfileEditFragment
 import com.kl.findix.presentation.profile.ProfileFragment
 import dagger.Module
@@ -13,5 +14,8 @@ abstract class ProfileActivityModule {
 
     @ContributesAndroidInjector(modules = [ProfileFragmentModule::class])
     internal abstract fun provideProfileFragment(): ProfileFragment
+
+    @ContributesAndroidInjector(modules = [ProfileBottomSheetDialogModule::class])
+    internal abstract fun provideProfileBottomSheetDialog(): ProfileBottomSheetDialog
 
 }
