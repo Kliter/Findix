@@ -60,6 +60,8 @@ class OrderFragment : Fragment() {
             }
         }
 
+        _viewModel.fetchLast15Orders()
+
         return binding.root
     }
 
@@ -76,7 +78,7 @@ class OrderFragment : Fragment() {
                 navigator.toOrderDetailFragment(order.orderId)
             }
         )
-        binding.recyclerView?.let {
+        binding.recyclerView.let {
             it.setController(controller as EpoxyController)
             it.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         }
