@@ -7,7 +7,7 @@ import com.kl.findix.model.Order
 import com.kl.findix.util.getDateTimeText
 
 class ProfileController(
-    private val onClickMenu: (() -> Unit)?
+    private val onClickMenu: (String) -> Unit
 ): TypedEpoxyController<List<Order>?>() {
 
     override fun buildModels(data: List<Order>?) {
@@ -22,7 +22,7 @@ class ProfileController(
                     dateTime(getDateTimeText(it))
                 }
                 onClickMenu { _ ->
-                    onClickMenu?.invoke()
+                    onClickMenu.invoke(order.orderId)
                 }
             }
         }

@@ -13,11 +13,13 @@ import com.kl.findix.di.ViewModelFactory
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
-class ProfileBottomSheetDialog : BottomSheetDialogFragment() {
+class ProfileBottomSheetDialog(
+    private val orderId: String?
+) : BottomSheetDialogFragment() {
 
     companion object {
-        fun newInstance(): ProfileBottomSheetDialog {
-            return ProfileBottomSheetDialog()
+        fun newInstance(orderId: String): ProfileBottomSheetDialog {
+            return ProfileBottomSheetDialog(orderId)
         }
     }
 
@@ -46,7 +48,9 @@ class ProfileBottomSheetDialog : BottomSheetDialogFragment() {
         val binding = DialogProfileBottomSheetBinding.inflate(inflater)
         binding.viewModel = _viewModel
         binding.btnDeleteOrder.setOnClickListener {
-            _viewModel.showDeleteOrderConfirm()
+            orderId?.let {
+                _viewModel.showDeleteOrderConfirm(it)
+            }
             dismissAllowingStateLoss()
         }
         binding.btnCancel.setOnClickListener {

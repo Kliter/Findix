@@ -1,5 +1,6 @@
 package com.kl.findix.services
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -160,6 +161,18 @@ class FirebaseDataBaseServiceImpl @Inject constructor(
                     }
                 }
                 fetchOwnOrdersListener.invoke(orders)
+            }
+    }
+
+    override suspend fun deleteOrder(
+        orderId: String,
+        deleteOrderListener: () -> Unit
+    ) {
+        database.collection("Order")
+            .document(orderId)
+            .delete()
+            .addOnSuccessListener { result ->
+                deleteOrderListener.invoke()
             }
     }
 }

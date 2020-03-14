@@ -37,4 +37,8 @@ interface FirebaseDataBaseService {
         lastOrder: Order? = null,
         fetchOwnOrdersListener: (List<Order>) -> Unit
     )
+    suspend fun deleteOrder(
+        orderId: String,
+        deleteOrderListener: () -> Unit
+    )
 }

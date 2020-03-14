@@ -87,4 +87,6 @@
     <string name="your_orders">Your Orders</string>
     <string name="delete_this_order">Delete this order</string>
     <string name="cancel">Cancel</string>
+    <string name="confirm_delete_order">Delete this order?</string>
+    <string name="complete_delete_order">Order is deleted successfully.</string>
 </resources>

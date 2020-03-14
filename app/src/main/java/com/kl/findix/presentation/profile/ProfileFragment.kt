@@ -1,25 +1,24 @@
 package com.kl.findix.presentation.profile
 
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.epoxy.EpoxyController
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import com.kl.findix.R
 import com.kl.findix.databinding.FragmentProfileBinding
 import com.kl.findix.di.ViewModelFactory
 import com.kl.findix.navigation.ProfileNavigator
 import com.kl.findix.util.nonNullObserve
 import dagger.android.support.AndroidSupportInjection
-import kotlinx.android.synthetic.main.fragment_profile.*
 import javax.inject.Inject
 
 class ProfileFragment : Fragment() {
@@ -78,8 +77,8 @@ class ProfileFragment : Fragment() {
 
     private fun setController() {
         controller = ProfileController(
-            onClickMenu = {
-                val dialog = ProfileBottomSheetDialog.newInstance()
+            onClickMenu = { orderId ->
+                val dialog = ProfileBottomSheetDialog.newInstance(orderId)
                 dialog.show(childFragmentManager, "Delete")
             }
         )
@@ -95,6 +94,17 @@ class ProfileFragment : Fragment() {
                 Glide.with(requireContext())
                     .load(storageReference)
                     .into(binding.profilePhoto)
+            }
+            showDeleteOrderConfirmDialogCommand.nonNullObserve(viewLifecycleOwner) { orderId ->
+                AlertDialog.Builder(context)
+                    .setTitle("")
+                    .setMessage(getString(R.string.confirm_delete_order))
+                    .setPositiveButton(getString(R.string.ok)) { _, _ ->
+                        _viewModel.deleteOrder(orderId)
+                    }.show()
+            }
+            showSnackBarCommand.nonNullObserve(viewLifecycleOwner) { resId ->
+                Snackbar.make(binding.container, getString(resId), Snackbar.LENGTH_LONG).show()
             }
         }
     }

@@ -9,12 +9,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.storage.StorageReference
+import com.kl.findix.R
 import com.kl.findix.model.Order
 import com.kl.findix.model.User
 import com.kl.findix.services.FirebaseDataBaseService
 import com.kl.findix.services.FirebaseStorageService
 import com.kl.findix.services.FirebaseUserService
 import com.shopify.livedataktx.PublishLiveDataKtx
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -41,6 +43,8 @@ class ProfileViewModel @Inject constructor(
 
     var profileIconBitmap: MutableLiveData<Bitmap> = MutableLiveData()
     var setProfileIconCommand: PublishLiveDataKtx<StorageReference> = PublishLiveDataKtx()
+    val showDeleteOrderConfirmDialogCommand: PublishLiveDataKtx<String> = PublishLiveDataKtx()
+    val showSnackBarCommand: PublishLiveDataKtx<Int> = PublishLiveDataKtx()
 
     private var firebaseUser: FirebaseUser? = firebaseUserService.getCurrentSignInUser()
 
@@ -77,8 +81,19 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun showDeleteOrderConfirm() {
+    fun showDeleteOrderConfirm(orderId: String) {
+        showDeleteOrderConfirmDialogCommand.postValue(orderId)
+    }
 
+    fun deleteOrder(orderId: String) {
+        GlobalScope.launch {
+            firebaseDataBaseService.deleteOrder(
+                orderId = orderId
+            ) {
+                fetchOwnOrder()
+                showSnackBarCommand.postValue(R.string.complete_delete_order)
+            }
+        }
     }
 
     fun signOut() {
