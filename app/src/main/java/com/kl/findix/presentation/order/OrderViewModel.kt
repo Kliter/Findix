@@ -5,18 +5,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
-import com.kl.findix.model.Order
 import com.kl.findix.services.FirebaseDataBaseService
+import com.kl.findix.services.FirebaseStorageService
 import com.kl.findix.services.FirebaseUserService
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class OrderViewModel @Inject constructor(
     private val firebaseUserService: FirebaseUserService,
-    private val firebaseDataBaseService: FirebaseDataBaseService
+    private val firebaseDataBaseService: FirebaseDataBaseService,
+    private val firebaseStorageService: FirebaseStorageService
 ) : ViewModel(), LifecycleObserver {
 
-    val orders: MutableLiveData<List<Order>> = MutableLiveData()
+    val orderListItems: MutableLiveData<List<OrderListItem>> = MutableLiveData()
 
     private var firebaseUser: FirebaseUser? = firebaseUserService.getCurrentSignInUser()
 
@@ -24,8 +25,24 @@ class OrderViewModel @Inject constructor(
         viewModelScope.launch {
             firebaseDataBaseService.fetchLast15Orders(
                 fetchLast15OrdersListener = { result ->
-                    orders.postValue(result)
-                })
+                    val orderListItems = result.map { order ->
+                        OrderListItem(order = order)
+                    }
+                    setOrderPhotoRef(orderListItems)
+                }
+            )
+        }
+    }
+
+    private fun setOrderPhotoRef(list: List<OrderListItem>) {
+        firebaseUser?.let { firebaseUser ->
+            list.forEach { orderListItem ->
+                orderListItem.orderPhotoRef = firebaseStorageService.getOrderPhotoRef(
+                    firebaseUser.uid,
+                    orderListItem.order.orderId
+                )
+            }
+            orderListItems.postValue(list)
         }
     }
 }

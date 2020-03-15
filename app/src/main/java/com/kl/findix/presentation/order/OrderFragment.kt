@@ -10,9 +10,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.epoxy.EpoxyController
+import com.google.firebase.storage.StorageReference
 import com.kl.findix.R
 import com.kl.findix.databinding.FragmentOrderBinding
 import com.kl.findix.di.ViewModelFactory
+import com.kl.findix.model.Order
 import com.kl.findix.navigation.OrderNavigator
 import com.kl.findix.util.nonNullObserve
 import dagger.android.support.AndroidSupportInjection
@@ -86,8 +88,8 @@ class OrderFragment : Fragment() {
 
     private fun observeState(viewModel: OrderViewModel) {
         viewModel.run {
-            this.orders.nonNullObserve(viewLifecycleOwner) { orders ->
-                controller?.setData(orders)
+            this.orderListItems.nonNullObserve(viewLifecycleOwner) { orderListItems ->
+                controller?.setData(orderListItems)
                 if (binding.swipeRefresh.isRefreshing) {
                     binding.swipeRefresh.isRefreshing = false
                 }
@@ -98,3 +100,8 @@ class OrderFragment : Fragment() {
     private fun observeEvent(viewModel: OrderViewModel) {
     }
 }
+
+data class OrderListItem(
+    val order: Order,
+    var orderPhotoRef: StorageReference? = null
+)

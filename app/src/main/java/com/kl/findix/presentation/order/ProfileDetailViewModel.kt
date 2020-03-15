@@ -34,13 +34,13 @@ class ProfileDetailViewModel @Inject constructor(
             firebaseDataBaseService.fetchUserInfo(userId) {
                 _user.postValue(it)
                 it.profilePhotoUrl?.isNotEmpty()?.let {
-                    fetchProfilePhoto()
+                    setProfilePhoto()
                 }
             }
         }
     }
 
-    fun fetchProfilePhoto() {
+    private fun setProfilePhoto() {
         firebaseUser?.let { firebaseUser ->
             setProfilePhotoCommand.postValue(
                 firebaseStorageService.getProfileIconRef(firebaseUser.uid)
