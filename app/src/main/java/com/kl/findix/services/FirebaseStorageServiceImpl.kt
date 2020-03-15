@@ -2,6 +2,7 @@ package com.kl.findix.services
 
 import android.util.Log
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.kl.findix.util.getStorageOrderPhotoPath
 import com.kl.findix.util.getStorageProfileIconPath
 
@@ -37,4 +38,9 @@ class FirebaseStorageServiceImpl(
     override fun getOrderPhotoRef(userId: String, orderId: String) = storage.reference.child(
         getStorageOrderPhotoPath(userId = userId, orderId = orderId)
     )
+
+    override fun deleteOrderPhoto(userId: String, orderId: String) {
+        val orderPhotoReference = storage.reference.child(getStorageOrderPhotoPath(userId, orderId))
+        orderPhotoReference.delete()
+    }
 }

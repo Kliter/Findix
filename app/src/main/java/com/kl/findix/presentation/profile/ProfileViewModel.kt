@@ -90,6 +90,9 @@ class ProfileViewModel @Inject constructor(
             firebaseDataBaseService.deleteOrder(
                 orderId = orderId
             ) {
+                firebaseUser?.uid?.let { firebaseuserId ->
+                    firebaseStorageService.deleteOrderPhoto(userId = firebaseuserId,orderId = orderId)
+                }
                 fetchOwnOrder()
                 showSnackBarCommand.postValue(R.string.complete_delete_order)
             }
