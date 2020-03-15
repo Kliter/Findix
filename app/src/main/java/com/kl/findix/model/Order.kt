@@ -14,7 +14,7 @@ class Order(): BaseObservable() {
         description: String? = "",
         city: String? = "",
         userLocation: UserLocation? = null,
-        photoUrl: String? = "",
+        hasPhoto: Boolean? = false,
         shouldRegisterLocation: Boolean = false,
         timeStamp: Date? = null
     ): this() {
@@ -24,7 +24,7 @@ class Order(): BaseObservable() {
         this.description = description
         this.city = city
         this.userLocation = userLocation
-        this.photoUrl = photoUrl
+        this.hasPhoto = hasPhoto
         this.shouldRegisterLocation = shouldRegisterLocation
         this.timeStamp = timeStamp
     }
@@ -74,10 +74,10 @@ class Order(): BaseObservable() {
         }
 
     @Bindable
-    var photoUrl: String? = null
+    var hasPhoto: Boolean? = null
         set(value) {
             field = value
-            notifyPropertyChanged(BR.photoUrl)
+            notifyPropertyChanged(BR.hasPhoto)
         }
 
     @Bindable

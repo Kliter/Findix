@@ -35,14 +35,18 @@ class OrderViewModel @Inject constructor(
     }
 
     private fun setOrderPhotoRef(list: List<OrderListItem>) {
-        firebaseUser?.let { firebaseUser ->
-            list.forEach { orderListItem ->
-                orderListItem.orderPhotoRef = firebaseStorageService.getOrderPhotoRef(
-                    firebaseUser.uid,
-                    orderListItem.order.orderId
-                )
+        viewModelScope.launch {
+            firebaseUser?.let { firebaseUser ->
+                list.forEach { orderListItem ->
+                    if (orderListItem.order.hasPhoto == true) {
+                        orderListItem.orderPhotoRef = firebaseStorageService.getOrderPhotoRef(
+                            firebaseUser.uid,
+                            orderListItem.order.orderId
+                        )
+                    }
+                }
+                orderListItems.postValue(list)
             }
-            orderListItems.postValue(list)
         }
     }
 }

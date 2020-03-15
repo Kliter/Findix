@@ -40,6 +40,7 @@
                     android:layout_height="160dp"
                     android:layout_margin="@dimen/margin_x0_5"
                     android:background="@color/colorBlack_10"
+                    android:visibility="@{order.hasPhoto ? View.VISIBLE : View.GONE}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

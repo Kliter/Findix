@@ -49,14 +49,15 @@ class CreateOrderViewModel @Inject constructor(
     var succeedCreateOrderCommand: PublishLiveDataKtx<Boolean> = PublishLiveDataKtx()
     var setOrderPhotoCommand: PublishLiveDataKtx<StorageReference> = PublishLiveDataKtx()
 
-    var order: Order? = null
-    var _orderPhotoUri: Uri? = null
-    var cityNumber: CityNumber? = null // Spinnerのテキストバインドするために必要
     private var firebaseUser: FirebaseUser? = firebaseUserService.getCurrentSignInUser()
+    private var _orderPhotoUri: Uri? = null
+    var order: Order? = null
+    var cityNumber: CityNumber? = null // Spinnerのテキストバインドするために必要
 
     fun resetOrderInfo() {
         order = Order()
         cityNumber = CityNumber()
+        _orderPhotoUri = null
     }
 
     fun createOrder(
@@ -75,6 +76,7 @@ class CreateOrderViewModel @Inject constructor(
                         this.city = context.resources.getStringArray(R.array.cities)[number]
                     }
                 }
+                order.hasPhoto = _orderPhotoUri != null
                 firebaseUser?.let { firebaseUser ->
                     GlobalScope.launch {
                         // viewModelScopeだとちゃんとScope破棄できなくて2回目createできない。
@@ -109,6 +111,7 @@ class CreateOrderViewModel @Inject constructor(
                                 orderId = orderId,
                                 byteArray = imageService.getBytesFromBitmap(result.data)
                             )
+                            resetOrderInfo()
                         }
                         is ServiceResult.Failure -> {
                             Log.e(TAG, result.error)
