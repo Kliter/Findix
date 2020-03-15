@@ -3,21 +3,31 @@ package com.kl.findix.presentation.order
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.storage.StorageReference
 import com.kl.findix.model.Order
 import com.kl.findix.services.FirebaseDataBaseService
+import com.kl.findix.services.FirebaseStorageService
+import com.kl.findix.services.FirebaseUserService
 import com.shopify.livedataktx.PublishLiveDataKtx
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class OrderDetailViewModel @Inject constructor(
-    private val firebaseDataBaseService: FirebaseDataBaseService
+    private val firebaseUserService: FirebaseUserService,
+    private val firebaseDataBaseService: FirebaseDataBaseService,
+    private val firebaseStorageService: FirebaseStorageService
 ) : ViewModel(), LifecycleObserver {
 
+    // State
     var _order: MutableLiveData<Order> = MutableLiveData()
 
-    var toProfileDetailCommand: PublishLiveDataKtx<String> = PublishLiveDataKtx()
+    // Event
+    var navigateToProfileDetailCommand: PublishLiveDataKtx<String> = PublishLiveDataKtx()
+    var setOrderPhotoCommand: PublishLiveDataKtx<StorageReference> = PublishLiveDataKtx()
+
+    private var firebaseUser: FirebaseUser? = firebaseUserService.getCurrentSignInUser()
 
     fun fetchOrderDetail(orderId: String) {
         GlobalScope.launch {
@@ -32,7 +42,13 @@ class OrderDetailViewModel @Inject constructor(
 
     fun toProfileDetailFragment() {
         _order.value?.userId?.let {
-            toProfileDetailCommand.postValue(it)
+            navigateToProfileDetailCommand.postValue(it)
+        }
+    }
+
+    fun setOrderPhoto(orderId: String) {
+        firebaseUser?.let { firebaseUser ->
+            setOrderPhotoCommand.postValue(firebaseStorageService.getOrderPhotoRef(firebaseUser.uid, orderId))
         }
     }
 }

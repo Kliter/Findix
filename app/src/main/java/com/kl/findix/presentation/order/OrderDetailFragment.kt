@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
 import com.kl.findix.R
 import com.kl.findix.databinding.FragmentOrderDetailBinding
 import com.kl.findix.di.ViewModelFactory
@@ -18,7 +19,7 @@ import com.kl.findix.util.nonNullObserve
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
-class OrderDetailFragment: Fragment() {
+class OrderDetailFragment : Fragment() {
 
     companion object {
         private const val TAG = "OrderDetailFragment"
@@ -44,8 +45,10 @@ class OrderDetailFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _viewModel = ViewModelProviders.of(this, mViewModelFactory).get(OrderDetailViewModel::class.java)
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_order_detail, container, false)
+        _viewModel =
+            ViewModelProviders.of(this, mViewModelFactory).get(OrderDetailViewModel::class.java)
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_order_detail, container, false)
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             lifecycle.addObserver(_viewModel)
@@ -58,6 +61,7 @@ class OrderDetailFragment: Fragment() {
         }
 
         _viewModel.fetchOrderDetail(args.orderId)
+        _viewModel.setOrderPhoto(args.orderId)
 
         return binding.root
     }
@@ -81,10 +85,15 @@ class OrderDetailFragment: Fragment() {
 
     private fun observeEvent(viewModel: OrderDetailViewModel) {
         viewModel.run {
-            this.toProfileDetailCommand.nonNullObserve(viewLifecycleOwner) { userId ->
+            this.navigateToProfileDetailCommand.nonNullObserve(viewLifecycleOwner) { userId ->
                 userId.let {
                     navigator.toProfileDetailFragment(it)
                 }
+            }
+            this.setOrderPhotoCommand.nonNullObserve(viewLifecycleOwner) { storageReference ->
+                Glide.with(requireContext())
+                    .load(storageReference)
+                    .into(binding.image)
             }
         }
     }

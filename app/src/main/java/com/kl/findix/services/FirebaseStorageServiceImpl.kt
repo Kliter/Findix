@@ -7,7 +7,7 @@ import com.kl.findix.util.getStorageProfileIconPath
 
 class FirebaseStorageServiceImpl(
     private val storage: FirebaseStorage
-): FirebaseStorageService {
+) : FirebaseStorageService {
 
     companion object {
         private const val TAG = "FirebaseStorageService"
@@ -24,7 +24,8 @@ class FirebaseStorageServiceImpl(
         }
     }
 
-    override fun getProfileIconRef(userId: String) = storage.reference.child(getStorageProfileIconPath(userId))
+    override fun getProfileIconRef(userId: String) =
+        storage.reference.child(getStorageProfileIconPath(userId))
 
     override fun uploadOrderPhoto(userId: String, orderId: String, byteArray: ByteArray) {
         val orderPhotoReference = storage.reference.child(getStorageOrderPhotoPath(userId, orderId))
@@ -32,4 +33,8 @@ class FirebaseStorageServiceImpl(
             Log.d(TAG, "Order photo is uploaded successfully.")
         }
     }
+
+    override fun getOrderPhotoRef(userId: String, orderId: String) = storage.reference.child(
+        getStorageOrderPhotoPath(userId = userId, orderId = orderId)
+    )
 }
