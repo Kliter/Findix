@@ -91,6 +91,9 @@ dependencies {
     implementation "com.shopify:livedata-ktx:3.0.0"
 
     implementation "com.google.maps.android:android-maps-utils:0.6.2"
+
+    // AdMob
+    implementation 'com.google.firebase:firebase-ads:19.0.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
