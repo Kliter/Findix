@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
-
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:ads="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -27,6 +27,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
+
             <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     style="@style/Widget.Findix.Toolbar"
@@ -47,8 +48,8 @@
                         android:id="@+id/search_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/search_order_location"
                         android:layout_marginEnd="@dimen/margin_x1"
+                        android:hint="@string/search_order_location"
                         android:inputType="text" />
 
             </androidx.appcompat.widget.Toolbar>
@@ -77,6 +78,16 @@
                 app:borderWidth="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.google.android.gms.ads.AdView
+                android:id="@+id/ad_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                ads:adSize="BANNER"
+                ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -16,6 +16,10 @@ import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -36,6 +40,7 @@ import com.kl.findix.util.REQUEST_CODE_PERMISSION
 import com.kl.findix.util.nonNullObserve
 import com.kl.findix.util.safeLet
 import dagger.android.support.AndroidSupportInjection
+import kotlinx.android.synthetic.main.fragment_maps.*
 import javax.inject.Inject
 
 class MapsFragment : Fragment(), OnMapReadyCallback {
@@ -56,6 +61,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private lateinit var binding: FragmentMapsBinding
     private lateinit var mLocationProviderClient: FusedLocationProviderClient
     private lateinit var mClusterManager: ClusterManager<ClusterItem>
+    private lateinit var mAdView: AdView
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -96,8 +102,14 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
         setupMap()
         setupSearchAutoComplete()
+        initAd()
 
         return binding.root
+    }
+
+    private fun initAd() {
+        val adRequest = AdRequest.Builder().build()
+        binding.adView.loadAd(adRequest)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

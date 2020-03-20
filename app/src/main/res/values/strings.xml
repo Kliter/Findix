@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Findix</string>
     <string name="admob_app_id">ca-app-pub-5689302165765608~6822231240</string>
+    <string name="admob_map_banner_ad_id">ca-app-pub-5689302165765608/3022587037</string>
     <string name="welcome">Welcome</string>
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>

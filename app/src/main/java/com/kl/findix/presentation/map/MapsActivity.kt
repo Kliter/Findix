@@ -12,7 +12,6 @@ import com.google.android.gms.location.LocationServices
 import com.kl.findix.R
 import com.kl.findix.databinding.ActivityMapsBinding
 import com.kl.findix.di.ViewModelFactory
-import com.kl.findix.presentation.login.LoginActivity
 import com.kl.findix.util.setupBottomNavigationView
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
