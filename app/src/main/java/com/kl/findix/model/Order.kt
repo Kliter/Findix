@@ -1,10 +1,12 @@
 package com.kl.findix.model
 
+import androidx.annotation.Keep
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
 import java.util.*
 
+@Keep
 class Order(): BaseObservable() {
 
     constructor(
