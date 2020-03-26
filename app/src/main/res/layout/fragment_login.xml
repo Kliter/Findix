@@ -11,10 +11,6 @@
                 type="com.kl.findix.presentation.login.LoginViewModel" />
 
         <variable
-                name="signInInfo"
-                type="com.kl.findix.model.SignInInfo" />
-
-        <variable
                 name="onClickGoogleSign"
                 type="android.view.View.OnClickListener" />
 
@@ -79,7 +75,7 @@
                         android:layout_height="wrap_content"
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
-                        android:text="@={signInInfo.email}" />
+                        android:text="@={viewModel.signInInfo.email}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -101,7 +97,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword"
-                        android:text="@={signInInfo.password}" />
+                        android:text="@={viewModel.signInInfo.password}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

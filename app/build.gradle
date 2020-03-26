@@ -9,6 +9,14 @@ apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs"
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('/Users/katsumikusumi/Documents/workspace/Findix/app/build/outputs/apk/Findix.jks')
+            storePassword 'Findix2020'
+            keyPassword 'Findix2020'
+            keyAlias = 'key0'
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.kl.findix"
@@ -20,11 +28,14 @@ android {
     }
     buildTypes {
         debug {
+            applicationIdSuffix ".debug"
+            debuggable true
         }
         release {
             minifyEnabled true
             debuggable false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     dataBinding {

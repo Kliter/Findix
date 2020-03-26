@@ -1,21 +1,18 @@
 package com.kl.findix.presentation.login
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.firebase.auth.FirebaseUser
 import com.kl.findix.model.SignInInfo
 import com.kl.findix.services.FirebaseUserService
 import com.kl.findix.util.safeLet
 import com.shopify.livedataktx.PublishLiveDataKtx
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(
     private val firebaseUserService: FirebaseUserService
-): ViewModel() {
+) : ViewModel() {
 
     val signInResult: PublishLiveDataKtx<Boolean> = PublishLiveDataKtx()
     val isAlreadySignedIn: PublishLiveDataKtx<Boolean> = PublishLiveDataKtx()
@@ -39,17 +36,19 @@ class LoginViewModel @Inject constructor(
 
     fun signInWithEmail() {
         safeLet(signInInfo.email, signInInfo.password) { email, password ->
-            viewModelScope.launch {
-                firebaseUserService.signInWithEmail(
-                    email = email,
-                    password = password,
-                    emailSignInSuccessListener = {
-                        signInResult.postValue(true)
-                    },
-                    emailSignInFailedListener = {
-                        signInResult.postValue(false)
-                    }
-                )
+            safeLet(email, password) { email, password ->
+                viewModelScope.launch {
+                    firebaseUserService.signInWithEmail(
+                        email = email,
+                        password = password,
+                        emailSignInSuccessListener = {
+                            signInResult.postValue(true)
+                        },
+                        emailSignInFailedListener = {
+                            signInResult.postValue(false)
+                        }
+                    )
+                }
             }
         }
     }
