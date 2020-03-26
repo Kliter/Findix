@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.epoxy.EpoxyController
+import com.google.android.gms.ads.AdRequest
 import com.google.firebase.storage.StorageReference
 import com.kl.findix.R
 import com.kl.findix.databinding.FragmentOrderBinding
@@ -64,6 +65,8 @@ class OrderFragment : Fragment() {
 
         _viewModel.fetchLast15Orders()
 
+        initAd()
+
         return binding.root
     }
 
@@ -72,6 +75,11 @@ class OrderFragment : Fragment() {
         setController()
         observeState(_viewModel)
 //        observeEvent(_viewModel)
+    }
+
+    private fun initAd() {
+        val adRequest = AdRequest.Builder().build()
+        binding.adView.loadAd(adRequest)
     }
 
     private fun setController() {

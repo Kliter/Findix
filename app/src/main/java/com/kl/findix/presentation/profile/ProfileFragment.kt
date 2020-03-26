@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.epoxy.EpoxyController
 import com.bumptech.glide.Glide
+import com.google.android.gms.ads.AdRequest
 import com.google.android.material.snackbar.Snackbar
 import com.kl.findix.R
 import com.kl.findix.databinding.FragmentProfileBinding
@@ -68,6 +69,8 @@ class ProfileFragment : Fragment() {
         _viewModel.fetchUserInfo()
         _viewModel.fetchOwnOrder()
 
+        initAd()
+
         return binding.root
     }
 
@@ -76,6 +79,11 @@ class ProfileFragment : Fragment() {
         setController()
         observeState(_viewModel)
         observeEvent(_viewModel)
+    }
+
+    private fun initAd() {
+        val adRequest = AdRequest.Builder().build()
+        binding.adView.loadAd(adRequest)
     }
 
     private fun setController() {

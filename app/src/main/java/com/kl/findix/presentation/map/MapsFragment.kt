@@ -61,7 +61,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private lateinit var binding: FragmentMapsBinding
     private lateinit var mLocationProviderClient: FusedLocationProviderClient
     private lateinit var mClusterManager: ClusterManager<ClusterItem>
-    private lateinit var mAdView: AdView
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
