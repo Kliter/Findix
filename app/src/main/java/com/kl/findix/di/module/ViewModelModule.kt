@@ -1,6 +1,7 @@
 package com.kl.findix.di.module
 
 import androidx.lifecycle.ViewModel
+import com.kl.findix.presentation.MainViewModel
 import com.kl.findix.presentation.login.LoginViewModel
 import com.kl.findix.presentation.login.SignUpViewModel
 import com.kl.findix.presentation.map.MapsViewModel
@@ -17,6 +18,12 @@ import javax.inject.Singleton
 
 @Module
 abstract class ViewModelModule {
+
+    @Binds
+    @IntoMap
+    @Singleton
+    @ViewModelKey(MainViewModel::class)
+    internal abstract fun provideMainViewModel(mainViewModel: MainViewModel): ViewModel
 
     @Binds
     @IntoMap

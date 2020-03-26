@@ -9,7 +9,13 @@ class LoginNavigator (
 
     fun toSignUpFragment() {
         navController.navigate(
-            LoginFragmentDirections.actionLoginToSignUp()
+            LoginFragmentDirections.toSignUp()
+        )
+    }
+
+    fun toMap() {
+        navController.navigate(
+            LoginFragmentDirections.toMaps()
         )
     }
 }

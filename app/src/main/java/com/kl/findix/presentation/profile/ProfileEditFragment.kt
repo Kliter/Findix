@@ -16,7 +16,6 @@ import com.kl.findix.R
 import com.kl.findix.databinding.FragmentProfileEditBinding
 import com.kl.findix.di.ViewModelFactory
 import com.kl.findix.navigation.ProfileEditNavigator
-import com.kl.findix.presentation.login.LoginActivity
 import com.kl.findix.util.GALLERY_TYPE_IMAGE
 import com.kl.findix.util.REQUEST_CODE_CHOOOSE_PROFILE_ICON
 import com.kl.findix.util.nonNullObserve
@@ -82,8 +81,7 @@ class ProfileEditFragment : Fragment() {
                     .setMessage(R.string.sign_out_dialog_message)
                     .setPositiveButton(R.string.ok) { _, _ ->
                         _viewModel.signOut()
-                        val intent = Intent(context, LoginActivity::class.java)
-                        startActivity(intent)
+                        navigator.toLogin()
                     }
                     .show()
             }

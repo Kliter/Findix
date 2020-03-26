@@ -1,12 +1,19 @@
 package com.kl.findix.navigation
 
 import androidx.navigation.NavController
+import com.kl.findix.presentation.profile.ProfileEditFragmentDirections
 
-class ProfileEditNavigator (
+class ProfileEditNavigator(
     private val navController: NavController
 ) {
 
     fun toPrev() {
         navController.popBackStack()
+    }
+
+    fun toLogin() {
+        navController.navigate(
+            ProfileEditFragmentDirections.toLogin()
+        )
     }
 }

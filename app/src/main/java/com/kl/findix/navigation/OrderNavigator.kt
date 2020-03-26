@@ -8,13 +8,13 @@ class OrderNavigator (
 ) {
     fun toCreateOrderFragment() {
         navController.navigate(
-            OrderFragmentDirections.actionOrderToCreateOrder()
+            OrderFragmentDirections.toCreateOrder()
         )
     }
 
     fun toOrderDetailFragment(orderId: String) {
         navController.navigate(
-            OrderFragmentDirections.actionOrderToOrderDetail(orderId)
+            OrderFragmentDirections.toOrderDetail(orderId)
         )
     }
 

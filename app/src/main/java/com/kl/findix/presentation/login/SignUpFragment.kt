@@ -1,7 +1,6 @@
 package com.kl.findix.presentation.login
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +12,6 @@ import com.kl.findix.R
 import com.kl.findix.databinding.FragmentSignupBinding
 import com.kl.findix.di.ViewModelFactory
 import com.kl.findix.navigation.SignUpNavigator
-import com.kl.findix.presentation.map.MapsActivity
 import com.kl.findix.util.nonNullObserve
 import com.kl.findix.util.showToast
 import dagger.android.support.AndroidSupportInjection
@@ -78,8 +76,7 @@ class SignUpFragment : Fragment() {
             this.signInResult.nonNullObserve(viewLifecycleOwner) { result ->
                 context?.let { context ->
                     if (result) {
-                        val intent = Intent(context, MapsActivity::class.java)
-                        startActivity(intent)
+                        navigator.toMaps()
                     } else {
                         showToast(context, context.getString(R.string.failed_sign_up))
                     }

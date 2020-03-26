@@ -3,7 +3,6 @@ package com.kl.findix.presentation.map
 import android.Manifest
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.KeyEvent
@@ -16,10 +15,9 @@ import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
 import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdSize
-import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -33,14 +31,13 @@ import com.kl.findix.R
 import com.kl.findix.databinding.FragmentMapsBinding
 import com.kl.findix.di.ViewModelFactory
 import com.kl.findix.model.ClusterItem
-import com.kl.findix.util.MarkerClusterRenderer
 import com.kl.findix.navigation.MapsNavigator
-import com.kl.findix.presentation.login.LoginActivity
+import com.kl.findix.util.MarkerClusterRenderer
 import com.kl.findix.util.REQUEST_CODE_PERMISSION
 import com.kl.findix.util.nonNullObserve
 import com.kl.findix.util.safeLet
 import dagger.android.support.AndroidSupportInjection
-import kotlinx.android.synthetic.main.fragment_maps.*
+import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 class MapsFragment : Fragment(), OnMapReadyCallback {
@@ -115,6 +112,9 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         super.onActivityCreated(savedInstanceState)
         observeState()
         observeEvent(_viewModel)
+        val navController = findNavController()
+        activity?.bottom_navigation_view?.setupWithNavController(navController)
+        activity?.bottom_navigation_view?.visibility = View.VISIBLE
     }
 
     override fun onMapReady(googleMap: GoogleMap?) {
@@ -185,8 +185,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         viewModel.run {
             this.backToLoginCommand.nonNullObserve(viewLifecycleOwner) {
                 // _viewModel.signOut()
-                val intent = Intent(requireContext(), LoginActivity::class.java)
-                startActivity(intent)
+                navigator.toLogin()
             }
         }
     }

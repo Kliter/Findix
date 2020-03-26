@@ -15,11 +15,11 @@ import com.kl.findix.R
 import com.kl.findix.databinding.FragmentLoginBinding
 import com.kl.findix.di.ViewModelFactory
 import com.kl.findix.navigation.LoginNavigator
-import com.kl.findix.presentation.map.MapsActivity
 import com.kl.findix.util.REQUEST_CODE_SIGN_IN
 import com.kl.findix.util.nonNullObserve
 import com.kl.findix.util.showToast
 import dagger.android.support.AndroidSupportInjection
+import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 class LoginFragment : Fragment() {
@@ -62,6 +62,9 @@ class LoginFragment : Fragment() {
                 navigator.toSignUpFragment()
             }
         }
+
+        _viewModel.isAlreadySignedIn()
+
         return binding.root
     }
 
@@ -73,6 +76,7 @@ class LoginFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         observeState(_viewModel)
+        activity?.bottom_navigation_view?.visibility = View.VISIBLE
     }
 
     private fun observeState(viewModel: LoginViewModel) {
@@ -80,7 +84,7 @@ class LoginFragment : Fragment() {
             context?.let { context ->
                 if (result) {
                     showToast(context, getString(R.string.succeed_sign_in))
-                    startActivity(MapsActivity.newInstance(context))
+                    navigator.toMap()
                 } else {
                     showToast(context, getString(R.string.failed_sign_in))
                 }
@@ -88,9 +92,7 @@ class LoginFragment : Fragment() {
         }
         viewModel.isAlreadySignedIn.nonNullObserve(viewLifecycleOwner) {
             if (it) {
-                context?.let { context ->
-                    startActivity(MapsActivity.newInstance(context))
-                }
+                navigator.toMap()
             }
         }
     }

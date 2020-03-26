@@ -18,18 +18,12 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/Theme.AppTheme">
-        <activity android:name=".presentation.profile.ProfileActivity">
-        </activity>
-        <activity android:name=".presentation.order.OrderActivity">
-        </activity>
-        <activity android:name=".presentation.login.LoginActivity">
+        <activity android:name=".presentation.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-        </activity>
-        <activity android:name=".presentation.map.MapsActivity">
         </activity>
 
         <meta-data
