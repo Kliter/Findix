@@ -3,6 +3,7 @@ package com.kl.findix.di.component
 import com.kl.findix.Application
 import com.kl.findix.di.module.AppModule
 import com.kl.findix.di.module.BuildersModule
+import com.kl.findix.di.module.DelegateModule
 import com.kl.findix.di.module.ServiceModule
 import dagger.BindsInstance
 import dagger.Component
@@ -16,7 +17,8 @@ import javax.inject.Singleton
         AndroidSupportInjectionModule::class,
         BuildersModule::class,
         AppModule::class,
-        ServiceModule::class
+        ServiceModule::class,
+        DelegateModule::class
     ]
 )
 interface AppComponent: AndroidInjector<Application> {

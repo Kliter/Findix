@@ -16,9 +16,8 @@ import com.kl.findix.model.User
 import com.kl.findix.services.FirebaseDataBaseService
 import com.kl.findix.services.FirebaseStorageService
 import com.kl.findix.services.FirebaseUserService
-import com.kl.findix.util.FindixError.NetworkError
-import com.kl.findix.util.FindixError.UndefinedError
 import com.kl.findix.util.UiState
+import com.kl.findix.util.delegate.UiStateViewModelDelegate
 import com.shopify.livedataktx.PublishLiveDataKtx
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -27,8 +26,10 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val firebaseDataBaseService: FirebaseDataBaseService,
     private val firebaseUserService: FirebaseUserService,
-    private val firebaseStorageService: FirebaseStorageService
-) : ViewModel(), LifecycleObserver {
+    private val firebaseStorageService: FirebaseStorageService,
+    private val uiStateViewModelDelegate: UiStateViewModelDelegate
+) : ViewModel(), LifecycleObserver,
+    UiStateViewModelDelegate by uiStateViewModelDelegate {
 
     companion object {
         private const val TAG = "ProfileViewModel"
@@ -41,46 +42,28 @@ class ProfileViewModel @Inject constructor(
     private val _orders: MutableLiveData<List<Order>> = MutableLiveData()
     val orders: LiveData<List<Order>>
         get() = _orders
-    private val _uiState: MutableLiveData<UiState> = MutableLiveData()
-    val uiState: LiveData<UiState>
-        get() = _uiState
     var profileIconBitmap: MutableLiveData<Bitmap> = MutableLiveData()
 
     // Event
     var setProfileIconCommand: PublishLiveDataKtx<StorageReference> = PublishLiveDataKtx()
     val showDeleteOrderConfirmDialogCommand: PublishLiveDataKtx<String> = PublishLiveDataKtx()
     val showSnackBarCommand: PublishLiveDataKtx<Int> = PublishLiveDataKtx()
-    val showErrorDialogCommand: PublishLiveDataKtx<String> = PublishLiveDataKtx()
 
     var index: Int = 0
     private var firebaseUser: FirebaseUser? = firebaseUserService.getCurrentSignInUser()
 
     fun fetchUserInfo() {
         viewModelScope.launch {
-            _uiState.postValue(UiState.Loading)
+            uiState.postValue(UiState.Loading)
             firebaseUser?.let { firebaseUser ->
                 when (val result =
                     firebaseDataBaseService.fetchOwnProfileInfo(firebaseUser = firebaseUser)) {
                     is ServiceResult.Success -> {
-                        _uiState.postValue(UiState.Loaded)
+                        uiState.postValue(UiState.Loaded)
                         _user.postValue(result.data)
                     }
                     is ServiceResult.Failure -> {
-                        when (val exception = result.exception) {
-                            is NetworkError -> {
-                                _uiState.postValue(UiState.Retry)
-                            }
-                            is UndefinedError -> {
-                                _uiState.postValue(UiState.Error)
-                                showErrorDialogCommand.postValue(exception.alertMessage)
-                            }
-                            else -> {
-                                _uiState.postValue(UiState.Error)
-                                exception.message?.let { message ->
-                                    showErrorDialogCommand.postValue(message)
-                                }
-                            }
-                        }
+                        handleError(result.exception)
                     }
                 }
             }
