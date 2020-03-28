@@ -5,11 +5,11 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.provider.MediaStore
 import com.kl.findix.model.ServiceResult
-import com.kl.findix.model.ServiceResult.Success
 import com.kl.findix.model.ServiceResult.Failure
+import com.kl.findix.model.ServiceResult.Success
 import java.io.ByteArrayOutputStream
 
-class ImageServiceImpl: ImageService {
+class ImageServiceImpl : ImageService {
 
     companion object {
         private const val TAG = "ImageServiceImpl"
@@ -21,7 +21,7 @@ class ImageServiceImpl: ImageService {
             MediaStore.Images.Media.getBitmap(contentResolver, uri)
         }.fold(
             onSuccess = { Success(it) },
-            onFailure = { Failure("Failed to get bitmap.") }
+            onFailure = { Failure(it as Exception) }
         )
     }
 

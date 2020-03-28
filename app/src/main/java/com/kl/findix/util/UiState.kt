@@ -5,4 +5,5 @@ sealed class UiState {
     object Loading: UiState()
     object Loaded: UiState()
     object Retry: UiState()
+    object Error: UiState()
 }

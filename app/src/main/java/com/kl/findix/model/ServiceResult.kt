@@ -7,12 +7,12 @@ package com.kl.findix.model
 sealed class ServiceResult<out R> {
 
     data class Success<out T>(val data: T) : ServiceResult<T>()
-    data class Error(val exception: Exception) : ServiceResult<Nothing>()
+    data class Failure(val exception: Exception) : ServiceResult<Nothing>()
 
     override fun toString(): String {
         return when (this) {
             is Success<*> -> "Success[data=$data]"
-            is Error -> "Error[exception=$exception]"
+            is Failure -> "Error[exception=$exception]"
         }
     }
 }

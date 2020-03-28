@@ -114,7 +114,7 @@ class CreateOrderViewModel @Inject constructor(
                             resetOrderInfo()
                         }
                         is ServiceResult.Failure -> {
-                            Log.e(TAG, result.error)
+                            // TODO: Error handling.
                         }
                     }
                 }
@@ -129,7 +129,7 @@ class CreateOrderViewModel @Inject constructor(
                 orderPhotoBitmap.postValue(result.data)
             }
             is ServiceResult.Failure -> {
-                Log.e(TAG, result.error)
+                // TODO: Error handling.
             }
         }
     }

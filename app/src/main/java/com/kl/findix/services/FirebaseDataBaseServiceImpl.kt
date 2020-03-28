@@ -1,31 +1,48 @@
 package com.kl.findix.services
 
-import android.util.Log
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.kl.findix.model.Order
+import com.kl.findix.model.ServiceResult
 import com.kl.findix.model.User
 import com.kl.findix.model.UserLocation
+import com.kl.findix.util.FindixError
 import com.kl.findix.util.getStorageProfileIconPath
+import java.net.SocketTimeoutException
 import java.util.*
 import javax.inject.Inject
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class FirebaseDataBaseServiceImpl @Inject constructor(
     private val database: FirebaseFirestore
 ) : FirebaseDataBaseService {
 
-    override suspend fun fetchOwnProfileInfo(
-        firebaseUser: FirebaseUser,
-        fetchOwnProfileInfoListener: (User) -> Unit
-    ) {
-        database.collection("User").document(firebaseUser.uid).get().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val user = task.result?.toObject(User::class.java) ?: User()
-                fetchOwnProfileInfoListener.invoke(user)
+    override suspend fun fetchOwnProfileInfo(firebaseUser: FirebaseUser) =
+        suspendCoroutine<ServiceResult<User>> { continuation ->
+            try {
+                database.collection("User")
+                    .document(firebaseUser.uid)
+                    .get()
+                    .addOnSuccessListener {
+                        val user = it.toObject(User::class.java) ?: User()
+                        continuation.resume(ServiceResult.Success(user))
+                    }
+                    .addOnFailureListener {
+                        when (it) {
+                            is SocketTimeoutException -> {
+                                continuation.resume(ServiceResult.Failure(FindixError.NetworkError()))
+                            }
+                            else -> {
+                                continuation.resume(ServiceResult.Failure(FindixError.UndefinedError()))
+                            }
+                        }
+                    }
+            } catch (e: Exception) {
+                continuation.resume(ServiceResult.Failure(e))
             }
         }
-    }
 
     override suspend fun updateProfileInfo(
         firebaseUser: FirebaseUser,
