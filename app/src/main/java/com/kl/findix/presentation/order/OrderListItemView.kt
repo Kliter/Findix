@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.kl.findix.R
 import com.kl.findix.databinding.ItemOrderListBinding
 import com.kl.findix.model.Order
-import com.kl.findix.util.getDateTimeText
+import com.kl.findix.util.extension.getDateTimeText
 
 @EpoxyModelClass(layout = R.layout.item_order_list)
 abstract class OrderListItemView(
@@ -22,7 +22,8 @@ abstract class OrderListItemView(
     override fun bind(holder: ViewHolder) {
         holder.binding.order = orderListItem.order
         orderListItem.order.timeStamp?.let {
-            holder.binding.dateTime = getDateTimeText(it)
+            holder.binding.dateTime =
+                getDateTimeText(it)
         }
         holder.binding.setOnClickOrder {
             onClickOrder?.invoke(orderListItem.order)

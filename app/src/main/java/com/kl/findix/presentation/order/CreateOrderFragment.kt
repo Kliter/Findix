@@ -20,9 +20,9 @@ import com.kl.findix.di.ViewModelFactory
 import com.kl.findix.navigation.CreateOrderNavigator
 import com.kl.findix.util.GALLERY_TYPE_IMAGE
 import com.kl.findix.util.REQUEST_CODE_CHOOOSE_PROFILE_ICON
-import com.kl.findix.util.nonNullObserve
-import com.kl.findix.util.safeLet
-import com.kl.findix.util.showToast
+import com.kl.findix.util.extension.nonNullObserve
+import com.kl.findix.util.extension.safeLet
+import com.kl.findix.util.extension.showToast
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -79,7 +79,10 @@ class CreateOrderFragment : Fragment() {
                 val isTitleFilled = binding.textInputLayoutTitle.editText?.text?.isNotBlank()
                 val isDescriptionFilled =
                     binding.textInputLayoutDescription.editText?.text?.isNotBlank()
-                safeLet(isTitleFilled, isDescriptionFilled) { isTitleFilled, isDescriptionFilled ->
+                safeLet(
+                    isTitleFilled,
+                    isDescriptionFilled
+                ) { isTitleFilled, isDescriptionFilled ->
                     createOrderIfEnable(isTitleFilled, isDescriptionFilled)
                 }
             }
@@ -100,7 +103,10 @@ class CreateOrderFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_CHOOOSE_PROFILE_ICON && resultCode == Activity.RESULT_OK) {
-            safeLet(data?.data, activity?.contentResolver) { uri, contentResolver ->
+            safeLet(
+                data?.data,
+                activity?.contentResolver
+            ) { uri, contentResolver ->
                 _viewModel.updateOrderPhoto(uri, contentResolver)
             }
         }
@@ -124,13 +130,19 @@ class CreateOrderFragment : Fragment() {
             }
             showToastCommand.nonNullObserve(viewLifecycleOwner) {
                 context?.let { context ->
-                    showToast(context, getString(it))
+                    showToast(
+                        context,
+                        getString(it)
+                    )
                 }
             }
             succeedCreateOrderCommand.nonNullObserve(viewLifecycleOwner) {
                 if (it) {
                     context?.let { context ->
-                        showToast(context, getString(R.string.succeed_create_order))
+                        showToast(
+                            context,
+                            getString(R.string.succeed_create_order)
+                        )
                     }
                     navigator.toPrev()
                 }
@@ -153,7 +165,10 @@ class CreateOrderFragment : Fragment() {
                 this.error = getString(R.string.error_description_is_not_filled)
             }
         } else {
-            safeLet(context, activity) { context, activity ->
+            safeLet(
+                context,
+                activity
+            ) { context, activity ->
                 _viewModel.createOrder(context, mLocationProviderClient, activity.contentResolver)
             }
         }

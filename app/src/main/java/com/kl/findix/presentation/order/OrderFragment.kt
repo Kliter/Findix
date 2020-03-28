@@ -17,7 +17,7 @@ import com.kl.findix.databinding.FragmentOrderBinding
 import com.kl.findix.di.ViewModelFactory
 import com.kl.findix.model.Order
 import com.kl.findix.navigation.OrderNavigator
-import com.kl.findix.util.nonNullObserve
+import com.kl.findix.util.extension.nonNullObserve
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 

@@ -6,11 +6,9 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
-import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.storage.StorageReference
@@ -23,7 +21,7 @@ import com.kl.findix.services.FirebaseDataBaseService
 import com.kl.findix.services.FirebaseStorageService
 import com.kl.findix.services.FirebaseUserService
 import com.kl.findix.services.ImageService
-import com.kl.findix.util.safeLet
+import com.kl.findix.util.extension.safeLet
 import com.shopify.livedataktx.PublishLiveDataKtx
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -102,7 +100,10 @@ class CreateOrderViewModel @Inject constructor(
 
     private fun uploadOrderPhoto(orderId: String, contentResolver: ContentResolver) {
         GlobalScope.launch {
-            safeLet(firebaseUserService.getCurrentSignInUser(), _orderPhotoUri) { currentSignInUser, orderPhotoUri ->
+            safeLet(
+                firebaseUserService.getCurrentSignInUser(),
+                _orderPhotoUri
+            ) { currentSignInUser, orderPhotoUri ->
                 GlobalScope.launch {
                     when (val result = imageService.getBitmap(orderPhotoUri, contentResolver)) {
                         is ServiceResult.Success -> {

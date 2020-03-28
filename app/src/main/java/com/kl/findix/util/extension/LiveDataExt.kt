@@ -1,4 +1,4 @@
-package com.kl.findix.util
+package com.kl.findix.util.extension
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData

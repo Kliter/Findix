@@ -18,8 +18,8 @@ import com.kl.findix.di.ViewModelFactory
 import com.kl.findix.navigation.ProfileEditNavigator
 import com.kl.findix.util.GALLERY_TYPE_IMAGE
 import com.kl.findix.util.REQUEST_CODE_CHOOOSE_PROFILE_ICON
-import com.kl.findix.util.nonNullObserve
-import com.kl.findix.util.safeLet
+import com.kl.findix.util.extension.nonNullObserve
+import com.kl.findix.util.extension.safeLet
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_profile.*
 import javax.inject.Inject
@@ -131,7 +131,10 @@ class ProfileEditFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_CHOOOSE_PROFILE_ICON && resultCode == Activity.RESULT_OK) {
-            safeLet(data?.data, activity?.contentResolver) { uri, contentResolver ->
+            safeLet(
+                data?.data,
+                activity?.contentResolver
+            ) { uri, contentResolver ->
                 _viewModel.updateProfilePhoto(uri, contentResolver)
             }
         }

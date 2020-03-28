@@ -4,7 +4,7 @@ import com.airbnb.epoxy.TypedEpoxyController
 import com.kl.findix.itemProfileOrderList
 import com.kl.findix.itemProfileOredersSectionHeader
 import com.kl.findix.model.Order
-import com.kl.findix.util.getDateTimeText
+import com.kl.findix.util.extension.getDateTimeText
 
 class ProfileController(
     private val onClickMenu: (String) -> Unit

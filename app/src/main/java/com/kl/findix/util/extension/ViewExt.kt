@@ -1,4 +1,4 @@
-package com.kl.findix.util
+package com.kl.findix.util.extension
 
 import android.graphics.Bitmap
 import android.view.View

@@ -20,7 +20,7 @@ import com.kl.findix.services.ImageService
 import com.kl.findix.util.FindixError
 import com.kl.findix.util.FindixError.NetworkError
 import com.kl.findix.util.UiState
-import com.kl.findix.util.safeLet
+import com.kl.findix.util.extension.safeLet
 import com.shopify.livedataktx.PublishLiveDataKtx
 import kotlinx.coroutines.launch
 import javax.inject.Inject

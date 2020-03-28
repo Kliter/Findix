@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kl.findix.model.SignInInfo
 import com.kl.findix.services.FirebaseUserService
-import com.kl.findix.util.safeLet
+import com.kl.findix.util.extension.safeLet
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,7 +20,10 @@ class SignUpViewModel @Inject constructor(
     var signInInfo: SignInInfo = SignInInfo("", "")
 
     fun signUpWithEmail() {
-        safeLet(signInInfo.email, signInInfo.password) { email, password ->
+        safeLet(
+            signInInfo.email,
+            signInInfo.password
+        ) { email, password ->
             viewModelScope.launch {
                 firebaseUserService.signUpWithEmail(
                     email = email,
@@ -37,7 +40,10 @@ class SignUpViewModel @Inject constructor(
     }
 
     fun signInWithEmail() {
-        safeLet(signInInfo.email, signInInfo.password) { email, password ->
+        safeLet(
+            signInInfo.email,
+            signInInfo.password
+        ) { email, password ->
             viewModelScope.launch {
                 firebaseUserService.signInWithEmail(
                     email = email,

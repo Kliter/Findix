@@ -1,5 +1,6 @@
-package com.kl.findix.util
+package com.kl.findix.util.extension
 
+import com.kl.findix.util.FIREBASE_IMAGE_STORAGE
 import java.text.SimpleDateFormat
 import java.util.*
 

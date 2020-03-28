@@ -8,7 +8,7 @@ import com.kl.findix.model.ServiceResult
 import com.kl.findix.model.User
 import com.kl.findix.model.UserLocation
 import com.kl.findix.util.FindixError
-import com.kl.findix.util.getStorageProfileIconPath
+import com.kl.findix.util.extension.getStorageProfileIconPath
 import java.net.SocketTimeoutException
 import java.util.*
 import javax.inject.Inject
@@ -53,7 +53,10 @@ class FirebaseDataBaseServiceImpl @Inject constructor(
             .document(firebaseUser.uid)
             .set(
                 user.apply {
-                    this.profilePhotoUrl = getStorageProfileIconPath(firebaseUser.uid)
+                    this.profilePhotoUrl =
+                        getStorageProfileIconPath(
+                            firebaseUser.uid
+                        )
                 }
             )
     }

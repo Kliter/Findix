@@ -12,8 +12,8 @@ import com.kl.findix.R
 import com.kl.findix.databinding.FragmentSignupBinding
 import com.kl.findix.di.ViewModelFactory
 import com.kl.findix.navigation.SignUpNavigator
-import com.kl.findix.util.nonNullObserve
-import com.kl.findix.util.showToast
+import com.kl.findix.util.extension.nonNullObserve
+import com.kl.findix.util.extension.showToast
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -69,7 +69,10 @@ class SignUpFragment : Fragment() {
                     if (result) {
                         this.signInWithEmail()
                     } else {
-                        showToast(context, context.getString(R.string.failed_sign_up))
+                        showToast(
+                            context,
+                            context.getString(R.string.failed_sign_up)
+                        )
                     }
                 }
             }
@@ -78,7 +81,10 @@ class SignUpFragment : Fragment() {
                     if (result) {
                         navigator.toMaps()
                     } else {
-                        showToast(context, context.getString(R.string.failed_sign_up))
+                        showToast(
+                            context,
+                            context.getString(R.string.failed_sign_up)
+                        )
                     }
                 }
             }

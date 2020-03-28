@@ -16,8 +16,8 @@ import com.kl.findix.databinding.FragmentLoginBinding
 import com.kl.findix.di.ViewModelFactory
 import com.kl.findix.navigation.LoginNavigator
 import com.kl.findix.util.REQUEST_CODE_SIGN_IN
-import com.kl.findix.util.nonNullObserve
-import com.kl.findix.util.showToast
+import com.kl.findix.util.extension.nonNullObserve
+import com.kl.findix.util.extension.showToast
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
@@ -83,10 +83,16 @@ class LoginFragment : Fragment() {
         viewModel.signInResult.nonNullObserve(viewLifecycleOwner) { result ->
             context?.let { context ->
                 if (result) {
-                    showToast(context, getString(R.string.succeed_sign_in))
+                    showToast(
+                        context,
+                        getString(R.string.succeed_sign_in)
+                    )
                     navigator.toMap()
                 } else {
-                    showToast(context, getString(R.string.failed_sign_in))
+                    showToast(
+                        context,
+                        getString(R.string.failed_sign_in)
+                    )
                 }
             }
         }

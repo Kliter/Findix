@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.kl.findix.model.SignInInfo
 import com.kl.findix.services.FirebaseUserService
-import com.kl.findix.util.safeLet
+import com.kl.findix.util.extension.safeLet
 import com.shopify.livedataktx.PublishLiveDataKtx
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -35,8 +35,14 @@ class LoginViewModel @Inject constructor(
     }
 
     fun signInWithEmail() {
-        safeLet(signInInfo.email, signInInfo.password) { email, password ->
-            safeLet(email, password) { email, password ->
+        safeLet(
+            signInInfo.email,
+            signInInfo.password
+        ) { email, password ->
+            safeLet(
+                email,
+                password
+            ) { email, password ->
                 viewModelScope.launch {
                     firebaseUserService.signInWithEmail(
                         email = email,
