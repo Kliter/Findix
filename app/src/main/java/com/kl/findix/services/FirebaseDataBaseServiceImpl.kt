@@ -78,8 +78,20 @@ class FirebaseDataBaseServiceImpl @Inject constructor(
     override suspend fun updateUserLocation(
         firebaseUser: FirebaseUser,
         userLocation: UserLocation
-    ) {
-        database.collection("UserLocation").document(firebaseUser.uid).set(userLocation)
+    ) = suspendCoroutine<ServiceResult<Unit>> { continuation ->
+        try {
+            database.collection("UserLocation")
+                .document(firebaseUser.uid)
+                .set(userLocation)
+                .addOnSuccessListener {
+                    continuation.resume(ServiceResult.Success(Unit))
+                }
+                .addOnFailureListener {
+                    continuation.resume(ServiceResult.Failure(it))
+                }
+        } catch (e: Exception) {
+            continuation.resume(ServiceResult.Failure(e))
+        }
     }
 
     override suspend fun fetchLast15Orders(fetchLast15OrdersListener: (List<Order>) -> Unit) {
@@ -119,20 +131,26 @@ class FirebaseDataBaseServiceImpl @Inject constructor(
     }
 
     override suspend fun fetchQueriedCityOrders(
-        city: String,
-        fetchQueriedCityOrdersListener: (List<Order>) -> Unit
-    ) {
-        database.collection("Order")
-            .whereEqualTo("city", city)
-            .get()
-            .addOnSuccessListener { results ->
-                val orders: List<Order> = results.map { result ->
-                    result.toObject(Order::class.java).apply {
-                        orderId = result.id
+        city: String
+    ) = suspendCoroutine<ServiceResult<List<Order>>> { continuation ->
+        try {
+            database.collection("Order")
+                .whereEqualTo("city", city)
+                .get()
+                .addOnSuccessListener { results ->
+                    val orders: List<Order> = results.map { result ->
+                        result.toObject(Order::class.java).apply {
+                            orderId = result.id
+                        }
                     }
+                    continuation.resume(ServiceResult.Success(orders))
                 }
-                fetchQueriedCityOrdersListener.invoke(orders)
-            }
+                .addOnFailureListener {
+                    continuation.resume(ServiceResult.Failure(it))
+                }
+        } catch (e: Exception) {
+            ServiceResult.Failure(e)
+        }
     }
 
     override suspend fun fetchOrderDetail(

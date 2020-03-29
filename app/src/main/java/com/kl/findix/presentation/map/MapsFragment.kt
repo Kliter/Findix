@@ -190,7 +190,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private fun observeEvent(viewModel: MapsViewModel) {
         viewModel.run {
             this.backToLoginCommand.nonNullObserve(viewLifecycleOwner) {
-                // _viewModel.signOut()
                 navController.navigate(
                     MapsFragmentDirections.toLogin()
                 )
@@ -207,6 +206,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private fun moveToUserLocation(latLng: LatLng) {
         mMap?.let { map ->
             val cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15f)
+            mMap?.clear()
             map.addMarker(
                 MarkerOptions()
                     .position(latLng)
