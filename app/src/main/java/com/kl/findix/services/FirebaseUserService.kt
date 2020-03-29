@@ -9,10 +9,7 @@ import com.kl.findix.model.User
 interface FirebaseUserService {
     fun getCurrentSignInUser(): FirebaseUser?
     suspend fun signOut()
-    suspend fun signInWithGoogle(
-        googleSignInAccount: GoogleSignInAccount
-    ): ServiceResult<Unit>
-    suspend fun getUserLiveData(): LiveData<User>
+    suspend fun signInWithGoogle(googleSignInAccount: GoogleSignInAccount): ServiceResult<Unit>
     suspend fun signUpWithEmail(email: String, password: String): ServiceResult<Unit>
     suspend fun signInWithEmail(email: String, password: String): ServiceResult<Unit>
 }

@@ -7,5 +7,5 @@ import com.kl.findix.model.ServiceResult
 
 interface ImageService {
     fun getBitmap(uri: Uri, contentResolver: ContentResolver): ServiceResult<Bitmap>
-    fun getBytesFromBitmap(bitmap: Bitmap): ByteArray
+    fun getBytesFromBitmap(bitmap: Bitmap): ServiceResult<ByteArray>
 }

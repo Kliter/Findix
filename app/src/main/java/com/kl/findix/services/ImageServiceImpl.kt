@@ -25,9 +25,18 @@ class ImageServiceImpl : ImageService {
         )
     }
 
-    override fun getBytesFromBitmap(bitmap: Bitmap): ByteArray {
-        val stream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, COMPRESS_QUALITY, stream)
-        return stream.toByteArray()
+    override fun getBytesFromBitmap(bitmap: Bitmap): ServiceResult<ByteArray> {
+        return runCatching {
+            val stream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, COMPRESS_QUALITY, stream)
+            stream.toByteArray()
+        }.fold(
+            onSuccess = {
+                Success(it)
+            },
+            onFailure = {
+                Failure(it as Exception)
+            }
+        )
     }
 }

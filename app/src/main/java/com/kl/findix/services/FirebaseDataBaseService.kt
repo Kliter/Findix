@@ -16,9 +16,6 @@ interface FirebaseDataBaseService {
     suspend fun fetchQueriedCityOrders(city: String): ServiceResult<List<Order>>
     suspend fun fetchOrderDetail(orderId: String): ServiceResult<Order?>
     suspend fun fetchUserInfo(userId: String): ServiceResult<User?>
-    suspend fun fetchOwnOrders(
-        userId: String,
-        lastOrder: Order? = null
-    ): ServiceResult<List<Order>>
+    suspend fun fetchOwnOrders(userId: String, lastOrder: Order? = null): ServiceResult<List<Order>>
     suspend fun deleteOrder(orderId: String): ServiceResult<Unit>
 }

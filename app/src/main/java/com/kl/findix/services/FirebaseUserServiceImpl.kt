@@ -53,8 +53,6 @@ class FirebaseUserServiceImpl @Inject constructor(
             }
         }
 
-    override suspend fun getUserLiveData(): MutableLiveData<User> = mUserData
-
     private fun signUpGoogleAccount(firebaseUser: FirebaseUser) {
         val email = firebaseUser.email.toString()
         if (email.isNotEmpty()) {
