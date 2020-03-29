@@ -57,7 +57,7 @@ class ProfileDetailViewModel @Inject constructor(
         firebaseUser?.let { firebaseUser ->
             viewModelScope.launch {
                 setProfilePhotoCommand.postValue(
-                    firebaseStorageService.getProfileIconRef(firebaseUser.uid)
+                    firebaseStorageService.getProfilePhotoRef(firebaseUser.uid)
                 )
             }
         }

@@ -87,7 +87,7 @@ class CreateOrderViewModel @Inject constructor(
                         is ServiceResult.Success -> {
                             uiState.postValue(UiState.Loaded)
                             succeedCreateOrderCommand.postValue(true)
-                            uploadOrderPhoto(result.data, contentResolver)
+                            prepareExecuteUploadOrderPhoto(result.data, contentResolver)
                         }
                         is ServiceResult.Failure -> {
                             handleError(result.exception)
@@ -100,7 +100,7 @@ class CreateOrderViewModel @Inject constructor(
         }
     }
 
-    private fun uploadOrderPhoto(orderId: String, contentResolver: ContentResolver) {
+    private fun prepareExecuteUploadOrderPhoto(orderId: String, contentResolver: ContentResolver) {
         safeLet(
             firebaseUserService.getCurrentSignInUser(),
             _orderPhotoUri
@@ -110,16 +110,44 @@ class CreateOrderViewModel @Inject constructor(
                 when (val result = imageService.getBitmap(orderPhotoUri, contentResolver)) {
                     is ServiceResult.Success -> {
                         uiState.postValue(UiState.Loaded)
-                        firebaseStorageService.uploadOrderPhoto(
-                            userId = currentSignInUser.uid,
-                            orderId = orderId,
-                            byteArray = imageService.getBytesFromBitmap(result.data)
-                        )
-                        resetOrderInfo()
+                        executeUploadOrderPhoto(currentSignInUser.uid, orderId, result.data)
                     }
                     is ServiceResult.Failure -> {
                         handleError(result.exception)
                     }
+                }
+            }
+        }
+    }
+
+    private fun executeUploadOrderPhoto(userId: String, orderId: String, orderPhotoBitmap: Bitmap) {
+        viewModelScope.launch {
+            uiState.postValue(UiState.Loading)
+            when (val result = imageService.getBytesFromBitmap(orderPhotoBitmap)) {
+                is ServiceResult.Success -> {
+                    uploadOrderPhoto(userId, orderId, result.data)
+                }
+                is ServiceResult.Failure -> {
+                    handleError(result.exception)
+                }
+            }
+        }
+    }
+
+    private fun uploadOrderPhoto(userId: String, orderId: String, orderPhotoByteArray: ByteArray) {
+        viewModelScope.launch {
+            uiState.postValue(UiState.Loading)
+            when (val result = firebaseStorageService.uploadOrderPhoto(
+                userId = userId,
+                orderId = orderId,
+                byteArray = orderPhotoByteArray
+            )) {
+                is ServiceResult.Success -> {
+                    uiState.postValue(UiState.Loaded)
+                    resetOrderInfo()
+                }
+                is ServiceResult.Failure -> {
+                    handleError(result.exception)
                 }
             }
         }
@@ -145,7 +173,11 @@ class CreateOrderViewModel @Inject constructor(
         context: Context,
         locationProviderClient: FusedLocationProviderClient
     ): UserLocation? {
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
             return suspendCoroutine { continuation ->
                 locationProviderClient.lastLocation.addOnSuccessListener { result ->
                     result?.let {

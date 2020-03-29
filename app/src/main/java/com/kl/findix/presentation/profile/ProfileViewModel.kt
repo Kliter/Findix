@@ -1,13 +1,10 @@
 package com.kl.findix.presentation.profile
 
 import android.graphics.Bitmap
-import android.util.Log
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
@@ -22,7 +19,6 @@ import com.kl.findix.services.FirebaseUserService
 import com.kl.findix.util.UiState
 import com.kl.findix.util.delegate.UiStateViewModelDelegate
 import com.shopify.livedataktx.PublishLiveDataKtx
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -75,7 +71,7 @@ class ProfileViewModel @Inject constructor(
     fun setProfileIcon() {
         firebaseUser?.let { firebaseUser ->
             viewModelScope.launch {
-                setProfileIconCommand.postValue(firebaseStorageService.getProfileIconRef(firebaseUser.uid))
+                setProfileIconCommand.postValue(firebaseStorageService.getProfilePhotoRef(firebaseUser.uid))
             }
         }
     }

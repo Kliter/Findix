@@ -95,10 +95,7 @@ class ProfileEditViewModel @Inject constructor(
             viewModelScope.launch {
                 when (val result = imageService.getBitmap(profilePhotoUri, contentResolver)) {
                     is ServiceResult.Success -> {
-                        firebaseStorageService.uploadProfileIcon(
-                            currentSignInUser.uid,
-                            imageService.getBytesFromBitmap(result.data)
-                        )
+                        executeUploadProfilePhoto(currentSignInUser, result.data)
                     }
                     is ServiceResult.Failure -> {
                         handleError(result.exception)
@@ -124,7 +121,7 @@ class ProfileEditViewModel @Inject constructor(
         firebaseUser?.let { firebaseUser ->
             viewModelScope.launch {
                 setProfileIconCommand.postValue(
-                    firebaseStorageService.getProfileIconRef(
+                    firebaseStorageService.getProfilePhotoRef(
                         firebaseUser.uid
                     )
                 )
@@ -135,6 +132,43 @@ class ProfileEditViewModel @Inject constructor(
     fun signOut() {
         viewModelScope.launch {
             firebaseUserService.signOut()
+        }
+    }
+
+    private fun executeUploadProfilePhoto(
+        currentSignInUser: FirebaseUser,
+        profilePhotoBitmap: Bitmap
+    ) {
+        viewModelScope.launch {
+            uiState.postValue(UiState.Loading)
+            when (val result = imageService.getBytesFromBitmap(profilePhotoBitmap)) {
+                is ServiceResult.Success -> {
+                    uiState.postValue(UiState.Loaded)
+                    uploadProfilePhoto(currentSignInUser, result.data)
+                }
+                is ServiceResult.Failure -> {
+                    handleError(result.exception)
+                }
+            }
+        }
+    }
+
+    private fun uploadProfilePhoto(
+        currentSignInUser: FirebaseUser,
+        profilePhotoByteArray: ByteArray
+    ) {
+        viewModelScope.launch {
+            when (val result = firebaseStorageService.uploadProfilePhoto(
+                currentSignInUser.uid,
+                profilePhotoByteArray
+            )) {
+                is ServiceResult.Success -> {
+                    uiState.postValue(UiState.Loaded)
+                }
+                is ServiceResult.Failure -> {
+                    handleError(result.exception)
+                }
+            }
         }
     }
 }
