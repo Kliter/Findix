@@ -95,4 +95,7 @@ class Order(): BaseObservable() {
             field = value
             notifyPropertyChanged(BR.timeStamp)
         }
+
+    fun isFilledTitle() = title?.isNotBlank() ?: false
+    fun isFilledDescription() = description?.isNotBlank() ?: false
 }

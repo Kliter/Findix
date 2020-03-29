@@ -89,7 +89,6 @@ class CreateOrderFragment : Fragment() {
                 }
             }
         }
-
         _viewModel.resetOrderInfo()
         setupSpinner()
 

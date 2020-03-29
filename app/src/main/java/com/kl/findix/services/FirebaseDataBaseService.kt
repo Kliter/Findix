@@ -16,12 +16,7 @@ interface FirebaseDataBaseService {
     )
 
     suspend fun updateUserLocation(firebaseUser: FirebaseUser, userLocation: UserLocation)
-    suspend fun createOrder(
-        firebaseUser: FirebaseUser,
-        order: Order,
-        createOrderListener: (String) -> Unit
-    )
-
+    suspend fun createOrder(firebaseUser: FirebaseUser, order: Order): ServiceResult<String>
     suspend fun fetchLast15Orders(fetchLast15OrdersListener: (List<Order>) -> Unit)
     suspend fun fetchQueriedCityOrders(
         city: String,

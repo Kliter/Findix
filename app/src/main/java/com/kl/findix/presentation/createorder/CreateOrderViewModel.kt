@@ -7,6 +7,8 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -22,6 +24,8 @@ import com.kl.findix.services.FirebaseDataBaseService
 import com.kl.findix.services.FirebaseStorageService
 import com.kl.findix.services.FirebaseUserService
 import com.kl.findix.services.ImageService
+import com.kl.findix.util.UiState
+import com.kl.findix.util.delegate.UiStateViewModelDelegate
 import com.kl.findix.util.extension.safeLet
 import com.shopify.livedataktx.PublishLiveDataKtx
 import kotlinx.coroutines.launch
@@ -34,13 +38,18 @@ class CreateOrderViewModel @Inject constructor(
     private val firebaseUserService: FirebaseUserService,
     private val firebaseDataBaseService: FirebaseDataBaseService,
     private val firebaseStorageService: FirebaseStorageService,
-    private val imageService: ImageService
-) : ViewModel() {
+    private val imageService: ImageService,
+    private val uiStateViewModelDelegate: UiStateViewModelDelegate
+) : ViewModel(), LifecycleObserver,
+    UiStateViewModelDelegate by uiStateViewModelDelegate {
 
     companion object {
         private const val TAG = "CreateOrderViewModel"
     }
 
+    private val _order: MutableLiveData<Order> = MutableLiveData()
+    val order: LiveData<Order>
+        get() = _order
     var orderPhotoBitmap: MutableLiveData<Bitmap> = MutableLiveData()
 
     var showToastCommand: PublishLiveDataKtx<Int> = PublishLiveDataKtx()
@@ -49,11 +58,10 @@ class CreateOrderViewModel @Inject constructor(
 
     private var firebaseUser: FirebaseUser? = firebaseUserService.getCurrentSignInUser()
     private var _orderPhotoUri: Uri? = null
-    var order: Order? = null
     var cityNumber: CityNumber? = null // Spinnerのテキストバインドするために必要
 
     fun resetOrderInfo() {
-        order = Order()
+        _order.postValue(Order())
         cityNumber = CityNumber()
         _orderPhotoUri = null
     }
@@ -63,31 +71,26 @@ class CreateOrderViewModel @Inject constructor(
         locationProviderClient: FusedLocationProviderClient,
         contentResolver: ContentResolver
     ) {
-        safeLet(
-            order,
-            order?.title?.isNotBlank(),
-            order?.description?.isNotBlank()
-        ) { order, isFilledTitle, isFilledDescription ->
-            if (isFilledTitle && isFilledDescription) {
-                cityNumber?.number?.let { number ->
-                    order.apply {
-                        this.city = context.resources.getStringArray(R.array.cities)[number]
+        safeLet(firebaseUser, _order.value) { firebaseUser, order ->
+            if (order.isFilledTitle() && order.isFilledDescription()) {
+                viewModelScope.launch {
+                    uiState.postValue(UiState.Loading)
+                    cityNumber?.number?.let { number ->
+                        order.city = context.resources.getStringArray(R.array.cities)[number]
                     }
-                }
-                order.hasPhoto = _orderPhotoUri != null
-                firebaseUser?.let { firebaseUser ->
-                    viewModelScope.launch {
-                        order.shouldRegisterLocation?.let {
-                            if (it) {
-                                order.userLocation = getLocation(context, locationProviderClient)
-                            }
-                        }
-                        firebaseDataBaseService.createOrder(
-                            firebaseUser,
-                            order
-                        ) { orderId ->
+                    if (order.shouldRegisterLocation == true) {
+                        order.userLocation = getLocation(context, locationProviderClient)
+                    }
+                    order.hasPhoto = _orderPhotoUri != null
+
+                    when (val result = firebaseDataBaseService.createOrder(firebaseUser, order)) {
+                        is ServiceResult.Success -> {
+                            uiState.postValue(UiState.Loaded)
                             succeedCreateOrderCommand.postValue(true)
-                            uploadOrderPhoto(orderId, contentResolver)
+                            uploadOrderPhoto(result.data, contentResolver)
+                        }
+                        is ServiceResult.Failure -> {
+                            handleError(result.exception)
                         }
                     }
                 }
@@ -103,8 +106,10 @@ class CreateOrderViewModel @Inject constructor(
             _orderPhotoUri
         ) { currentSignInUser, orderPhotoUri ->
             viewModelScope.launch {
+                uiState.postValue(UiState.Loading)
                 when (val result = imageService.getBitmap(orderPhotoUri, contentResolver)) {
                     is ServiceResult.Success -> {
+                        uiState.postValue(UiState.Loaded)
                         firebaseStorageService.uploadOrderPhoto(
                             userId = currentSignInUser.uid,
                             orderId = orderId,
@@ -113,7 +118,7 @@ class CreateOrderViewModel @Inject constructor(
                         resetOrderInfo()
                     }
                     is ServiceResult.Failure -> {
-                        // TODO: Error handling.
+                        handleError(result.exception)
                     }
                 }
             }
@@ -121,13 +126,17 @@ class CreateOrderViewModel @Inject constructor(
     }
 
     fun updateOrderPhoto(uri: Uri, contentResolver: ContentResolver) {
-        when (val result = imageService.getBitmap(uri, contentResolver)) {
-            is ServiceResult.Success -> {
-                _orderPhotoUri = uri
-                orderPhotoBitmap.postValue(result.data)
-            }
-            is ServiceResult.Failure -> {
-                // TODO: Error handling.
+        viewModelScope.launch {
+            uiState.postValue(UiState.Loading)
+            when (val result = imageService.getBitmap(uri, contentResolver)) {
+                is ServiceResult.Success -> {
+                    uiState.postValue(UiState.Loaded)
+                    _orderPhotoUri = uri
+                    orderPhotoBitmap.postValue(result.data)
+                }
+                is ServiceResult.Failure -> {
+                    handleError(result.exception)
+                }
             }
         }
     }
@@ -136,11 +145,7 @@ class CreateOrderViewModel @Inject constructor(
         context: Context,
         locationProviderClient: FusedLocationProviderClient
     ): UserLocation? {
-        if (ActivityCompat.checkSelfPermission(
-                context,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             return suspendCoroutine { continuation ->
                 locationProviderClient.lastLocation.addOnSuccessListener { result ->
                     result?.let {

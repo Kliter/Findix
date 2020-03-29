@@ -99,17 +99,23 @@ class FirebaseDataBaseServiceImpl @Inject constructor(
 
     override suspend fun createOrder(
         firebaseUser: FirebaseUser,
-        order: Order,
-        createOrderListener: (String) -> Unit
-    ) {
-        database.collection("Order")
-            .add(order.apply {
-                this.userId = firebaseUser.uid
-                this.timeStamp = Date()
-            })
-            .addOnSuccessListener {
-                createOrderListener.invoke(it.id)
-            }
+        order: Order
+    ) = suspendCoroutine<ServiceResult<String>> { continuation ->
+        try {
+            database.collection("Order")
+                .add(order.apply {
+                    this.userId = firebaseUser.uid
+                    this.timeStamp = Date()
+                })
+                .addOnSuccessListener {
+                    continuation.resume(ServiceResult.Success(it.id))
+                }
+                .addOnFailureListener {
+                    continuation.resume(ServiceResult.Failure(it))
+                }
+        } catch (e: Exception) {
+            continuation.resume(ServiceResult.Failure(e))
+        }
     }
 
     override suspend fun fetchQueriedCityOrders(
