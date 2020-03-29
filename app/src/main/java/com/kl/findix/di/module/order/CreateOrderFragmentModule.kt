@@ -3,7 +3,7 @@ package com.kl.findix.di.module.order
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.kl.findix.navigation.CreateOrderNavigator
-import com.kl.findix.presentation.order.CreateOrderFragment
+import com.kl.findix.presentation.createorder.CreateOrderFragment
 import dagger.Binds
 import dagger.Module
 import dagger.Provides

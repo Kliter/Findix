@@ -3,7 +3,7 @@ package com.kl.findix.di.module.order
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.kl.findix.navigation.ProfileDetailNavigator
-import com.kl.findix.presentation.order.ProfileDetailFragment
+import com.kl.findix.presentation.profiledetail.ProfileDetailFragment
 import dagger.Binds
 import dagger.Module
 import dagger.Provides

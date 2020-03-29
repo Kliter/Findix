@@ -10,16 +10,16 @@ import com.kl.findix.di.module.order.ProfileDetailFragmentModule
 import com.kl.findix.di.module.profile.ProfileBottomSheetDialogModule
 import com.kl.findix.di.module.profile.ProfileEditFragmentModule
 import com.kl.findix.di.module.profile.ProfileFragmentModule
+import com.kl.findix.presentation.createorder.CreateOrderFragment
 import com.kl.findix.presentation.login.LoginFragment
-import com.kl.findix.presentation.login.SignUpFragment
 import com.kl.findix.presentation.map.MapsFragment
-import com.kl.findix.presentation.order.CreateOrderFragment
-import com.kl.findix.presentation.order.OrderDetailFragment
 import com.kl.findix.presentation.order.OrderFragment
-import com.kl.findix.presentation.order.ProfileDetailFragment
+import com.kl.findix.presentation.orderdetail.OrderDetailFragment
 import com.kl.findix.presentation.profile.ProfileBottomSheetDialog
-import com.kl.findix.presentation.profile.ProfileEditFragment
 import com.kl.findix.presentation.profile.ProfileFragment
+import com.kl.findix.presentation.profiledetail.ProfileDetailFragment
+import com.kl.findix.presentation.profileedit.ProfileEditFragment
+import com.kl.findix.presentation.signup.SignUpFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

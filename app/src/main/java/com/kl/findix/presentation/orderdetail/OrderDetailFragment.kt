@@ -1,4 +1,4 @@
-package com.kl.findix.presentation.order
+package com.kl.findix.presentation.orderdetail
 
 import android.content.Context
 import android.os.Bundle

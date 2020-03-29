@@ -1,4 +1,4 @@
-package com.kl.findix.presentation.order
+package com.kl.findix.presentation.profiledetail
 
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.MediatorLiveData

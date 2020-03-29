@@ -1,4 +1,4 @@
-package com.kl.findix.presentation.login
+package com.kl.findix.presentation.signup
 
 import android.content.Context
 import android.os.Bundle

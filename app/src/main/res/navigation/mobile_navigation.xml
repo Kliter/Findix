@@ -28,7 +28,7 @@
 
     <fragment
             android:id="@+id/fragment_sign_up"
-            android:name="com.kl.findix.presentation.login.SignUpFragment"
+            android:name="com.kl.findix.presentation.signup.SignUpFragment"
             android:label="SignUp">
 
         <action
@@ -83,12 +83,12 @@
 
     <fragment
             android:id="@+id/fragment_create_order"
-            android:name="com.kl.findix.presentation.order.CreateOrderFragment"
+            android:name="com.kl.findix.presentation.createorder.CreateOrderFragment"
             android:label="CreateOrder" />
 
     <fragment
             android:id="@+id/fragment_order_detail"
-            android:name="com.kl.findix.presentation.order.OrderDetailFragment"
+            android:name="com.kl.findix.presentation.orderdetail.OrderDetailFragment"
             android:label="OrderDetail">
 
         <argument
@@ -107,7 +107,7 @@
 
     <fragment
             android:id="@+id/fragment_profile_detail"
-            android:name="com.kl.findix.presentation.order.ProfileDetailFragment"
+            android:name="com.kl.findix.presentation.profiledetail.ProfileDetailFragment"
             android:label="ProfileDetail">
 
         <argument
@@ -132,7 +132,7 @@
 
     <fragment
             android:id="@+id/fragment_profile_edit"
-            android:name="com.kl.findix.presentation.profile.ProfileEditFragment"
+            android:name="com.kl.findix.presentation.profileedit.ProfileEditFragment"
             android:label="ProfileEdit">
 
         <action

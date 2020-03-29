@@ -1,4 +1,4 @@
-package com.kl.findix.presentation.login
+package com.kl.findix.presentation.signup
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

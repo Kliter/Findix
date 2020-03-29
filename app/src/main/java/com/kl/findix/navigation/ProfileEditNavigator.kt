@@ -1,7 +1,7 @@
 package com.kl.findix.navigation
 
 import androidx.navigation.NavController
-import com.kl.findix.presentation.profile.ProfileEditFragmentDirections
+import com.kl.findix.presentation.profileedit.ProfileEditFragmentDirections
 
 class ProfileEditNavigator(
     private val navController: NavController

@@ -1,7 +1,7 @@
 package com.kl.findix.navigation
 
 import androidx.navigation.NavController
-import com.kl.findix.presentation.order.OrderDetailFragmentDirections
+import com.kl.findix.presentation.orderdetail.OrderDetailFragmentDirections
 
 class OrderDetailNavigator(
     private val navController: NavController

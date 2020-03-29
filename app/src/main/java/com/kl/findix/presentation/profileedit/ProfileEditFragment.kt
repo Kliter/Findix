@@ -1,4 +1,4 @@
-package com.kl.findix.presentation.profile
+package com.kl.findix.presentation.profileedit
 
 import android.app.Activity
 import android.app.AlertDialog

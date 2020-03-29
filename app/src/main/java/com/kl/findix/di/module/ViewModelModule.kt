@@ -2,15 +2,15 @@ package com.kl.findix.di.module
 
 import androidx.lifecycle.ViewModel
 import com.kl.findix.presentation.MainViewModel
+import com.kl.findix.presentation.createorder.CreateOrderViewModel
 import com.kl.findix.presentation.login.LoginViewModel
-import com.kl.findix.presentation.login.SignUpViewModel
 import com.kl.findix.presentation.map.MapsViewModel
-import com.kl.findix.presentation.order.CreateOrderViewModel
-import com.kl.findix.presentation.order.OrderDetailViewModel
 import com.kl.findix.presentation.order.OrderViewModel
-import com.kl.findix.presentation.order.ProfileDetailViewModel
-import com.kl.findix.presentation.profile.ProfileEditViewModel
+import com.kl.findix.presentation.profiledetail.ProfileDetailViewModel
+import com.kl.findix.presentation.orderdetail.OrderDetailViewModel
 import com.kl.findix.presentation.profile.ProfileViewModel
+import com.kl.findix.presentation.profileedit.ProfileEditViewModel
+import com.kl.findix.presentation.signup.SignUpViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap

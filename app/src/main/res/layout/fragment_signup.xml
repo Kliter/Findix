@@ -8,7 +8,7 @@
 
         <variable
                 name="viewModel"
-                type="com.kl.findix.presentation.login.SignUpViewModel" />
+                type="com.kl.findix.presentation.signup.SignUpViewModel" />
 
         <variable
                 name="signInInfo"

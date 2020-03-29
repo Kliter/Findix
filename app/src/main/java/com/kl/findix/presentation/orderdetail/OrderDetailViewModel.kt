@@ -1,4 +1,4 @@
-package com.kl.findix.presentation.order
+package com.kl.findix.presentation.orderdetail
 
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.MutableLiveData
