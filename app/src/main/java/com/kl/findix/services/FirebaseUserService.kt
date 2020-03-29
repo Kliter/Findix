@@ -13,14 +13,6 @@ interface FirebaseUserService {
         googleSignInAccount: GoogleSignInAccount
     ): ServiceResult<Unit>
     suspend fun getUserLiveData(): LiveData<User>
-    suspend fun signUpWithEmail(
-        email: String,
-        password: String,
-        emailSignUpSuccessListener: () -> Unit,
-        emailSignUpFailedListener: () -> Unit
-    )
-    suspend fun signInWithEmail(
-        email: String,
-        password: String
-    ): ServiceResult<Unit>
+    suspend fun signUpWithEmail(email: String, password: String): ServiceResult<Unit>
+    suspend fun signInWithEmail(email: String, password: String): ServiceResult<Unit>
 }

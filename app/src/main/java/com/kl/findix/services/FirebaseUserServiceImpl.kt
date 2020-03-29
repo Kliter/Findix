@@ -86,27 +86,20 @@ class FirebaseUserServiceImpl @Inject constructor(
         return true
     }
 
-    override suspend fun signUpWithEmail(
-        email: String,
-        password: String,
-        emailSignUpSuccessListener: () -> Unit,
-        emailSignUpFailedListener: () -> Unit
-    ) {
-        coroutineScope {
-            launch {
+    override suspend fun signUpWithEmail(email: String, password: String) =
+        suspendCoroutine<ServiceResult<Unit>> { continuation ->
+            try {
                 mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            Log.d(TAG, "createUserWithEmail: Succeed.")
-                            emailSignUpSuccessListener.invoke()
-                        } else {
-                            Log.d(TAG, "createUserWithEmail: Failed.")
-                            emailSignUpFailedListener.invoke()
-                        }
+                        continuation.resume(ServiceResult.Success(Unit))
                     }
+                    .addOnFailureListener {
+                        continuation.resume(ServiceResult.Failure(it))
+                    }
+            } catch (e: Exception) {
+                continuation.resume(ServiceResult.Failure(e))
             }
         }
-    }
 
     override suspend fun signInWithEmail(email: String, password: String) =
         suspendCoroutine<ServiceResult<Unit>> { continutation ->

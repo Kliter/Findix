@@ -30,16 +30,17 @@ class SignUpViewModel @Inject constructor(
             signInInfo.password
         ) { email, password ->
             viewModelScope.launch {
-                firebaseUserService.signUpWithEmail(
-                    email = email,
-                    password = password,
-                    emailSignUpSuccessListener = {
+                uiState.postValue(UiState.Loading)
+                when (val result = firebaseUserService.signUpWithEmail(email = email, password = password)) {
+                    is ServiceResult.Success -> {
+                        uiState.postValue(UiState.Loaded)
                         signUpResult.postValue(true)
-                    },
-                    emailSignUpFailedListener = {
+                    }
+                    is ServiceResult.Failure -> {
+                        handleError(result.exception)
                         signUpResult.postValue(false)
                     }
-                )
+                }
             }
         }
     }
