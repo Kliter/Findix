@@ -20,7 +20,7 @@ interface FirebaseDataBaseService {
     suspend fun fetchLast15Orders(): ServiceResult<List<Order>>
     suspend fun fetchQueriedCityOrders(city: String): ServiceResult<List<Order>>
     suspend fun fetchOrderDetail(orderId: String): ServiceResult<Order?>
-    suspend fun fetchUserInfo(userId: String, fetchUserInfoListener: (User) -> Unit)
+    suspend fun fetchUserInfo(userId: String): ServiceResult<User?>
     suspend fun fetchOwnOrders(
         userId: String,
         lastOrder: Order? = null

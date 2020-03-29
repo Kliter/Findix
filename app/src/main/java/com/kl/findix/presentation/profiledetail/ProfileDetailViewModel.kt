@@ -7,10 +7,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.storage.StorageReference
+import com.kl.findix.model.ServiceResult
 import com.kl.findix.model.User
 import com.kl.findix.services.FirebaseDataBaseService
 import com.kl.findix.services.FirebaseStorageService
 import com.kl.findix.services.FirebaseUserService
+import com.kl.findix.util.UiState
+import com.kl.findix.util.delegate.UiStateViewModelDelegate
 import com.shopify.livedataktx.PublishLiveDataKtx
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,8 +21,9 @@ import javax.inject.Inject
 class ProfileDetailViewModel @Inject constructor(
     private val firebaseUserService: FirebaseUserService,
     private val firebaseDataBaseService: FirebaseDataBaseService,
-    private val firebaseStorageService: FirebaseStorageService
-) : ViewModel(), LifecycleObserver {
+    private val firebaseStorageService: FirebaseStorageService,
+    private val uiStateViewModelDelegate: UiStateViewModelDelegate
+) : ViewModel(), LifecycleObserver, UiStateViewModelDelegate by uiStateViewModelDelegate {
 
     private val _user: MediatorLiveData<User> = MediatorLiveData()
     val user: MutableLiveData<User>
@@ -31,10 +35,19 @@ class ProfileDetailViewModel @Inject constructor(
 
     fun fetchUserInfo(userId: String) {
         viewModelScope.launch {
-            firebaseDataBaseService.fetchUserInfo(userId) {
-                _user.postValue(it)
-                it.profilePhotoUrl?.isNotEmpty()?.let {
-                    setProfilePhoto()
+            uiState.postValue(UiState.Loading)
+            when (val result = firebaseDataBaseService.fetchUserInfo(userId)) {
+                is ServiceResult.Success -> {
+                    uiState.postValue(UiState.Loaded)
+                    result.data?.let { user ->
+                        _user.postValue(user)
+                        user.profilePhotoUrl?.isNotEmpty()?.let {
+                            setProfilePhoto()
+                        }
+                    }
+                }
+                is ServiceResult.Failure -> {
+                    handleError(result.exception)
                 }
             }
         }
@@ -42,9 +55,11 @@ class ProfileDetailViewModel @Inject constructor(
 
     private fun setProfilePhoto() {
         firebaseUser?.let { firebaseUser ->
-            setProfilePhotoCommand.postValue(
-                firebaseStorageService.getProfileIconRef(firebaseUser.uid)
-            )
+            viewModelScope.launch {
+                setProfilePhotoCommand.postValue(
+                    firebaseStorageService.getProfileIconRef(firebaseUser.uid)
+                )
+            }
         }
     }
 }

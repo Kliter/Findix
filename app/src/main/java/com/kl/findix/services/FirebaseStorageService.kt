@@ -4,7 +4,7 @@ import com.google.firebase.storage.StorageReference
 
 interface FirebaseStorageService {
     fun uploadProfileIcon(userId: String, byteArray: ByteArray)
-    fun getProfileIconRef(userId: String): StorageReference
+    suspend fun getProfileIconRef(userId: String): StorageReference
     fun uploadOrderPhoto(userId: String, orderId: String, byteArray: ByteArray)
     suspend fun getOrderPhotoRef(userId: String, orderId: String): StorageReference
     fun deleteOrderPhoto(userId: String, orderId: String)

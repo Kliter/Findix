@@ -28,12 +28,8 @@ class FirebaseStorageServiceImpl(
         }
     }
 
-    override fun getProfileIconRef(userId: String) =
-        storage.reference.child(
-            getStorageProfileIconPath(
-                userId
-            )
-        )
+    override suspend fun getProfileIconRef(userId: String) =
+        storage.reference.child(getStorageProfileIconPath(userId))
 
     override fun uploadOrderPhoto(userId: String, orderId: String, byteArray: ByteArray) {
         val orderPhotoReference = storage.reference.child(

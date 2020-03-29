@@ -117,7 +117,9 @@ class ProfileEditViewModel @Inject constructor(
 
     fun setProfileIcon() {
         firebaseUser?.let { firebaseUser ->
-            setProfileIconCommand.postValue(firebaseStorageService.getProfileIconRef(firebaseUser.uid))
+            viewModelScope.launch {
+                setProfileIconCommand.postValue(firebaseStorageService.getProfileIconRef(firebaseUser.uid))
+            }
         }
     }
 
