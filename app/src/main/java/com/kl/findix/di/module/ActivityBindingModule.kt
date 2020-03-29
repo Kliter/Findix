@@ -12,6 +12,7 @@ import com.kl.findix.presentation.profile.ProfileModule
 import com.kl.findix.presentation.profiledetail.ProfileDetailModule
 import com.kl.findix.presentation.profileedit.ProfileEditModule
 import com.kl.findix.presentation.signup.SignUpModule
+import com.kl.findix.presentation.splash.SplashModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -43,6 +44,7 @@ abstract class ActivityBindingModule {
             ProfileDetailModule::class,
             ProfileEditModule::class,
             SignUpModule::class,
+            SplashModule::class,
             NavModule::class
         ]
     )

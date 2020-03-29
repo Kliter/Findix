@@ -9,14 +9,11 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.kl.findix.R
 import com.kl.findix.databinding.FragmentLoginBinding
-import com.kl.findix.di.ViewModelFactory
-import com.kl.findix.navigation.LoginNavigator
 import com.kl.findix.util.REQUEST_CODE_SIGN_IN
 import com.kl.findix.util.extension.nonNullObserve
 import com.kl.findix.util.extension.showToast
@@ -66,8 +63,6 @@ class LoginFragment : Fragment() {
             }
         }
 
-        _viewModel.isAlreadySignedIn()
-
         return binding.root
     }
 
@@ -79,7 +74,7 @@ class LoginFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         observeState(_viewModel)
-        activity?.bottom_navigation_view?.visibility = View.VISIBLE
+        activity?.bottom_navigation_view?.visibility = View.GONE
     }
 
     private fun observeState(viewModel: LoginViewModel) {
@@ -99,13 +94,6 @@ class LoginFragment : Fragment() {
                         getString(R.string.failed_sign_in)
                     )
                 }
-            }
-        }
-        viewModel.isAlreadySignedIn.nonNullObserve(viewLifecycleOwner) {
-            if (it) {
-                navController.navigate(
-                    LoginFragmentDirections.toMaps()
-                )
             }
         }
     }
