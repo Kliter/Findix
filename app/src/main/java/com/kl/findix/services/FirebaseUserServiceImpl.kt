@@ -4,17 +4,19 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.kl.findix.R
+import com.kl.findix.model.ServiceResult
 import com.kl.findix.model.User
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class FirebaseUserServiceImpl @Inject constructor(
     val context: Context,
@@ -35,32 +37,21 @@ class FirebaseUserServiceImpl @Inject constructor(
         mAuth.signOut()
     }
 
-    override suspend fun signInWithGoogle(
-        googleSignInAccount: GoogleSignInAccount,
-        googleSignInSuccessListener: () -> Unit,
-        googleSignInFailedListener: () -> Unit
-    ) {
-        try {
-            val credential = GoogleAuthProvider.getCredential(googleSignInAccount.idToken, null)
-            mAuth.signInWithCredential(credential).addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d(TAG, "Google signin is succeed.")
-                    val user = mAuth.currentUser
-                    user?.let {
-                        signUpGoogleAccount(user)
+    override suspend fun signInWithGoogle(googleSignInAccount: GoogleSignInAccount) =
+        suspendCoroutine<ServiceResult<Unit>> { continuation ->
+            try {
+                val credential = GoogleAuthProvider.getCredential(googleSignInAccount.idToken, null)
+                mAuth.signInWithCredential(credential)
+                    .addOnSuccessListener { task ->
+                        continuation.resume(ServiceResult.Success(Unit))
                     }
-                    googleSignInSuccessListener.invoke()
-                }
-                else {
-                    Log.d(TAG, "Google signin is failed.")
-                    googleSignInFailedListener.invoke()
-                }
+                    .addOnFailureListener {
+                        continuation.resume(ServiceResult.Failure(it))
+                    }
+            } catch (e: Exception) {
+                continuation.resume(ServiceResult.Failure(e))
             }
-        } catch (e: ApiException) {
-            e.printStackTrace()
-            googleSignInFailedListener.invoke()
         }
-    }
 
     override suspend fun getUserLiveData(): MutableLiveData<User> = mUserData
 
@@ -84,7 +75,8 @@ class FirebaseUserServiceImpl @Inject constructor(
     private suspend fun isAlreadySignUp(): Boolean {
         coroutineScope {
             launch {
-                val usersReference = firestore.collection("Users").document(mAuth.currentUser?.uid!!)
+                val usersReference =
+                    firestore.collection("Users").document(mAuth.currentUser?.uid!!)
                 usersReference.get().addOnCompleteListener { document ->
                     Log.d(TAG, "exist")
                 }
@@ -102,37 +94,32 @@ class FirebaseUserServiceImpl @Inject constructor(
     ) {
         coroutineScope {
             launch {
-                mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Log.d(TAG, "createUserWithEmail: Succeed.")
-                        emailSignUpSuccessListener.invoke()
-                    } else {
-                        Log.d(TAG, "createUserWithEmail: Failed.")
-                        emailSignUpFailedListener.invoke()
+                mAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Log.d(TAG, "createUserWithEmail: Succeed.")
+                            emailSignUpSuccessListener.invoke()
+                        } else {
+                            Log.d(TAG, "createUserWithEmail: Failed.")
+                            emailSignUpFailedListener.invoke()
+                        }
                     }
-                }
             }
         }
     }
 
-    override suspend fun signInWithEmail(
-        email: String,
-        password: String,
-        emailSignInSuccessListener: () -> Unit,
-        emailSignInFailedListener: () -> Unit
-    ) {
-        coroutineScope {
-            launch {
-                mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Log.d(TAG, "signInWithEmail: Succeed.")
-                        emailSignInSuccessListener.invoke()
-                    } else {
-                        Log.d(TAG, "signInWithEmail: Failed.")
-                        emailSignInFailedListener.invoke()
+    override suspend fun signInWithEmail(email: String, password: String) =
+        suspendCoroutine<ServiceResult<Unit>> { continutation ->
+            try {
+                mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnSuccessListener { task ->
+                        continutation.resume(ServiceResult.Success(Unit))
                     }
-                }
+                    .addOnFailureListener {
+                        continutation.resume(ServiceResult.Failure(it))
+                    }
+            } catch (e: Exception) {
+                continutation.resume(ServiceResult.Failure(e))
             }
         }
-    }
 }
