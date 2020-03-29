@@ -8,13 +8,8 @@ import com.kl.findix.model.UserLocation
 
 interface FirebaseDataBaseService {
     suspend fun fetchOwnProfileInfo(firebaseUser: FirebaseUser): ServiceResult<User>
-
-    suspend fun updateProfileInfo(firebaseUser: FirebaseUser, user: User, profilePhotoUrl: String)
-    suspend fun fetchUserLocation(
-        firebaseUser: FirebaseUser,
-        fetchUserLocationListener: (UserLocation) -> Unit
-    )
-
+    suspend fun updateProfileInfo(firebaseUser: FirebaseUser, user: User, profilePhotoUrl: String): ServiceResult<Unit>
+    suspend fun fetchUserLocation(firebaseUser: FirebaseUser, fetchUserLocationListener: (UserLocation) -> Unit)
     suspend fun updateUserLocation(firebaseUser: FirebaseUser, userLocation: UserLocation): ServiceResult<Unit>
     suspend fun createOrder(firebaseUser: FirebaseUser, order: Order): ServiceResult<String>
     suspend fun fetchLast15Orders(): ServiceResult<List<Order>>

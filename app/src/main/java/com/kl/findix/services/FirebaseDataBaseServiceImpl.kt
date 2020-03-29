@@ -48,17 +48,27 @@ class FirebaseDataBaseServiceImpl @Inject constructor(
         firebaseUser: FirebaseUser,
         user: User,
         profilePhotoUrl: String
-    ) {
-        database.collection("User")
-            .document(firebaseUser.uid)
-            .set(
-                user.apply {
-                    this.profilePhotoUrl =
-                        getStorageProfileIconPath(
-                            firebaseUser.uid
-                        )
+    ) = suspendCoroutine<ServiceResult<Unit>> { continuation ->
+        try {
+            database.collection("User")
+                .document(firebaseUser.uid)
+                .set(
+                    user.apply {
+                        this.profilePhotoUrl =
+                            getStorageProfileIconPath(
+                                firebaseUser.uid
+                            )
+                    }
+                )
+                .addOnSuccessListener {
+                    continuation.resume(ServiceResult.Success(Unit))
                 }
-            )
+                .addOnFailureListener {
+                    continuation.resume(ServiceResult.Failure(it))
+                }
+        } catch (e: Exception) {
+            continuation.resume(ServiceResult.Failure(e))
+        }
     }
 
     override suspend fun fetchUserLocation(

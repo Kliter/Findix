@@ -71,14 +71,19 @@ class ProfileEditViewModel @Inject constructor(
     }
 
     fun saveProfile(contentResolver: ContentResolver) {
-        user.value?.let { user ->
+        safeLet(user.value, firebaseUser) { user, firebaseUser ->
             viewModelScope.launch {
-                firebaseUser?.let {
-                    firebaseDataBaseService.updateProfileInfo(
-                        it,
-                        user,
-                        _profilePhotoUri.toString()
-                    )
+                when (val result = firebaseDataBaseService.updateProfileInfo(
+                    firebaseUser,
+                    user,
+                    _profilePhotoUri.toString()
+                )) {
+                    is ServiceResult.Success -> {
+                        uiState.postValue(UiState.Loaded)
+                    }
+                    is ServiceResult.Failure -> {
+                        handleError(result.exception)
+                    }
                 }
             }
         }
@@ -96,7 +101,7 @@ class ProfileEditViewModel @Inject constructor(
                         )
                     }
                     is ServiceResult.Failure -> {
-                        // TODO: Error handling.
+                        handleError(result.exception)
                     }
                 }
             }
@@ -118,7 +123,11 @@ class ProfileEditViewModel @Inject constructor(
     fun setProfileIcon() {
         firebaseUser?.let { firebaseUser ->
             viewModelScope.launch {
-                setProfileIconCommand.postValue(firebaseStorageService.getProfileIconRef(firebaseUser.uid))
+                setProfileIconCommand.postValue(
+                    firebaseStorageService.getProfileIconRef(
+                        firebaseUser.uid
+                    )
+                )
             }
         }
     }
