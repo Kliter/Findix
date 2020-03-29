@@ -157,26 +157,29 @@ class FirebaseDataBaseServiceImpl @Inject constructor(
                     continuation.resume(ServiceResult.Failure(it))
                 }
         } catch (e: Exception) {
-            ServiceResult.Failure(e)
+            continuation.resume(ServiceResult.Failure(e))
         }
     }
 
-    override suspend fun fetchOrderDetail(
-        orderId: String,
-        fetchOrderDetailListener: (Order) -> Unit
-    ) {
-        database.collection("Order")
-            .document(orderId)
-            .get()
-            .addOnSuccessListener { result ->
-                val order = result.toObject(Order::class.java).also {
-                    it?.orderId = result.id
-                }
-                order?.let {
-                    fetchOrderDetailListener.invoke(order)
-                }
+    override suspend fun fetchOrderDetail(orderId: String) =
+        suspendCoroutine<ServiceResult<Order?>> { continuation ->
+            try {
+                database.collection("Order")
+                    .document(orderId)
+                    .get()
+                    .addOnSuccessListener { result ->
+                        val order = result.toObject(Order::class.java).also {
+                            it?.orderId = result.id
+                        }
+                        continuation.resume(ServiceResult.Success(order))
+                    }
+                    .addOnFailureListener {
+                        continuation.resume(ServiceResult.Failure(it))
+                    }
+            } catch (e: Exception) {
+                continuation.resume(ServiceResult.Failure(e))
             }
-    }
+        }
 
     override suspend fun fetchUserInfo(userId: String, fetchUserInfoListener: (User) -> Unit) {
         database.collection("User")
