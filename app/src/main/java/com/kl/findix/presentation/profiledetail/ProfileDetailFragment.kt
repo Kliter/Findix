@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.kl.findix.R
@@ -15,6 +17,7 @@ import com.kl.findix.databinding.FragmentProfileDetailBinding
 import com.kl.findix.di.ViewModelFactory
 import com.kl.findix.navigation.ProfileDetailNavigator
 import com.kl.findix.util.extension.nonNullObserve
+import com.kl.findix.util.extension.viewModelProvider
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -25,9 +28,9 @@ class ProfileDetailFragment : Fragment() {
     }
 
     @Inject
-    lateinit var navigator: ProfileDetailNavigator
+    lateinit var mViewModelFactory: ViewModelProvider.Factory
     @Inject
-    lateinit var mViewModelFactory: ViewModelFactory
+    lateinit var navController: NavController
 
     private lateinit var _viewModel: ProfileDetailViewModel
     private lateinit var binding: FragmentProfileDetailBinding
@@ -44,13 +47,13 @@ class ProfileDetailFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _viewModel = ViewModelProviders.of(this, mViewModelFactory).get(ProfileDetailViewModel::class.java)
+        _viewModel = viewModelProvider(mViewModelFactory)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile_detail, container, false)
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = _viewModel
             onClickBack = View.OnClickListener {
-                navigator.toPrev()
+                navController.popBackStack()
             }
         }
 

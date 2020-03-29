@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.kl.findix.R
 import com.kl.findix.databinding.DialogProfileBottomSheetBinding
 import com.kl.findix.di.ViewModelFactory
+import com.kl.findix.util.extension.viewModelProvider
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -24,15 +26,14 @@ class ProfileBottomSheetDialog(
     }
 
     @Inject
-    lateinit var mViewModelFactory: ViewModelFactory
+    lateinit var mViewModelFactory: ViewModelProvider.Factory
 
     private lateinit var _viewModel: ProfileViewModel
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         AndroidSupportInjection.inject(this)
-        _viewModel =
-            ViewModelProviders.of(this, mViewModelFactory).get(ProfileViewModel::class.java)
+        _viewModel = viewModelProvider(mViewModelFactory)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

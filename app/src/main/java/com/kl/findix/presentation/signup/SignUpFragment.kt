@@ -7,13 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
 import com.kl.findix.R
 import com.kl.findix.databinding.FragmentSignupBinding
-import com.kl.findix.di.ViewModelFactory
-import com.kl.findix.navigation.SignUpNavigator
 import com.kl.findix.util.extension.nonNullObserve
 import com.kl.findix.util.extension.showToast
+import com.kl.findix.util.extension.viewModelProvider
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -21,9 +21,9 @@ class SignUpFragment : Fragment() {
 
     private lateinit var _viewModel: SignUpViewModel
     @Inject
-    lateinit var mViewModelFactory: ViewModelFactory
+    lateinit var mViewModelFactory: ViewModelProvider.Factory
     @Inject
-    lateinit var navigator: SignUpNavigator
+    lateinit var navController: NavController
 
     private lateinit var binding: FragmentSignupBinding
 
@@ -32,7 +32,7 @@ class SignUpFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _viewModel = ViewModelProviders.of(this, mViewModelFactory).get(SignUpViewModel::class.java)
+        _viewModel = viewModelProvider(mViewModelFactory)
 
         binding = DataBindingUtil.inflate<FragmentSignupBinding>(
             inflater,
@@ -46,7 +46,9 @@ class SignUpFragment : Fragment() {
                 _viewModel.signUpWithEmail()
             }
             onClickBack = View.OnClickListener {
-                navigator.toPrev()
+                navController.navigate(
+                    SignUpFragmentDirections.toMaps()
+                )
             }
         }
         return binding.root
@@ -79,7 +81,9 @@ class SignUpFragment : Fragment() {
             this.signInResult.nonNullObserve(viewLifecycleOwner) { result ->
                 context?.let { context ->
                     if (result) {
-                        navigator.toMaps()
+                        navController.navigate(
+                            SignUpFragmentDirections.toMaps()
+                        )
                     } else {
                         showToast(
                             context,

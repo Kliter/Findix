@@ -1,4 +1,4 @@
-package com.kl.findix.di.module
+package com.kl.findix.di
 
 import androidx.lifecycle.ViewModel
 import dagger.MapKey

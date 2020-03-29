@@ -10,10 +10,6 @@
                 type="com.kl.findix.presentation.order.OrderViewModel" />
 
         <variable
-                name="onClickSearch"
-                type="android.view.View.OnClickListener" />
-
-        <variable
                 name="onClickAddOrder"
                 type="android.view.View.OnClickListener" />
     </data>

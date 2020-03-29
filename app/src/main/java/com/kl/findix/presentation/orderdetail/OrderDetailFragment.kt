@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.kl.findix.R
@@ -16,6 +18,7 @@ import com.kl.findix.di.ViewModelFactory
 import com.kl.findix.navigation.OrderDetailNavigator
 import com.kl.findix.util.extension.getDateTimeText
 import com.kl.findix.util.extension.nonNullObserve
+import com.kl.findix.util.extension.viewModelProvider
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -26,9 +29,9 @@ class OrderDetailFragment : Fragment() {
     }
 
     @Inject
-    lateinit var mViewModelFactory: ViewModelFactory
+    lateinit var mViewModelFactory: ViewModelProvider.Factory
     @Inject
-    lateinit var navigator: OrderDetailNavigator
+    lateinit var navController: NavController
 
     private lateinit var _viewModel: OrderDetailViewModel
     private lateinit var binding: FragmentOrderDetailBinding
@@ -45,8 +48,7 @@ class OrderDetailFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _viewModel =
-            ViewModelProviders.of(this, mViewModelFactory).get(OrderDetailViewModel::class.java)
+        _viewModel = viewModelProvider(mViewModelFactory)
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_order_detail, container, false)
         binding.apply {
@@ -56,7 +58,7 @@ class OrderDetailFragment : Fragment() {
                 _viewModel.toProfileDetailFragment()
             }
             onClickBack = View.OnClickListener {
-                navigator.toPrev()
+                navController.popBackStack()
             }
         }
 
@@ -88,7 +90,9 @@ class OrderDetailFragment : Fragment() {
         viewModel.run {
             this.navigateToProfileDetailCommand.nonNullObserve(viewLifecycleOwner) { userId ->
                 userId.let {
-                    navigator.toProfileDetailFragment(it)
+                    navController.navigate(
+                        OrderDetailFragmentDirections.toProfileDetail(it)
+                    )
                 }
             }
             this.setOrderPhotoCommand.nonNullObserve(viewLifecycleOwner) { storageReference ->

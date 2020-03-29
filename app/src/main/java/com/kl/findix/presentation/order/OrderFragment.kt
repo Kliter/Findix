@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.epoxy.EpoxyController
 import com.google.android.gms.ads.AdRequest
@@ -18,6 +20,7 @@ import com.kl.findix.di.ViewModelFactory
 import com.kl.findix.model.Order
 import com.kl.findix.navigation.OrderNavigator
 import com.kl.findix.util.extension.nonNullObserve
+import com.kl.findix.util.extension.viewModelProvider
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -28,9 +31,9 @@ class OrderFragment : Fragment() {
     }
 
     @Inject
-    lateinit var navigator: OrderNavigator
+    lateinit var mViewModelFactory: ViewModelProvider.Factory
     @Inject
-    lateinit var mViewModelFactory: ViewModelFactory
+    lateinit var navController: NavController
 
     private lateinit var _viewModel: OrderViewModel
     private lateinit var binding: FragmentOrderBinding
@@ -46,7 +49,7 @@ class OrderFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _viewModel = ViewModelProviders.of(this, mViewModelFactory).get(OrderViewModel::class.java)
+        _viewModel = viewModelProvider(mViewModelFactory)
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_order, container, false)
         binding.apply {
@@ -56,10 +59,9 @@ class OrderFragment : Fragment() {
                 _viewModel.fetchLast15Orders()
             }
             onClickAddOrder = View.OnClickListener {
-                navigator.toCreateOrderFragment()
-            }
-            onClickSearch = View.OnClickListener {
-                navigator.toSearchFragment()
+                navController.navigate(
+                    OrderFragmentDirections.toCreateOrder()
+                )
             }
         }
 
@@ -85,7 +87,9 @@ class OrderFragment : Fragment() {
     private fun setController() {
         controller = OrderController(
             onClickOrder = { order ->
-                navigator.toOrderDetailFragment(order.orderId)
+                navController.navigate(
+                    OrderFragmentDirections.toOrderDetail(order.orderId)
+                )
             }
         )
         binding.recyclerView.let {

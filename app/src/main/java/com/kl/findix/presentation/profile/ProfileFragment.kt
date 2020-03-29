@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.epoxy.EpoxyController
 import com.bumptech.glide.Glide
@@ -19,6 +21,7 @@ import com.kl.findix.databinding.FragmentProfileBinding
 import com.kl.findix.di.ViewModelFactory
 import com.kl.findix.navigation.ProfileNavigator
 import com.kl.findix.util.extension.nonNullObserve
+import com.kl.findix.util.extension.viewModelProvider
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -29,9 +32,9 @@ class ProfileFragment : Fragment() {
     }
 
     @Inject
-    lateinit var navigator: ProfileNavigator
+    lateinit var mViewModelFactory: ViewModelProvider.Factory
     @Inject
-    lateinit var mViewModelFactory: ViewModelFactory
+    lateinit var navController: NavController
 
     private lateinit var _viewModel: ProfileViewModel
     private lateinit var binding: FragmentProfileBinding
@@ -47,8 +50,7 @@ class ProfileFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _viewModel =
-            ViewModelProviders.of(this, mViewModelFactory).get(ProfileViewModel::class.java)
+        _viewModel = viewModelProvider(mViewModelFactory)
 
         binding = DataBindingUtil.inflate<FragmentProfileBinding>(
             layoutInflater,
@@ -60,7 +62,9 @@ class ProfileFragment : Fragment() {
             viewModel = _viewModel
             toolbar.setTitle(R.string.action_profile)
             this.setOnClickEdit {
-                navigator.toProfileEdit()
+                navController.navigate(
+                    ProfileFragmentDirections.toProfileEdit()
+                )
             }
         }
         lifecycle.addObserver(_viewModel)

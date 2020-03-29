@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavController
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.kl.findix.R
@@ -18,6 +20,7 @@ import com.kl.findix.navigation.LoginNavigator
 import com.kl.findix.util.REQUEST_CODE_SIGN_IN
 import com.kl.findix.util.extension.nonNullObserve
 import com.kl.findix.util.extension.showToast
+import com.kl.findix.util.extension.viewModelProvider
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
@@ -29,11 +32,11 @@ class LoginFragment : Fragment() {
     }
 
     @Inject
-    lateinit var mViewModelFactory: ViewModelFactory
+    lateinit var mViewModelFactory: ViewModelProvider.Factory
     @Inject
     lateinit var mGoogleSignInClient: GoogleSignInClient
     @Inject
-    lateinit var navigator: LoginNavigator
+    lateinit var navController: NavController
 
     private lateinit var _viewModel: LoginViewModel
     private lateinit var binding: FragmentLoginBinding
@@ -43,7 +46,7 @@ class LoginFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _viewModel = ViewModelProviders.of(this, mViewModelFactory).get(LoginViewModel::class.java)
+        _viewModel = viewModelProvider(mViewModelFactory)
         binding = DataBindingUtil.inflate<FragmentLoginBinding>(
             inflater,
             R.layout.fragment_login,
@@ -59,7 +62,7 @@ class LoginFragment : Fragment() {
                 _viewModel.signInWithEmail()
             }
             onClickSignUp = View.OnClickListener {
-                navigator.toSignUpFragment()
+                LoginFragmentDirections.toSignUp()
             }
         }
 
@@ -87,7 +90,9 @@ class LoginFragment : Fragment() {
                         context,
                         getString(R.string.succeed_sign_in)
                     )
-                    navigator.toMap()
+                    navController.navigate(
+                        LoginFragmentDirections.toMaps()
+                    )
                 } else {
                     showToast(
                         context,
@@ -98,7 +103,9 @@ class LoginFragment : Fragment() {
         }
         viewModel.isAlreadySignedIn.nonNullObserve(viewLifecycleOwner) {
             if (it) {
-                navigator.toMap()
+                navController.navigate(
+                    LoginFragmentDirections.toMaps()
+                )
             }
         }
     }

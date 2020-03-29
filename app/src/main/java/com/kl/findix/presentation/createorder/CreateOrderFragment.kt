@@ -10,7 +10,9 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavController
 import com.bumptech.glide.Glide
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -23,6 +25,7 @@ import com.kl.findix.util.REQUEST_CODE_CHOOOSE_PROFILE_ICON
 import com.kl.findix.util.extension.nonNullObserve
 import com.kl.findix.util.extension.safeLet
 import com.kl.findix.util.extension.showToast
+import com.kl.findix.util.extension.viewModelProvider
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -33,9 +36,9 @@ class CreateOrderFragment : Fragment() {
     }
 
     @Inject
-    lateinit var navigator: CreateOrderNavigator
+    lateinit var mViewModelFactory: ViewModelProvider.Factory
     @Inject
-    lateinit var mViewModelFactory: ViewModelFactory
+    lateinit var navController: NavController
 
     private lateinit var _viewModel: CreateOrderViewModel
     private lateinit var binding: FragmentCreateOrderBinding
@@ -58,8 +61,7 @@ class CreateOrderFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _viewModel =
-            ViewModelProviders.of(this, mViewModelFactory).get(CreateOrderViewModel::class.java)
+        _viewModel = viewModelProvider(mViewModelFactory)
 
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_create_order, container, false)
@@ -73,7 +75,7 @@ class CreateOrderFragment : Fragment() {
                 startActivityForResult(intent, REQUEST_CODE_CHOOOSE_PROFILE_ICON)
             }
             onClickBack = View.OnClickListener {
-                navigator.toPrev()
+                navController.popBackStack()
             }
             onClickSave = View.OnClickListener {
                 val isTitleFilled = binding.textInputLayoutTitle.editText?.text?.isNotBlank()
@@ -144,7 +146,7 @@ class CreateOrderFragment : Fragment() {
                             getString(R.string.succeed_create_order)
                         )
                     }
-                    navigator.toPrev()
+                    navController.popBackStack()
                 }
             }
         }

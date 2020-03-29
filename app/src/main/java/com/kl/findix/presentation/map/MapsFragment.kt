@@ -14,7 +14,9 @@ import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.gms.ads.AdRequest
@@ -36,6 +38,7 @@ import com.kl.findix.util.MarkerClusterRenderer
 import com.kl.findix.util.REQUEST_CODE_PERMISSION
 import com.kl.findix.util.extension.nonNullObserve
 import com.kl.findix.util.extension.safeLet
+import com.kl.findix.util.extension.viewModelProvider
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
@@ -48,9 +51,9 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     }
 
     @Inject
-    lateinit var mViewModelFactory: ViewModelFactory
+    lateinit var mViewModelFactory: ViewModelProvider.Factory
     @Inject
-    lateinit var navigator: MapsNavigator
+    lateinit var navController: NavController
 
     private var mMap: GoogleMap? = null
 
@@ -75,7 +78,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _viewModel = ViewModelProviders.of(this, mViewModelFactory).get(MapsViewModel::class.java)
+        _viewModel = viewModelProvider(mViewModelFactory)
         binding = DataBindingUtil.inflate<FragmentMapsBinding>(
             inflater,
             R.layout.fragment_maps,
@@ -188,7 +191,9 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         viewModel.run {
             this.backToLoginCommand.nonNullObserve(viewLifecycleOwner) {
                 // _viewModel.signOut()
-                navigator.toLogin()
+                navController.navigate(
+                    MapsFragmentDirections.toLogin()
+                )
             }
         }
     }

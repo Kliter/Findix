@@ -10,7 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavController
 import com.bumptech.glide.Glide
 import com.kl.findix.R
 import com.kl.findix.databinding.FragmentProfileEditBinding
@@ -20,6 +22,7 @@ import com.kl.findix.util.GALLERY_TYPE_IMAGE
 import com.kl.findix.util.REQUEST_CODE_CHOOOSE_PROFILE_ICON
 import com.kl.findix.util.extension.nonNullObserve
 import com.kl.findix.util.extension.safeLet
+import com.kl.findix.util.extension.viewModelProvider
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_profile.*
 import javax.inject.Inject
@@ -31,9 +34,9 @@ class ProfileEditFragment : Fragment() {
     }
 
     @Inject
-    lateinit var navigator: ProfileEditNavigator
+    lateinit var mViewModelFactory: ViewModelProvider.Factory
     @Inject
-    lateinit var mViewModelFactory: ViewModelFactory
+    lateinit var navController: NavController
 
     private lateinit var _viewModel: ProfileEditViewModel
     private val binding: FragmentProfileEditBinding by lazy {
@@ -55,8 +58,7 @@ class ProfileEditFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _viewModel =
-            ViewModelProviders.of(this, mViewModelFactory).get(ProfileEditViewModel::class.java)
+        _viewModel = viewModelProvider(mViewModelFactory)
 
         binding.apply {
             lifecycleOwner = this@ProfileEditFragment
@@ -81,12 +83,14 @@ class ProfileEditFragment : Fragment() {
                     .setMessage(R.string.sign_out_dialog_message)
                     .setPositiveButton(R.string.ok) { _, _ ->
                         _viewModel.signOut()
-                        navigator.toLogin()
+                        navController.navigate(
+                            ProfileEditFragmentDirections.toLogin()
+                        )
                     }
                     .show()
             }
             this.toolbar.setNavigationOnClickListener {
-                navigator.toPrev()
+                navController.popBackStack()
             }
         }
         lifecycle.addObserver(_viewModel)
