@@ -3,6 +3,7 @@ package com.kl.findix.presentation.orderdetail
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.storage.StorageReference
 import com.kl.findix.model.Order
@@ -10,7 +11,6 @@ import com.kl.findix.services.FirebaseDataBaseService
 import com.kl.findix.services.FirebaseStorageService
 import com.kl.findix.services.FirebaseUserService
 import com.shopify.livedataktx.PublishLiveDataKtx
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,7 +30,7 @@ class OrderDetailViewModel @Inject constructor(
     private var firebaseUser: FirebaseUser? = firebaseUserService.getCurrentSignInUser()
 
     fun fetchOrderDetail(orderId: String) {
-        GlobalScope.launch {
+        viewModelScope.launch {
             firebaseDataBaseService.fetchOrderDetail(
                 orderId = orderId,
                 fetchOrderDetailListener = { order ->
@@ -48,7 +48,12 @@ class OrderDetailViewModel @Inject constructor(
 
     fun setOrderPhoto(orderId: String) {
         firebaseUser?.let { firebaseUser ->
-            setOrderPhotoCommand.postValue(firebaseStorageService.getOrderPhotoRef(firebaseUser.uid, orderId))
+            setOrderPhotoCommand.postValue(
+                firebaseStorageService.getOrderPhotoRef(
+                    firebaseUser.uid,
+                    orderId
+                )
+            )
         }
     }
 }

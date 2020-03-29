@@ -9,6 +9,7 @@ import android.net.Uri
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.storage.StorageReference
@@ -23,7 +24,6 @@ import com.kl.findix.services.FirebaseUserService
 import com.kl.findix.services.ImageService
 import com.kl.findix.util.extension.safeLet
 import com.shopify.livedataktx.PublishLiveDataKtx
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.coroutines.resume
@@ -76,8 +76,7 @@ class CreateOrderViewModel @Inject constructor(
                 }
                 order.hasPhoto = _orderPhotoUri != null
                 firebaseUser?.let { firebaseUser ->
-                    GlobalScope.launch {
-                        // viewModelScopeだとちゃんとScope破棄できなくて2回目createできない。
+                    viewModelScope.launch {
                         order.shouldRegisterLocation?.let {
                             if (it) {
                                 order.userLocation = getLocation(context, locationProviderClient)
@@ -99,24 +98,22 @@ class CreateOrderViewModel @Inject constructor(
     }
 
     private fun uploadOrderPhoto(orderId: String, contentResolver: ContentResolver) {
-        GlobalScope.launch {
-            safeLet(
-                firebaseUserService.getCurrentSignInUser(),
-                _orderPhotoUri
-            ) { currentSignInUser, orderPhotoUri ->
-                GlobalScope.launch {
-                    when (val result = imageService.getBitmap(orderPhotoUri, contentResolver)) {
-                        is ServiceResult.Success -> {
-                            firebaseStorageService.uploadOrderPhoto(
-                                userId = currentSignInUser.uid,
-                                orderId = orderId,
-                                byteArray = imageService.getBytesFromBitmap(result.data)
-                            )
-                            resetOrderInfo()
-                        }
-                        is ServiceResult.Failure -> {
-                            // TODO: Error handling.
-                        }
+        safeLet(
+            firebaseUserService.getCurrentSignInUser(),
+            _orderPhotoUri
+        ) { currentSignInUser, orderPhotoUri ->
+            viewModelScope.launch {
+                when (val result = imageService.getBitmap(orderPhotoUri, contentResolver)) {
+                    is ServiceResult.Success -> {
+                        firebaseStorageService.uploadOrderPhoto(
+                            userId = currentSignInUser.uid,
+                            orderId = orderId,
+                            byteArray = imageService.getBytesFromBitmap(result.data)
+                        )
+                        resetOrderInfo()
+                    }
+                    is ServiceResult.Failure -> {
+                        // TODO: Error handling.
                     }
                 }
             }
