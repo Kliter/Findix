@@ -115,7 +115,7 @@ class ProfileEditViewModel @Inject constructor(
                 profileIconBitmap.postValue(result.data)
             }
             is ServiceResult.Failure -> {
-                // TODO: Error handling.
+                handleError(result.exception)
             }
         }
     }
