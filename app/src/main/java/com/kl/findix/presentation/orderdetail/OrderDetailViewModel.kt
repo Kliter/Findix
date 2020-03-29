@@ -48,12 +48,14 @@ class OrderDetailViewModel @Inject constructor(
 
     fun setOrderPhoto(orderId: String) {
         firebaseUser?.let { firebaseUser ->
-            setOrderPhotoCommand.postValue(
-                firebaseStorageService.getOrderPhotoRef(
-                    firebaseUser.uid,
-                    orderId
+            viewModelScope.launch {
+                setOrderPhotoCommand.postValue(
+                    firebaseStorageService.getOrderPhotoRef(
+                        firebaseUser.uid,
+                        orderId
+                    )
                 )
-            )
+            }
         }
     }
 }

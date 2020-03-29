@@ -1,4 +1,4 @@
-package com.kl.findix.presentation.order
+package com.kl.findix.presentation.order.view
 
 import android.view.View
 import com.airbnb.epoxy.EpoxyAttribute
@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.kl.findix.R
 import com.kl.findix.databinding.ItemOrderListBinding
 import com.kl.findix.model.Order
+import com.kl.findix.presentation.order.OrderListItem
 import com.kl.findix.util.extension.getDateTimeText
 
 @EpoxyModelClass(layout = R.layout.item_order_list)

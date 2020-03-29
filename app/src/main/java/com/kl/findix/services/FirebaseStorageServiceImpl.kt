@@ -47,7 +47,7 @@ class FirebaseStorageServiceImpl(
         }
     }
 
-    override fun getOrderPhotoRef(userId: String, orderId: String) = storage.reference.child(
+    override suspend fun getOrderPhotoRef(userId: String, orderId: String) = storage.reference.child(
         getStorageOrderPhotoPath(
             userId = userId,
             orderId = orderId

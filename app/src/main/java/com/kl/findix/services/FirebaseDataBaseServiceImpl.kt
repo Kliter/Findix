@@ -94,20 +94,28 @@ class FirebaseDataBaseServiceImpl @Inject constructor(
         }
     }
 
-    override suspend fun fetchLast15Orders(fetchLast15OrdersListener: (List<Order>) -> Unit) {
-        database.collection("Order")
-            .orderBy("timeStamp", Query.Direction.DESCENDING)
-            .limit(15)
-            .get()
-            .addOnSuccessListener { results ->
-                val orders: List<Order> = results.map { result ->
-                    result.toObject(Order::class.java).apply {
-                        orderId = result.id
+    override suspend fun fetchLast15Orders() =
+        suspendCoroutine<ServiceResult<List<Order>>> { continutation ->
+            try {
+                database.collection("Order")
+                    .orderBy("timeStamp", Query.Direction.DESCENDING)
+                    .limit(15)
+                    .get()
+                    .addOnSuccessListener { results ->
+                        val orders: List<Order> = results.map { result ->
+                            result.toObject(Order::class.java).apply {
+                                orderId = result.id
+                            }
+                        }
+                        continutation.resume(ServiceResult.Success(orders))
                     }
-                }
-                fetchLast15OrdersListener.invoke(orders)
+                    .addOnFailureListener {
+                        continutation.resume(ServiceResult.Failure(it))
+                    }
+            } catch (e: Exception) {
+                continutation.resume(ServiceResult.Failure(e))
             }
-    }
+        }
 
     override suspend fun createOrder(
         firebaseUser: FirebaseUser,
