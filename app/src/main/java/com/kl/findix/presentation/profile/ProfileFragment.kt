@@ -111,7 +111,7 @@ class ProfileFragment : Fragment() {
                     .setTitle("")
                     .setMessage(getString(R.string.confirm_delete_order))
                     .setPositiveButton(getString(R.string.ok)) { _, _ ->
-                        _viewModel.deleteOrder(orderId)
+                        viewModel.deleteOrder(orderId)
                     }.show()
             }
             showSnackBarCommand.nonNullObserve(viewLifecycleOwner) { resId ->

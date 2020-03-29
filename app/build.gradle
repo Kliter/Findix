@@ -47,7 +47,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.core:core-ktx:1.1.0'
+    implementation 'androidx.core:core-ktx:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
@@ -65,14 +65,14 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:$aac_version"
     implementation "android.arch.lifecycle:reactivestreams:$aac_version"
     kapt "android.arch.lifecycle:compiler:$aac_version"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
 
     // Firebase
-    implementation "com.google.firebase:firebase-core:17.2.1"
-    implementation 'com.google.firebase:firebase-auth:19.2.0'
-    implementation 'com.google.firebase:firebase-database:19.2.0'
-    implementation 'com.google.firebase:firebase-firestore:21.3.1'
-    implementation 'com.google.firebase:firebase-storage:19.1.0'
+    implementation "com.google.firebase:firebase-core:17.2.3"
+    implementation 'com.google.firebase:firebase-auth:19.3.0'
+    implementation 'com.google.firebase:firebase-database:19.2.1'
+    implementation 'com.google.firebase:firebase-firestore:21.4.1'
+    implementation 'com.google.firebase:firebase-storage:19.1.1'
     implementation 'com.firebaseui:firebase-ui-storage:6.1.0'
 
     // Google Play Service
@@ -104,7 +104,7 @@ dependencies {
     implementation "com.google.maps.android:android-maps-utils:0.6.2"
 
     // AdMob
-    implementation 'com.google.firebase:firebase-ads:19.0.0'
+    implementation 'com.google.firebase:firebase-ads:19.0.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

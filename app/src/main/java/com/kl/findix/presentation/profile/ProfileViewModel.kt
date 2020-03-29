@@ -1,10 +1,13 @@
 package com.kl.findix.presentation.profile
 
 import android.graphics.Bitmap
+import android.util.Log
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
@@ -19,7 +22,7 @@ import com.kl.findix.services.FirebaseUserService
 import com.kl.findix.util.UiState
 import com.kl.findix.util.delegate.UiStateViewModelDelegate
 import com.shopify.livedataktx.PublishLiveDataKtx
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -56,8 +59,7 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch {
             uiState.postValue(UiState.Loading)
             firebaseUser?.let { firebaseUser ->
-                when (val result =
-                    firebaseDataBaseService.fetchOwnProfileInfo(firebaseUser = firebaseUser)) {
+                when (val result = firebaseDataBaseService.fetchOwnProfileInfo(firebaseUser = firebaseUser)) {
                     is ServiceResult.Success -> {
                         uiState.postValue(UiState.Loaded)
                         _user.postValue(result.data)
@@ -77,15 +79,21 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun fetchOwnOrder(lastOrder: Order? = null) {
-        viewModelScope.launch {
-            firebaseUser?.let { firebaseUser ->
-                firebaseDataBaseService.fetchOwnOrders(
+        firebaseUser?.let { firebaseUser ->
+            viewModelScope.launch {
+                uiState.postValue(UiState.Loading)
+                when (val result = firebaseDataBaseService.fetchOwnOrders(
                     userId = firebaseUser.uid,
-                    lastOrder = lastOrder,
-                    fetchOwnOrdersListener = { orders ->
-                        _orders.postValue(orders)
+                    lastOrder = lastOrder
+                )) {
+                    is ServiceResult.Success -> {
+                        uiState.postValue(UiState.Loaded)
+                        _orders.postValue(result.data)
                     }
-                )
+                    is ServiceResult.Failure -> {
+                        handleError(result.exception)
+                    }
+                }
             }
         }
     }
@@ -95,18 +103,16 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun deleteOrder(orderId: String) {
-        GlobalScope.launch {
-            firebaseDataBaseService.deleteOrder(
-                orderId = orderId
-            ) {
-                firebaseUser?.uid?.let { firebaseuserId ->
-                    firebaseStorageService.deleteOrderPhoto(
-                        userId = firebaseuserId,
-                        orderId = orderId
-                    )
+        viewModelScope.launch {
+            uiState.postValue(UiState.Loading)
+            when (val result = firebaseDataBaseService.deleteOrder(orderId = orderId)) {
+                is ServiceResult.Success -> {
+                    fetchOwnOrder()
+                    showSnackBarCommand.postValue(R.string.complete_delete_order)
                 }
-                fetchOwnOrder()
-                showSnackBarCommand.postValue(R.string.complete_delete_order)
+                is ServiceResult.Failure -> {
+                    handleError(result.exception)
+                }
             }
         }
     }

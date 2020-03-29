@@ -158,40 +158,49 @@ class FirebaseDataBaseServiceImpl @Inject constructor(
             }
     }
 
-    override suspend fun fetchOwnOrders(
-        userId: String,
-        lastOrder: Order?,
-        fetchOwnOrdersListener: (List<Order>) -> Unit
-    ) {
-        // lastOrder受け取った時だけそこから10件取得するためにstartAfter設定する。
-        val query = database.collection("Order")
-        if (lastOrder != null) {
-            query.startAfter(lastOrder)
+    override suspend fun fetchOwnOrders(userId: String, lastOrder: Order?) =
+        suspendCoroutine<ServiceResult<List<Order>>> { continuation ->
+            try {
+                // lastOrder受け取った時だけそこから10件取得するためにstartAfter設定する。
+                val query = database.collection("Order")
+                if (lastOrder != null) {
+                    query.startAfter(lastOrder)
+                }
+
+                query.whereEqualTo("userId", userId)
+                    .orderBy("timeStamp", Query.Direction.DESCENDING)
+                    .limit(10)
+                    .get()
+                    .addOnSuccessListener { results ->
+                        val orders: List<Order> = results.map { result ->
+                            result.toObject(Order::class.java).apply {
+                                orderId = result.id
+                            }
+                        }
+                        continuation.resume(ServiceResult.Success(orders))
+                    }
+                    .addOnFailureListener {
+                        continuation.resume(ServiceResult.Failure(it))
+                    }
+            } catch (e: Exception) {
+                continuation.resume(ServiceResult.Failure(e))
+            }
         }
 
-        query.whereEqualTo("userId", userId)
-            .orderBy("timeStamp", Query.Direction.DESCENDING)
-            .limit(10)
-            .get()
-            .addOnSuccessListener { results ->
-                val orders: List<Order> = results.map { result ->
-                    result.toObject(Order::class.java).apply {
-                        orderId = result.id
+    override suspend fun deleteOrder(orderId: String) =
+        suspendCoroutine<ServiceResult<Unit>> { continuation ->
+            try {
+                database.collection("Order")
+                    .document(orderId)
+                    .delete()
+                    .addOnSuccessListener { result ->
+                        continuation.resume(ServiceResult.Success(Unit))
                     }
-                }
-                fetchOwnOrdersListener.invoke(orders)
+                    .addOnFailureListener {
+                        continuation.resume(ServiceResult.Failure(it))
+                    }
+            } catch (e: Exception) {
+                continuation.resume(ServiceResult.Failure(e))
             }
-    }
-
-    override suspend fun deleteOrder(
-        orderId: String,
-        deleteOrderListener: () -> Unit
-    ) {
-        database.collection("Order")
-            .document(orderId)
-            .delete()
-            .addOnSuccessListener { result ->
-                deleteOrderListener.invoke()
-            }
-    }
+        }
 }

@@ -1,18 +1,17 @@
 package com.kl.findix
 
-import android.app.Activity
 import android.app.Application
 import com.google.android.gms.ads.MobileAds
 import com.kl.findix.di.component.DaggerAppComponent
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasActivityInjector
+import dagger.android.HasAndroidInjector
 import javax.inject.Inject
 
-class Application: Application(), HasActivityInjector {
+class Application: Application(), HasAndroidInjector {
 
     @Inject
-    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
+    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
 
     override fun onCreate() {
         super.onCreate()
@@ -20,5 +19,5 @@ class Application: Application(), HasActivityInjector {
         MobileAds.initialize(this, getString(R.string.admob_app_id))
     }
 
-    override fun activityInjector(): AndroidInjector<Activity> = dispatchingAndroidInjector
+    override fun androidInjector(): AndroidInjector<Any> = dispatchingAndroidInjector
 }

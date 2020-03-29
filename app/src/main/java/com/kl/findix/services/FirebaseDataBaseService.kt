@@ -32,11 +32,7 @@ interface FirebaseDataBaseService {
     suspend fun fetchUserInfo(userId: String, fetchUserInfoListener: (User) -> Unit)
     suspend fun fetchOwnOrders(
         userId: String,
-        lastOrder: Order? = null,
-        fetchOwnOrdersListener: (List<Order>) -> Unit
-    )
-    suspend fun deleteOrder(
-        orderId: String,
-        deleteOrderListener: () -> Unit
-    )
+        lastOrder: Order? = null
+    ): ServiceResult<List<Order>>
+    suspend fun deleteOrder(orderId: String): ServiceResult<Unit>
 }
