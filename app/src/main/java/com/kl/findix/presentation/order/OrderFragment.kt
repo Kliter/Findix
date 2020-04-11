@@ -85,7 +85,6 @@ class OrderFragment : Fragment(), RewardedVideoAdListener {
         super.onActivityCreated(savedInstanceState)
         setController()
         observeState(_viewModel)
-//        observeEvent(_viewModel)
     }
 
     override fun onPause() {
@@ -103,40 +102,32 @@ class OrderFragment : Fragment(), RewardedVideoAdListener {
         rewardedVideoAd.destroy(activity)
     }
 
-    // Todo: Fix RewardListener
     override fun onRewardedVideoAdClosed() {
         context?.let {
-            showToast(it, "onRewardedVideoAdClosed")
+            loadMovieAd()
         }
     }
 
     override fun onRewardedVideoAdLeftApplication() {
-        context?.let {
-            showToast(it, "onRewardedVideoAdLeftApplication")
-        }
+        // NOP
     }
 
     override fun onRewardedVideoAdLoaded() {
-        context?.let {
-            showToast(it, "onRewardedVideoAdLoaded")
-        }
+        // NOP
     }
 
     override fun onRewardedVideoAdOpened() {
-        context?.let {
-            showToast(it, "onRewardedVideoAdOpened")
-        }
+        // NOP
     }
 
     override fun onRewardedVideoCompleted() {
         context?.let {
-            showToast(it, "onRewardedVideoCompleted")
+            loadMovieAd()
         }
     }
 
     override fun onRewarded(reward: RewardItem?) {
         context?.let {
-            showToast(it, "onRewarded! currency: ${reward?.type} amount: ${reward?.amount}")
             navController.navigate(
                 OrderFragmentDirections.toCreateOrder()
             )
@@ -144,20 +135,22 @@ class OrderFragment : Fragment(), RewardedVideoAdListener {
     }
 
     override fun onRewardedVideoStarted() {
-        context?.let {
-            showToast(it, "onRewardedVideoStarted")
-        }
+        // NOP
     }
 
     override fun onRewardedVideoAdFailedToLoad(p0: Int) {
         context?.let {
-            showToast(it, "onRewardedVideoAdFailedToLoad")
+            showToast(it, getString(R.string.failed_to_load_movie_ad))
         }
     }
 
     private fun initAd() {
         val adRequest = AdRequest.Builder().build()
         binding.adView.loadAd(adRequest)
+        loadMovieAd()
+    }
+
+    private fun loadMovieAd() {
         rewardedVideoAd.loadAd(
             "ca-app-pub-3940256099942544/5224354917",
             AdRequest.Builder().build()
@@ -187,9 +180,6 @@ class OrderFragment : Fragment(), RewardedVideoAdListener {
                 }
             }
         }
-    }
-
-    private fun observeEvent(viewModel: OrderViewModel) {
     }
 }
 
