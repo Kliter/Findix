@@ -8,23 +8,25 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.epoxy.EpoxyController
 import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.reward.RewardItem
+import com.google.android.gms.ads.reward.RewardedVideoAd
+import com.google.android.gms.ads.reward.RewardedVideoAdListener
 import com.google.firebase.storage.StorageReference
 import com.kl.findix.R
 import com.kl.findix.databinding.FragmentOrderBinding
-import com.kl.findix.di.ViewModelFactory
 import com.kl.findix.model.Order
-import com.kl.findix.navigation.OrderNavigator
 import com.kl.findix.util.extension.nonNullObserve
+import com.kl.findix.util.extension.showToast
 import com.kl.findix.util.extension.viewModelProvider
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
-class OrderFragment : Fragment() {
+class OrderFragment : Fragment(), RewardedVideoAdListener {
 
     companion object {
         private const val TAG = "OrderFragment"
@@ -37,11 +39,18 @@ class OrderFragment : Fragment() {
 
     private lateinit var _viewModel: OrderViewModel
     private lateinit var binding: FragmentOrderBinding
+    private lateinit var rewardedVideoAd: RewardedVideoAd
     private var controller: OrderController? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         AndroidSupportInjection.inject(this)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        rewardedVideoAd = MobileAds.getRewardedVideoAdInstance(activity)
+        rewardedVideoAd.rewardedVideoAdListener = this
     }
 
     override fun onCreateView(
@@ -59,9 +68,9 @@ class OrderFragment : Fragment() {
                 _viewModel.fetchLast15Orders()
             }
             onClickAddOrder = View.OnClickListener {
-                navController.navigate(
-                    OrderFragmentDirections.toCreateOrder()
-                )
+                if (rewardedVideoAd.isLoaded) {
+                    rewardedVideoAd.show()
+                }
             }
         }
 
@@ -79,9 +88,80 @@ class OrderFragment : Fragment() {
 //        observeEvent(_viewModel)
     }
 
+    override fun onPause() {
+        super.onPause()
+        rewardedVideoAd.pause(activity)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        rewardedVideoAd.resume(activity)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        rewardedVideoAd.destroy(activity)
+    }
+
+    // Todo: Fix RewardListener
+    override fun onRewardedVideoAdClosed() {
+        context?.let {
+            showToast(it, "onRewardedVideoAdClosed")
+        }
+    }
+
+    override fun onRewardedVideoAdLeftApplication() {
+        context?.let {
+            showToast(it, "onRewardedVideoAdLeftApplication")
+        }
+    }
+
+    override fun onRewardedVideoAdLoaded() {
+        context?.let {
+            showToast(it, "onRewardedVideoAdLoaded")
+        }
+    }
+
+    override fun onRewardedVideoAdOpened() {
+        context?.let {
+            showToast(it, "onRewardedVideoAdOpened")
+        }
+    }
+
+    override fun onRewardedVideoCompleted() {
+        context?.let {
+            showToast(it, "onRewardedVideoCompleted")
+        }
+    }
+
+    override fun onRewarded(reward: RewardItem?) {
+        context?.let {
+            showToast(it, "onRewarded! currency: ${reward?.type} amount: ${reward?.amount}")
+            navController.navigate(
+                OrderFragmentDirections.toCreateOrder()
+            )
+        }
+    }
+
+    override fun onRewardedVideoStarted() {
+        context?.let {
+            showToast(it, "onRewardedVideoStarted")
+        }
+    }
+
+    override fun onRewardedVideoAdFailedToLoad(p0: Int) {
+        context?.let {
+            showToast(it, "onRewardedVideoAdFailedToLoad")
+        }
+    }
+
     private fun initAd() {
         val adRequest = AdRequest.Builder().build()
         binding.adView.loadAd(adRequest)
+        rewardedVideoAd.loadAd(
+            "ca-app-pub-3940256099942544/5224354917",
+            AdRequest.Builder().build()
+        )
     }
 
     private fun setController() {
