@@ -21,7 +21,6 @@ import com.kl.findix.R
 import com.kl.findix.databinding.FragmentOrderBinding
 import com.kl.findix.model.Order
 import com.kl.findix.util.extension.nonNullObserve
-import com.kl.findix.util.extension.showToast
 import com.kl.findix.util.extension.viewModelProvider
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
@@ -139,9 +138,7 @@ class OrderFragment : Fragment(), RewardedVideoAdListener {
     }
 
     override fun onRewardedVideoAdFailedToLoad(p0: Int) {
-        context?.let {
-            showToast(it, getString(R.string.failed_to_load_movie_ad))
-        }
+        // NOP
     }
 
     private fun initAd() {
@@ -152,7 +149,7 @@ class OrderFragment : Fragment(), RewardedVideoAdListener {
 
     private fun loadMovieAd() {
         rewardedVideoAd.loadAd(
-            "ca-app-pub-3940256099942544/5224354917",
+            getString(R.string.order_movie_ad_id),
             AdRequest.Builder().build()
         )
     }

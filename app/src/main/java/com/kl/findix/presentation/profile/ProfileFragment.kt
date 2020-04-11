@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.epoxy.EpoxyController
@@ -18,8 +17,6 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.material.snackbar.Snackbar
 import com.kl.findix.R
 import com.kl.findix.databinding.FragmentProfileBinding
-import com.kl.findix.di.ViewModelFactory
-import com.kl.findix.navigation.ProfileNavigator
 import com.kl.findix.util.extension.nonNullObserve
 import com.kl.findix.util.extension.viewModelProvider
 import dagger.android.support.AndroidSupportInjection

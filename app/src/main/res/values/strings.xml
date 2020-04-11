@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Findix</string>
     <string name="admob_app_id">ca-app-pub-5689302165765608~6822231240</string>
-    <string name="admob_map_banner_ad_id">ca-app-pub-5689302165765608/3022587037</string>
     <string name="welcome">Welcome</string>
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
@@ -91,6 +90,4 @@
     <string name="cancel">Cancel</string>
     <string name="confirm_delete_order">Delete this order?</string>
     <string name="complete_delete_order">Order is deleted successfully.</string>
-
-    <string name="failed_to_load_movie_ad">Failed to load Movie Ad.\nPlease check your network environment and retry.</string>
 </resources>
