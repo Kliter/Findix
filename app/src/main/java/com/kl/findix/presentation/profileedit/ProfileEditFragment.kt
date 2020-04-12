@@ -1,23 +1,20 @@
 package com.kl.findix.presentation.profileedit
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import com.bumptech.glide.Glide
 import com.kl.findix.R
 import com.kl.findix.databinding.FragmentProfileEditBinding
-import com.kl.findix.di.ViewModelFactory
-import com.kl.findix.navigation.ProfileEditNavigator
 import com.kl.findix.util.GALLERY_TYPE_IMAGE
 import com.kl.findix.util.REQUEST_CODE_CHOOOSE_PROFILE_ICON
 import com.kl.findix.util.extension.nonNullObserve
@@ -78,16 +75,18 @@ class ProfileEditFragment : Fragment() {
                 startActivityForResult(intent, REQUEST_CODE_CHOOOSE_PROFILE_ICON)
             }
             onClickSignOut = View.OnClickListener {
-                AlertDialog.Builder(context)
-                    .setTitle(R.string.sign_out_dialog_title)
-                    .setMessage(R.string.sign_out_dialog_message)
-                    .setPositiveButton(R.string.ok) { _, _ ->
-                        _viewModel.signOut()
-                        navController.navigate(
-                            ProfileEditFragmentDirections.toLogin()
-                        )
-                    }
-                    .show()
+                context?.let {
+                    AlertDialog.Builder(it)
+                        .setTitle(R.string.sign_out_dialog_title)
+                        .setMessage(R.string.sign_out_dialog_message)
+                        .setPositiveButton(R.string.ok) { _, _ ->
+                            _viewModel.signOut()
+                            navController.navigate(
+                                ProfileEditFragmentDirections.toLogin()
+                            )
+                        }
+                        .show()
+                }
             }
             this.toolbar.setNavigationOnClickListener {
                 navController.popBackStack()
