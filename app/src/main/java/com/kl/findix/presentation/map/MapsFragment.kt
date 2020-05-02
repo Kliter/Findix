@@ -9,6 +9,7 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
@@ -93,12 +94,12 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
             onClickGPSFixed = View.OnClickListener {
                 _viewModel.moveToCurrentLocation(requireContext(), mLocationProviderClient)
             }
-            searchText.setOnKeyListener { v, keyCode, event ->
-                if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+            searchText.setOnEditorActionListener { v, actionId, event ->
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     _viewModel.fetchQueriedCityOrders(binding.searchText.text.toString())
-                    return@setOnKeyListener true
+                    return@setOnEditorActionListener true
                 }
-                return@setOnKeyListener false
+                return@setOnEditorActionListener false
             }
         }
 

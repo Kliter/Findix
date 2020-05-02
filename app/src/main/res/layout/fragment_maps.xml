@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:ads="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -50,6 +50,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/margin_x1"
                         android:hint="@string/search_order_location"
+                        android:imeOptions="actionSearch"
                         android:inputType="text" />
 
             </androidx.appcompat.widget.Toolbar>
