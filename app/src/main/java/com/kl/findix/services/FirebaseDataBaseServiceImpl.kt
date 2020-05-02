@@ -154,6 +154,7 @@ class FirebaseDataBaseServiceImpl @Inject constructor(
         try {
             database.collection("Order")
                 .whereEqualTo("city", city)
+                .limit(15)
                 .get()
                 .addOnSuccessListener { results ->
                     val orders: List<Order> = results.map { result ->
