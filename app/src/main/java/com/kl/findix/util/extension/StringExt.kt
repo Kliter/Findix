@@ -4,7 +4,7 @@ import com.kl.findix.util.FIREBASE_IMAGE_STORAGE
 import java.text.SimpleDateFormat
 import java.util.*
 
-fun getStorageProfileIconPath(userId: String) = "$FIREBASE_IMAGE_STORAGE/$userId/profile_photo"
+fun getStorageProfileIconPath(userId: String) = "$FIREBASE_IMAGE_STORAGE$userId/profile_photo.png"
 
 fun isNotEmptyAndBlank(text: String): Boolean {
     return text.isNotEmpty() && text.isNotBlank()
