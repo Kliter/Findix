@@ -13,6 +13,8 @@ import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.epoxy.EpoxyController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.ads.AdRequest
 import com.google.android.material.snackbar.Snackbar
 import com.kl.findix.R
@@ -66,7 +68,7 @@ class ProfileFragment : Fragment() {
         }
         lifecycle.addObserver(_viewModel)
 
-        _viewModel.setProfileIcon()
+        _viewModel.setProfilePhoto()
         _viewModel.fetchUserInfo()
         _viewModel.fetchOwnOrder()
 
@@ -104,6 +106,11 @@ class ProfileFragment : Fragment() {
         viewModel.run {
             setProfileIconCommand.nonNullObserve(viewLifecycleOwner) { storageReference ->
                 Glide.with(requireContext())
+                    .applyDefaultRequestOptions(
+                        RequestOptions.diskCacheStrategyOf(
+                            DiskCacheStrategy.NONE
+                        )
+                    )
                     .load(storageReference)
                     .into(binding.profilePhoto)
             }

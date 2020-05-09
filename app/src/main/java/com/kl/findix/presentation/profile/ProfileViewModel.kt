@@ -68,7 +68,7 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun setProfileIcon() {
+    fun setProfilePhoto() {
         firebaseUser?.let { firebaseUser ->
             viewModelScope.launch {
                 setProfileIconCommand.postValue(firebaseStorageService.getProfilePhotoRef(firebaseUser.uid))
@@ -112,12 +112,6 @@ class ProfileViewModel @Inject constructor(
                     handleError(result.exception)
                 }
             }
-        }
-    }
-
-    fun signOut() {
-        viewModelScope.launch {
-            firebaseUserService.signOut()
         }
     }
 }
