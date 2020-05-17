@@ -1,10 +1,10 @@
 package com.kl.findix.services
 
-import android.util.Log
 import com.google.firebase.storage.FirebaseStorage
 import com.kl.findix.model.ServiceResult
 import com.kl.findix.util.extension.getStorageOrderPhotoPath
 import com.kl.findix.util.extension.getStorageProfileIconPath
+import com.kl.findix.util.extension.getStorageWorkPhotoPath
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -74,4 +74,12 @@ class FirebaseStorageServiceImpl(
         )
         orderPhotoReference.delete()
     }
+
+    override suspend fun getWorkPhotos(userId: String, number: Int) =
+        storage.reference.child(
+            getStorageWorkPhotoPath(
+                userId,
+                number
+            )
+        )
 }
