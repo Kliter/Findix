@@ -6,8 +6,6 @@
 
     <data>
 
-        <import type="com.google.firebase.storage.StorageReference" />
-
         <variable
                 name="viewModel"
                 type="com.kl.findix.presentation.profile.ProfileViewModel" />
@@ -22,6 +20,10 @@
 
         <variable
                 name="onClickEdit"
+                type="android.view.View.OnClickListener" />
+
+        <variable
+                name="onClickPhoto"
                 type="android.view.View.OnClickListener" />
 
     </data>
@@ -262,6 +264,7 @@
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
                                 android:contentDescription="@null"
+                                android:onClick="@{onClickPhoto}"
                                 android:src="@color/colorBlack_10"
                                 app:civ_border_color="@color/colorBlack_20"
                                 app:civ_border_width="3dp"
@@ -275,6 +278,7 @@
                                 android:id="@+id/photo2"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
+                                android:onClick="@{onClickPhoto}"
                                 android:src="@color/colorBlack_10"
                                 app:civ_border_color="@color/colorBlack_20"
                                 app:civ_border_width="3dp"
@@ -289,6 +293,7 @@
                                 android:id="@+id/photo3"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
+                                android:onClick="@{onClickPhoto}"
                                 android:src="@color/colorBlack_10"
                                 app:civ_border_color="@color/colorBlack_20"
                                 app:civ_border_width="3dp"
@@ -303,6 +308,7 @@
                                 android:id="@+id/photo4"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
+                                android:onClick="@{onClickPhoto}"
                                 android:src="@color/colorBlack_10"
                                 app:civ_border_color="@color/colorBlack_20"
                                 app:civ_border_width="3dp"
@@ -317,6 +323,7 @@
                                 android:id="@+id/photo5"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
+                                android:onClick="@{onClickPhoto}"
                                 android:src="@color/colorBlack_10"
                                 app:civ_border_color="@color/colorBlack_20"
                                 app:civ_border_width="3dp"

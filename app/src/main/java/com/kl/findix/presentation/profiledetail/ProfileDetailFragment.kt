@@ -8,14 +8,11 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.kl.findix.R
 import com.kl.findix.databinding.FragmentProfileDetailBinding
-import com.kl.findix.di.ViewModelFactory
-import com.kl.findix.navigation.ProfileDetailNavigator
 import com.kl.findix.util.extension.nonNullObserve
 import com.kl.findix.util.extension.viewModelProvider
 import dagger.android.support.AndroidSupportInjection
