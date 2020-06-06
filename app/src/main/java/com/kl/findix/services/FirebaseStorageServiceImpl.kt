@@ -75,7 +75,31 @@ class FirebaseStorageServiceImpl(
         orderPhotoReference.delete()
     }
 
-    override suspend fun getWorkPhotos(userId: String, number: Int) =
+    override suspend fun uploadWorkPhoto(
+        userId: String,
+        byteArray: ByteArray,
+        number: Int
+    ) = suspendCoroutine<ServiceResult<Unit>> { continuation ->
+            try {
+                val workPhotoReference = storage.reference.child(
+                    getStorageWorkPhotoPath(
+                        userId,
+                        number
+                    )
+                )
+                workPhotoReference.putBytes(byteArray)
+                    .addOnSuccessListener {
+                        continuation.resume(ServiceResult.Success(Unit))
+                    }
+                    .addOnFailureListener {
+                        continuation.resume(ServiceResult.Failure(it))
+                    }
+            } catch (e: Exception) {
+                continuation.resume(ServiceResult.Failure(e))
+            }
+        }
+
+    override suspend fun getWorkPhotoRef(userId: String, number: Int) =
         storage.reference.child(
             getStorageWorkPhotoPath(
                 userId,

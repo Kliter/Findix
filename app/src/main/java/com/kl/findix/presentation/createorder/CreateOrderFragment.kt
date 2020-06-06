@@ -11,17 +11,13 @@ import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import com.bumptech.glide.Glide
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.kl.findix.R
 import com.kl.findix.databinding.FragmentCreateOrderBinding
-import com.kl.findix.di.ViewModelFactory
-import com.kl.findix.navigation.CreateOrderNavigator
 import com.kl.findix.util.GALLERY_TYPE_IMAGE
-import com.kl.findix.util.REQUEST_CODE_CHOOOSE_PROFILE_ICON
 import com.kl.findix.util.extension.nonNullObserve
 import com.kl.findix.util.extension.safeLet
 import com.kl.findix.util.extension.showToast
@@ -33,6 +29,7 @@ class CreateOrderFragment : Fragment() {
 
     companion object {
         private const val TAG = "CreateOrderFragment"
+        internal const val REQUEST_CODE_CHOOSE_ORDER_PHOTO = 9001
     }
 
     @Inject
@@ -72,7 +69,7 @@ class CreateOrderFragment : Fragment() {
                 val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
                 intent.addCategory(Intent.CATEGORY_OPENABLE)
                 intent.type = GALLERY_TYPE_IMAGE
-                startActivityForResult(intent, REQUEST_CODE_CHOOOSE_PROFILE_ICON)
+                startActivityForResult(intent, REQUEST_CODE_CHOOSE_ORDER_PHOTO)
             }
             onClickBack = View.OnClickListener {
                 navController.popBackStack()
@@ -103,7 +100,7 @@ class CreateOrderFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_CHOOOSE_PROFILE_ICON && resultCode == Activity.RESULT_OK) {
+        if (requestCode == REQUEST_CODE_CHOOSE_ORDER_PHOTO && resultCode == Activity.RESULT_OK) {
             safeLet(
                 data?.data,
                 activity?.contentResolver

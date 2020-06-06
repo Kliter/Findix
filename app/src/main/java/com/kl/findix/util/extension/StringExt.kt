@@ -15,4 +15,8 @@ fun getDateTimeText(timeStamp: Date): String {
     return format.format(timeStamp)
 }
 
-fun getStorageOrderPhotoPath(userId: String, orderId: String) = "$FIREBASE_IMAGE_STORAGE/$userId/$orderId"
+fun getStorageOrderPhotoPath(userId: String, orderId: String) =
+    "$FIREBASE_IMAGE_STORAGE/$userId/$orderId"
+
+fun getStorageWorkPhotoPath(userId: String, number: Int) =
+    "$FIREBASE_IMAGE_STORAGE/$userId/work_photo_$number.png"

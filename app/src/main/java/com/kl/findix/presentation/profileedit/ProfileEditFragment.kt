@@ -12,11 +12,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
-import com.bumptech.glide.Glide
 import com.kl.findix.R
 import com.kl.findix.databinding.FragmentProfileEditBinding
 import com.kl.findix.util.GALLERY_TYPE_IMAGE
-import com.kl.findix.util.REQUEST_CODE_CHOOOSE_PROFILE_ICON
+import com.kl.findix.util.REQUEST_CODE_CHOOOSE_WORK_PHOTO
 import com.kl.findix.util.extension.nonNullObserve
 import com.kl.findix.util.extension.safeLet
 import com.kl.findix.util.extension.viewModelProvider
@@ -28,6 +27,7 @@ class ProfileEditFragment : Fragment() {
 
     companion object {
         private const val TAG = "ProfileEditFragment"
+        private const val KEY_PHOTO_NUMBER = "key_photo_number"
     }
 
     @Inject
@@ -63,18 +63,16 @@ class ProfileEditFragment : Fragment() {
             swipeRefresh.setOnRefreshListener {
                 _viewModel.fetchUserInfo()
             }
-            onClickSave = View.OnClickListener {
-                activity?.contentResolver?.let { contentResolver ->
-                    _viewModel.saveProfile(contentResolver)
-                }
+            setOnClickPhoto1 { createIntent(1) }
+            setOnClickPhoto2 { createIntent(2) }
+            setOnClickPhoto3 { createIntent(3) }
+            setOnClickPhoto4 { createIntent(4) }
+            setOnClickPhoto5 { createIntent(5) }
+            setOnClickSave{
+                _viewModel.saveProfile()
+                _viewModel.savePhoto()
             }
-            onClickUserIcon = View.OnClickListener {
-                val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
-                intent.addCategory(Intent.CATEGORY_OPENABLE)
-                intent.type = GALLERY_TYPE_IMAGE
-                startActivityForResult(intent, REQUEST_CODE_CHOOOSE_PROFILE_ICON)
-            }
-            onClickSignOut = View.OnClickListener {
+            setOnClickSignOut {
                 context?.let {
                     AlertDialog.Builder(it)
                         .setTitle(R.string.sign_out_dialog_title)
@@ -94,7 +92,6 @@ class ProfileEditFragment : Fragment() {
         }
         lifecycle.addObserver(_viewModel)
 
-        _viewModel.setProfileIcon()
         _viewModel.fetchUserInfo()
 
         return binding.root
@@ -106,13 +103,16 @@ class ProfileEditFragment : Fragment() {
         observeEvent(_viewModel)
     }
 
+    private fun createIntent(number: Int) {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        intent.type = GALLERY_TYPE_IMAGE
+        intent.putExtra(KEY_PHOTO_NUMBER, number)
+        startActivityForResult(intent, REQUEST_CODE_CHOOOSE_WORK_PHOTO)
+    }
+
     private fun observeEvent(viewModel: ProfileEditViewModel) {
         viewModel.run {
-            setProfileIconCommand.nonNullObserve(viewLifecycleOwner) { storageReference ->
-                Glide.with(requireContext())
-                    .load(storageReference)
-                    .into(binding.profileIcon)
-            }
             hideRefreshCommand.nonNullObserve(viewLifecycleOwner) {
                 if (it) {
                     if (binding.swipeRefresh.isRefreshing) {
@@ -125,20 +125,23 @@ class ProfileEditFragment : Fragment() {
 
     private fun observeState(viewModel: ProfileEditViewModel) {
         viewModel.run {
-            profileIconBitmap.nonNullObserve(viewLifecycleOwner) { profileIconBitmap ->
-                binding.profileIconSrc = profileIconBitmap
-            }
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_CHOOOSE_PROFILE_ICON && resultCode == Activity.RESULT_OK) {
+        if (requestCode == REQUEST_CODE_CHOOOSE_WORK_PHOTO && resultCode == Activity.RESULT_OK) {
             safeLet(
                 data?.data,
                 activity?.contentResolver
             ) { uri, contentResolver ->
-                _viewModel.updateProfilePhoto(uri, contentResolver)
+                data?.getIntExtra(KEY_PHOTO_NUMBER, 0)?.let { number ->
+                    _viewModel.updateWorkPhoto(
+                        number = number,
+                        uri = uri,
+                        contentResolver = contentResolver
+                    )
+                }
             }
         }
     }

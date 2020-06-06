@@ -1,7 +1,6 @@
 package com.kl.findix.presentation.profileedit
 
 import android.content.ContentResolver
-import android.graphics.Bitmap
 import android.net.Uri
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.MediatorLiveData
@@ -10,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.storage.StorageReference
+import com.kl.findix.model.Photo
 import com.kl.findix.model.ServiceResult
 import com.kl.findix.model.User
 import com.kl.findix.services.FirebaseDataBaseService
@@ -18,6 +18,7 @@ import com.kl.findix.services.FirebaseUserService
 import com.kl.findix.services.ImageService
 import com.kl.findix.util.UiState
 import com.kl.findix.util.delegate.UiStateViewModelDelegate
+import com.kl.findix.util.extension.MutableListLiveData
 import com.kl.findix.util.extension.safeLet
 import com.shopify.livedataktx.PublishLiveDataKtx
 import kotlinx.coroutines.launch
@@ -34,20 +35,27 @@ class ProfileEditViewModel @Inject constructor(
 
     companion object {
         private const val TAG = "ProfileEditViewModel"
+        private const val WORK_PHOTO_LIMIT = 5
     }
 
     // State
     private val _user: MediatorLiveData<User> = MediatorLiveData()
     val user: MutableLiveData<User>
         get() = _user
-    var profileIconBitmap: MutableLiveData<Bitmap> = MutableLiveData()
 
+    private val _photos: MutableListLiveData<Photo> = MutableListLiveData()
+    val photos: MutableList<Photo>
+        get() = _photos
+
+    private val _photoReferences: MutableListLiveData<StorageReference?> =
+        MutableListLiveData<StorageReference?>(
+            (0..WORK_PHOTO_LIMIT).map { null }.toMutableList()
+        )
+    val photoReferences: MutableListLiveData<StorageReference?>
+        get() = _photoReferences
 
     // Event
-    var setProfileIconCommand: PublishLiveDataKtx<StorageReference> = PublishLiveDataKtx()
     var hideRefreshCommand: PublishLiveDataKtx<Boolean> = PublishLiveDataKtx()
-
-    private var _profilePhotoUri: Uri? = null
 
     private var firebaseUser: FirebaseUser? = firebaseUserService.getCurrentSignInUser()
 
@@ -70,14 +78,22 @@ class ProfileEditViewModel @Inject constructor(
         }
     }
 
-    fun saveProfile(contentResolver: ContentResolver) {
+    fun fetchWorkPhotos() {
+        viewModelScope.launch {
+            firebaseUser?.let { firebaseUser ->
+                uiState.postValue(UiState.Loading)
+                (0..4).forEach {
+                    val result = firebaseStorageService.getWorkPhotoRef(firebaseUser.uid, it)
+                    _photoReferences[it] = result
+                }
+            }
+        }
+    }
+
+    fun saveProfile() {
         safeLet(user.value, firebaseUser) { user, firebaseUser ->
             viewModelScope.launch {
-                when (val result = firebaseDataBaseService.updateProfileInfo(
-                    firebaseUser,
-                    user,
-                    _profilePhotoUri.toString()
-                )) {
+                when (val result = firebaseDataBaseService.updateProfileInfo(firebaseUser, user)) {
                     is ServiceResult.Success -> {
                         uiState.postValue(UiState.Loaded)
                     }
@@ -87,78 +103,28 @@ class ProfileEditViewModel @Inject constructor(
                 }
             }
         }
+    }
 
-        safeLet(
-            firebaseUserService.getCurrentSignInUser(),
-            _profilePhotoUri
-        ) { currentSignInUser, profilePhotoUri ->
-            viewModelScope.launch {
-                when (val result = imageService.getBitmap(profilePhotoUri, contentResolver)) {
-                    is ServiceResult.Success -> {
-                        executeUploadProfilePhoto(currentSignInUser, result.data)
-                    }
-                    is ServiceResult.Failure -> {
-                        handleError(result.exception)
+    fun savePhoto() {
+        viewModelScope.launch {
+            photos.forEachIndexed { index, photo ->
+                photo.bitmap?.let { bitmap ->
+                    val photoByteArray =
+                        (imageService.getBytesFromBitmap(bitmap) as? ServiceResult.Success)?.data
+                    safeLet(firebaseUser?.uid, photoByteArray) { id, photoByteArray ->
+                        uploadWorkPhoto(id, photoByteArray, index + 1)
                     }
                 }
             }
         }
     }
 
-    fun updateProfilePhoto(uri: Uri, contentResolver: ContentResolver) {
-        when (val result = imageService.getBitmap(uri, contentResolver)) {
-            is ServiceResult.Success -> {
-                _profilePhotoUri = uri
-                profileIconBitmap.postValue(result.data)
-            }
-            is ServiceResult.Failure -> {
-                handleError(result.exception)
-            }
-        }
-    }
-
-    fun setProfileIcon() {
-        firebaseUser?.let { firebaseUser ->
-            viewModelScope.launch {
-                setProfileIconCommand.postValue(
-                    firebaseStorageService.getProfilePhotoRef(firebaseUser.uid)
-                )
-            }
-        }
-    }
-
-    fun signOut() {
+    private fun uploadWorkPhoto(id: String, photoByteArray: ByteArray, number: Int) {
         viewModelScope.launch {
-            firebaseUserService.signOut()
-        }
-    }
-
-    private fun executeUploadProfilePhoto(
-        currentSignInUser: FirebaseUser,
-        profilePhotoBitmap: Bitmap
-    ) {
-        viewModelScope.launch {
-            uiState.postValue(UiState.Loading)
-            when (val result = imageService.getBytesFromBitmap(profilePhotoBitmap)) {
-                is ServiceResult.Success -> {
-                    uiState.postValue(UiState.Loaded)
-                    uploadProfilePhoto(currentSignInUser, result.data)
-                }
-                is ServiceResult.Failure -> {
-                    handleError(result.exception)
-                }
-            }
-        }
-    }
-
-    private fun uploadProfilePhoto(
-        currentSignInUser: FirebaseUser,
-        profilePhotoByteArray: ByteArray
-    ) {
-        viewModelScope.launch {
-            when (val result = firebaseStorageService.uploadProfilePhoto(
-                currentSignInUser.uid,
-                profilePhotoByteArray
+            when (val result = firebaseStorageService.uploadWorkPhoto(
+                id,
+                photoByteArray,
+                number
             )) {
                 is ServiceResult.Success -> {
                     uiState.postValue(UiState.Loaded)
@@ -167,6 +133,20 @@ class ProfileEditViewModel @Inject constructor(
                     handleError(result.exception)
                 }
             }
+        }
+    }
+
+    fun updateWorkPhoto(number: Int, uri: Uri, contentResolver: ContentResolver) {
+        val result = imageService.getBitmap(uri, contentResolver)
+        photos[number - 1] = Photo(
+            (result as? ServiceResult.Success)?.data,
+            uri
+        )
+    }
+
+    fun signOut() {
+        viewModelScope.launch {
+            firebaseUserService.signOut()
         }
     }
 }

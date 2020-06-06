@@ -32,6 +32,7 @@ class ProfileViewModel @Inject constructor(
 
     companion object {
         private const val TAG = "ProfileViewModel"
+        private val WORK_PHOTO_LIMIT = 5
     }
 
     // State
@@ -41,12 +42,13 @@ class ProfileViewModel @Inject constructor(
     private val _orders: MutableLiveData<List<Order>> = MutableLiveData()
     val orders: LiveData<List<Order>>
         get() = _orders
+
     var profileIconBitmap: MutableLiveData<Bitmap> = MutableLiveData()
 
     // Event
-    var setProfileIconCommand: PublishLiveDataKtx<StorageReference> = PublishLiveDataKtx()
     val showDeleteOrderConfirmDialogCommand: PublishLiveDataKtx<String> = PublishLiveDataKtx()
     val showSnackBarCommand: PublishLiveDataKtx<Int> = PublishLiveDataKtx()
+    val setWorkPhotosCommand: PublishLiveDataKtx<Pair<Int, StorageReference>> = PublishLiveDataKtx()
 
     var index: Int = 0
     private var firebaseUser: FirebaseUser? = firebaseUserService.getCurrentSignInUser()
@@ -55,7 +57,8 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch {
             uiState.postValue(UiState.Loading)
             firebaseUser?.let { firebaseUser ->
-                when (val result = firebaseDataBaseService.fetchOwnProfileInfo(firebaseUser = firebaseUser)) {
+                when (val result =
+                    firebaseDataBaseService.fetchOwnProfileInfo(firebaseUser = firebaseUser)) {
                     is ServiceResult.Success -> {
                         uiState.postValue(UiState.Loaded)
                         _user.postValue(result.data)
@@ -64,14 +67,6 @@ class ProfileViewModel @Inject constructor(
                         handleError(result.exception)
                     }
                 }
-            }
-        }
-    }
-
-    fun setProfilePhoto() {
-        firebaseUser?.let { firebaseUser ->
-            viewModelScope.launch {
-                setProfileIconCommand.postValue(firebaseStorageService.getProfilePhotoRef(firebaseUser.uid))
             }
         }
     }
@@ -110,6 +105,18 @@ class ProfileViewModel @Inject constructor(
                 }
                 is ServiceResult.Failure -> {
                     handleError(result.exception)
+                }
+            }
+        }
+    }
+
+    fun setWorkPhotos() {
+        viewModelScope.launch {
+            firebaseUser?.let { firebaseUser ->
+                uiState.postValue(UiState.Loading)
+                (0..4).forEach {
+                    val reference = firebaseStorageService.getWorkPhotoRef(firebaseUser.uid, it)
+                    setWorkPhotosCommand.postValue(Pair(it + 1, reference))
                 }
             }
         }

@@ -28,6 +28,11 @@ class ProfileFragment : Fragment() {
 
     companion object {
         private const val TAG = "MapsFragment"
+        private const val PHOTO_INDEX_1 = 1
+        private const val PHOTO_INDEX_2 = 2
+        private const val PHOTO_INDEX_3 = 3
+        private const val PHOTO_INDEX_4 = 4
+        private const val PHOTO_INDEX_5 = 5
     }
 
     @Inject
@@ -68,7 +73,6 @@ class ProfileFragment : Fragment() {
         }
         lifecycle.addObserver(_viewModel)
 
-        _viewModel.setProfilePhoto()
         _viewModel.fetchUserInfo()
         _viewModel.fetchOwnOrder()
 
@@ -80,6 +84,7 @@ class ProfileFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setController()
+        _viewModel.setWorkPhotos()
         observeState(_viewModel)
         observeEvent(_viewModel)
     }
@@ -104,16 +109,6 @@ class ProfileFragment : Fragment() {
 
     private fun observeEvent(viewModel: ProfileViewModel) {
         viewModel.run {
-            setProfileIconCommand.nonNullObserve(viewLifecycleOwner) { storageReference ->
-                Glide.with(requireContext())
-                    .applyDefaultRequestOptions(
-                        RequestOptions.diskCacheStrategyOf(
-                            DiskCacheStrategy.NONE
-                        )
-                    )
-                    .load(storageReference)
-                    .into(binding.profilePhoto)
-            }
             showDeleteOrderConfirmDialogCommand.nonNullObserve(viewLifecycleOwner) { orderId ->
                 AlertDialog.Builder(context)
                     .setTitle("")
@@ -124,6 +119,19 @@ class ProfileFragment : Fragment() {
             }
             showSnackBarCommand.nonNullObserve(viewLifecycleOwner) { resId ->
                 Snackbar.make(binding.container, getString(resId), Snackbar.LENGTH_LONG).show()
+            }
+            setWorkPhotosCommand.nonNullObserve(viewLifecycleOwner) {
+                context?.let { context ->
+                    val workPhotoImageView = getWorkPhotoImageView(it.first)
+                    Glide.with(context)
+                        .applyDefaultRequestOptions(
+                            RequestOptions.diskCacheStrategyOf(
+                                DiskCacheStrategy.NONE
+                            )
+                        )
+                        .load(it.second)
+                        .into(workPhotoImageView)
+                }
             }
         }
     }
@@ -136,6 +144,27 @@ class ProfileFragment : Fragment() {
             orders.nonNullObserve(viewLifecycleOwner) { orders ->
                 controller?.setData(orders)
             }
+        }
+    }
+
+    private fun getWorkPhotoImageView(index: Int) = when (index) {
+        PHOTO_INDEX_1 -> {
+            binding.photo1
+        }
+        PHOTO_INDEX_2 -> {
+            binding.photo2
+        }
+        PHOTO_INDEX_3 -> {
+            binding.photo3
+        }
+        PHOTO_INDEX_4 -> {
+            binding.photo4
+        }
+        PHOTO_INDEX_5 -> {
+            binding.photo5
+        }
+        else -> {
+            throw IndexOutOfBoundsException("")
         }
     }
 

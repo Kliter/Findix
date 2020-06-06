@@ -46,8 +46,7 @@ class FirebaseDataBaseServiceImpl @Inject constructor(
 
     override suspend fun updateProfileInfo(
         firebaseUser: FirebaseUser,
-        user: User,
-        profilePhotoUrl: String
+        user: User
     ) = suspendCoroutine<ServiceResult<Unit>> { continuation ->
         try {
             database.collection("User")

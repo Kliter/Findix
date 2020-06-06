@@ -10,15 +10,27 @@
                 type="com.kl.findix.presentation.profileedit.ProfileEditViewModel" />
 
         <variable
-                name="profileIconSrc"
-                type="android.graphics.Bitmap" />
-
-        <variable
                 name="onClickSave"
                 type="android.view.View.OnClickListener" />
 
         <variable
-                name="onClickUserIcon"
+                name="onClickPhoto1"
+                type="android.view.View.OnClickListener" />
+
+        <variable
+                name="onClickPhoto2"
+                type="android.view.View.OnClickListener" />
+
+        <variable
+                name="onClickPhoto3"
+                type="android.view.View.OnClickListener" />
+
+        <variable
+                name="onClickPhoto4"
+                type="android.view.View.OnClickListener" />
+
+        <variable
+                name="onClickPhoto5"
                 type="android.view.View.OnClickListener" />
 
         <variable
@@ -75,30 +87,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp">
 
-                    <ImageView
-                            android:id="@+id/profile_icon"
-                            android:layout_width="match_parent"
-                            android:layout_height="200dp"
-                            android:background="@color/colorBlack_10"
-                            android:foreground="@drawable/ripple_white"
-                            android:onClick="@{onClickUserIcon}"
-                            app:bitmapSrc="@{profileIconSrc}"
-                            app:civ_border_color="@color/colorBlack"
-                            app:civ_border_width="2dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    <ImageView
-                            android:id="@+id/ic_camera"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:src="@drawable/ic_camera"
-                            app:layout_constraintBottom_toBottomOf="@id/profile_icon"
-                            app:layout_constraintEnd_toEndOf="@id/profile_icon"
-                            app:layout_constraintStart_toStartOf="@id/profile_icon"
-                            app:layout_constraintTop_toTopOf="@id/profile_icon" />
-
                     <androidx.cardview.widget.CardView
                             android:id="@+id/profile_icon_container"
                             android:layout_width="0dp"
@@ -106,7 +94,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/profile_icon">
+                            app:layout_constraintTop_toTopOf="parent">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                                 android:id="@+id/icon_container"
@@ -122,6 +110,12 @@
                                     app:layout_constraintBottom_toTopOf="@id/text_sign_out"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
+                                    app:onClickPhoto1="@{onClickPhoto1}"
+                                    app:onClickPhoto2="@{onClickPhoto2}"
+                                    app:onClickPhoto3="@{onClickPhoto3}"
+                                    app:onClickPhoto4="@{onClickPhoto4}"
+                                    app:onClickPhoto5="@{onClickPhoto5}"
+                                    app:viewModel="@{viewModel}"
                                     app:user="@={viewModel.user}" />
 
                             <TextView

@@ -1,12 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
                 name="user"
                 type="com.kl.findix.model.User" />
+
+        <variable
+                name="viewModel"
+                type="com.kl.findix.presentation.profileedit.ProfileEditViewModel" />
+
+        <variable
+                name="onClickPhoto1"
+                type="android.view.View.OnClickListener" />
+
+        <variable
+                name="onClickPhoto2"
+                type="android.view.View.OnClickListener" />
+
+        <variable
+                name="onClickPhoto3"
+                type="android.view.View.OnClickListener" />
+
+        <variable
+                name="onClickPhoto4"
+                type="android.view.View.OnClickListener" />
+
+        <variable
+                name="onClickPhoto5"
+                type="android.view.View.OnClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -135,7 +160,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="text"
+                        android:inputType="textMultiLine"
+                        android:maxLines="8"
                         android:text="@={user.description}" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -310,6 +336,119 @@
                         android:text="@={user.phone}" />
 
             </com.google.android.material.textfield.TextInputLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_photos"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_x2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_phone_number">
+
+            <ImageView
+                    android:id="@+id/ic_camera"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginEnd="@dimen/margin_x1"
+                    android:contentDescription="@string/user_info"
+                    android:src="@drawable/ic_camera"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/container_photos"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/container_photos"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@id/ic_camera"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/ic_camera"
+                    app:layout_constraintTop_toTopOf="@id/ic_camera">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/photo1"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:foreground="@drawable/ripple_white"
+                        android:onClick="@{onClickPhoto1}"
+                        app:bitmapSrc="@{viewModel.photos.get(1).bitmap}"
+                        app:civ_border_color="@color/colorBlack_20"
+                        app:civ_border_width="3dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/photo2"
+                        app:layout_constraintHorizontal_chainStyle="spread"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:src="@color/colorBlack" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/photo2"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:foreground="@drawable/ripple_white"
+                        android:onClick="@{onClickPhoto2}"
+                        app:bitmapSrc="@{viewModel.photos.get(2).bitmap}"
+                        app:civ_border_color="@color/colorBlack_20"
+                        app:civ_border_width="3dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/photo3"
+                        app:layout_constraintHorizontal_chainStyle="spread"
+                        app:layout_constraintStart_toEndOf="@id/photo1"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:src="@color/colorBlack" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/photo3"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:foreground="@drawable/ripple_white"
+                        android:onClick="@{onClickPhoto3}"
+                        app:bitmapSrc="@{viewModel.photos.get(3).bitmap}"
+                        app:civ_border_color="@color/colorBlack_20"
+                        app:civ_border_width="3dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/photo4"
+                        app:layout_constraintHorizontal_chainStyle="spread"
+                        app:layout_constraintStart_toEndOf="@id/photo2"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:src="@color/colorBlack" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/photo4"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:foreground="@drawable/ripple_white"
+                        android:onClick="@{onClickPhoto4}"
+                        app:bitmapSrc="@{viewModel.photos.get(4).bitmap}"
+                        app:civ_border_color="@color/colorBlack_20"
+                        app:civ_border_width="3dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/photo5"
+                        app:layout_constraintHorizontal_chainStyle="spread"
+                        app:layout_constraintStart_toEndOf="@id/photo3"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:src="@color/colorBlack" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/photo5"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:foreground="@drawable/ripple_white"
+                        android:onClick="@{onClickPhoto5}"
+                        app:bitmapSrc="@{viewModel.photos.get(5).bitmap}"
+                        app:civ_border_color="@color/colorBlack_20"
+                        app:civ_border_width="3dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_chainStyle="spread"
+                        app:layout_constraintStart_toEndOf="@id/photo4"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:src="@color/colorBlack" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
