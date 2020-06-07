@@ -68,9 +68,6 @@ class ProfileEditFragment : Fragment() {
         binding.apply {
             lifecycleOwner = this@ProfileEditFragment
             viewModel = _viewModel
-            swipeRefresh.setOnRefreshListener {
-                _viewModel.fetchUserInfo()
-            }
             setOnClickPhoto1 { chooseWorkPhoto(1) }
             setOnClickPhoto2 { chooseWorkPhoto(2) }
             setOnClickPhoto3 { chooseWorkPhoto(3) }
@@ -121,15 +118,6 @@ class ProfileEditFragment : Fragment() {
     }
 
     private fun observeEvent(viewModel: ProfileEditViewModel) {
-        viewModel.run {
-            hideRefreshCommand.nonNullObserve(viewLifecycleOwner) {
-                if (it) {
-                    if (binding.swipeRefresh.isRefreshing) {
-                        binding.swipeRefresh.isRefreshing = false
-                    }
-                }
-            }
-        }
     }
 
     private fun observeState(viewModel: ProfileEditViewModel) {
