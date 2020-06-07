@@ -12,6 +12,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.kl.findix.R
 import com.kl.findix.databinding.FragmentProfileEditBinding
 import com.kl.findix.util.GALLERY_TYPE_IMAGE
@@ -28,6 +31,11 @@ class ProfileEditFragment : Fragment() {
     companion object {
         private const val TAG = "ProfileEditFragment"
         private const val KEY_PHOTO_NUMBER = "key_photo_number"
+        private const val PHOTO_INDEX_1 = 1
+        private const val PHOTO_INDEX_2 = 2
+        private const val PHOTO_INDEX_3 = 3
+        private const val PHOTO_INDEX_4 = 4
+        private const val PHOTO_INDEX_5 = 5
     }
 
     @Inject
@@ -63,12 +71,12 @@ class ProfileEditFragment : Fragment() {
             swipeRefresh.setOnRefreshListener {
                 _viewModel.fetchUserInfo()
             }
-            setOnClickPhoto1 { createIntent(1) }
-            setOnClickPhoto2 { createIntent(2) }
-            setOnClickPhoto3 { createIntent(3) }
-            setOnClickPhoto4 { createIntent(4) }
-            setOnClickPhoto5 { createIntent(5) }
-            setOnClickSave{
+            setOnClickPhoto1 { chooseWorkPhoto(1) }
+            setOnClickPhoto2 { chooseWorkPhoto(2) }
+            setOnClickPhoto3 { chooseWorkPhoto(3) }
+            setOnClickPhoto4 { chooseWorkPhoto(4) }
+            setOnClickPhoto5 { chooseWorkPhoto(5) }
+            setOnClickSave {
                 _viewModel.saveProfile()
                 _viewModel.savePhoto()
             }
@@ -99,11 +107,12 @@ class ProfileEditFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        _viewModel.setWorkPhotos()
         observeState(_viewModel)
         observeEvent(_viewModel)
     }
 
-    private fun createIntent(number: Int) {
+    private fun chooseWorkPhoto(number: Int) {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
         intent.type = GALLERY_TYPE_IMAGE
@@ -125,6 +134,19 @@ class ProfileEditFragment : Fragment() {
 
     private fun observeState(viewModel: ProfileEditViewModel) {
         viewModel.run {
+            setWorkPhotosCommand.nonNullObserve(viewLifecycleOwner) {
+                context?.let { context ->
+                    val workPhotoImageView = getWorkPhotoImageView(it.first)
+                    Glide.with(context)
+                        .applyDefaultRequestOptions(
+                            RequestOptions.diskCacheStrategyOf(
+                                DiskCacheStrategy.NONE
+                            )
+                        )
+                        .load(it.second)
+                        .into(workPhotoImageView)
+                }
+            }
         }
     }
 
@@ -143,6 +165,27 @@ class ProfileEditFragment : Fragment() {
                     )
                 }
             }
+        }
+    }
+
+    private fun getWorkPhotoImageView(index: Int) = when (index) {
+        PHOTO_INDEX_1 -> {
+            binding.photo1
+        }
+        PHOTO_INDEX_2 -> {
+            binding.photo2
+        }
+        PHOTO_INDEX_3 -> {
+            binding.photo3
+        }
+        PHOTO_INDEX_4 -> {
+            binding.photo4
+        }
+        PHOTO_INDEX_5 -> {
+            binding.photo5
+        }
+        else -> {
+            throw IndexOutOfBoundsException("")
         }
     }
 }

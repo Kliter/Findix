@@ -35,7 +35,6 @@ class ProfileEditViewModel @Inject constructor(
 
     companion object {
         private const val TAG = "ProfileEditViewModel"
-        private const val WORK_PHOTO_LIMIT = 5
     }
 
     // State
@@ -47,17 +46,17 @@ class ProfileEditViewModel @Inject constructor(
     val photos: MutableList<Photo>
         get() = _photos
 
-    private val _photoReferences: MutableListLiveData<StorageReference?> =
-        MutableListLiveData<StorageReference?>(
-            (0..WORK_PHOTO_LIMIT).map { null }.toMutableList()
-        )
-    val photoReferences: MutableListLiveData<StorageReference?>
-        get() = _photoReferences
-
     // Event
     var hideRefreshCommand: PublishLiveDataKtx<Boolean> = PublishLiveDataKtx()
+    val setWorkPhotosCommand: PublishLiveDataKtx<Pair<Int, StorageReference>> = PublishLiveDataKtx()
 
     private var firebaseUser: FirebaseUser? = firebaseUserService.getCurrentSignInUser()
+
+    init {
+        (0..4).forEach {
+            _photos.add(Photo())
+        }
+    }
 
     fun fetchUserInfo() {
         viewModelScope.launch {
@@ -78,13 +77,13 @@ class ProfileEditViewModel @Inject constructor(
         }
     }
 
-    fun fetchWorkPhotos() {
+    fun setWorkPhotos() {
         viewModelScope.launch {
             firebaseUser?.let { firebaseUser ->
                 uiState.postValue(UiState.Loading)
                 (0..4).forEach {
-                    val result = firebaseStorageService.getWorkPhotoRef(firebaseUser.uid, it)
-                    _photoReferences[it] = result
+                    val reference = firebaseStorageService.getWorkPhotoRef(firebaseUser.uid, it)
+                    setWorkPhotosCommand.postValue(Pair(it + 1, reference))
                 }
             }
         }
@@ -138,7 +137,7 @@ class ProfileEditViewModel @Inject constructor(
 
     fun updateWorkPhoto(number: Int, uri: Uri, contentResolver: ContentResolver) {
         val result = imageService.getBitmap(uri, contentResolver)
-        photos[number - 1] = Photo(
+        photos[number] = Photo(
             (result as? ServiceResult.Success)?.data,
             uri
         )

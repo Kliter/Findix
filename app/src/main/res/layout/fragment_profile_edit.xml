@@ -102,27 +102,423 @@
                                 android:layout_height="wrap_content"
                                 android:background="@color/colorWhite">
 
-                            <include
-                                    layout="@layout/item_profile_base_info_view"
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/layout_username"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginBottom="@dimen/margin_x1"
-                                    app:layout_constraintBottom_toTopOf="@id/text_sign_out"
+                                    android:layout_marginTop="@dimen/margin_x2"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
-                                    app:onClickPhoto1="@{onClickPhoto1}"
-                                    app:onClickPhoto2="@{onClickPhoto2}"
-                                    app:onClickPhoto3="@{onClickPhoto3}"
-                                    app:onClickPhoto4="@{onClickPhoto4}"
-                                    app:onClickPhoto5="@{onClickPhoto5}"
-                                    app:viewModel="@{viewModel}"
-                                    app:user="@={viewModel.user}" />
+                                    app:layout_constraintTop_toTopOf="parent">
+
+                                <ImageView
+                                        android:id="@+id/iv_username_icon"
+                                        android:layout_width="32dp"
+                                        android:layout_height="32dp"
+                                        android:layout_marginEnd="@dimen/margin_x1"
+                                        android:src="@drawable/ic_user"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toStartOf="@id/text_input_layout_username"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                        android:id="@+id/text_input_layout_username"
+                                        style="@style/TextAppearance.MaterialComponents.Headline6"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginEnd="@dimen/margin_x1"
+                                        android:hint="@string/hint_username"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toEndOf="@id/iv_username_icon"
+                                        app:layout_constraintTop_toTopOf="parent">
+
+                                    <com.google.android.material.textfield.TextInputEditText
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:inputType="text"
+                                            android:maxLines="1"
+                                            android:text="@={viewModel.user.userName}" />
+
+                                </com.google.android.material.textfield.TextInputLayout>
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/layout_major"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/margin_x2"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@id/layout_username">
+
+                                <ImageView
+                                        android:id="@+id/iv_major_icon"
+                                        android:layout_width="32dp"
+                                        android:layout_height="32dp"
+                                        android:src="@drawable/ic_major"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                        android:id="@+id/text_input_layout_major"
+                                        style="@style/TextAppearance.MaterialComponents.Headline6"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="@dimen/margin_x1"
+                                        android:layout_marginEnd="@dimen/margin_x1"
+                                        android:hint="@string/hint_major"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toEndOf="@id/iv_major_icon"
+                                        app:layout_constraintTop_toTopOf="parent">
+
+                                    <com.google.android.material.textfield.TextInputEditText
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:inputType="text"
+                                            android:maxLines="1"
+                                            android:text="@={viewModel.user.major}" />
+
+                                </com.google.android.material.textfield.TextInputLayout>
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/layout_description"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/margin_x2"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@id/layout_major">
+
+                                <ImageView
+                                        android:id="@+id/iv_description"
+                                        android:layout_width="32dp"
+                                        android:layout_height="32dp"
+                                        android:layout_marginEnd="@dimen/margin_x1"
+                                        android:src="@drawable/ic_description"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                        android:id="@+id/text_input_layout_description"
+                                        style="@style/TextAppearance.MaterialComponents.Headline6"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="@dimen/margin_x1"
+                                        android:layout_marginEnd="@dimen/margin_x1"
+                                        android:hint="@string/hint_description"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toEndOf="@id/iv_description"
+                                        app:layout_constraintTop_toTopOf="parent">
+
+                                    <com.google.android.material.textfield.TextInputEditText
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:inputType="textMultiLine"
+                                            android:maxLines="8"
+                                            android:text="@={viewModel.user.description}" />
+
+                                </com.google.android.material.textfield.TextInputLayout>
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/layout_company"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/margin_x2"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@id/layout_description">
+
+                                <ImageView
+                                        android:id="@+id/ic_company"
+                                        android:layout_width="32dp"
+                                        android:layout_height="32dp"
+                                        android:layout_marginEnd="@dimen/margin_x1"
+                                        android:src="@drawable/ic_company"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toStartOf="@id/text_input_layout_company"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                        android:id="@+id/text_input_layout_company"
+                                        style="@style/TextAppearance.MaterialComponents.Headline6"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginEnd="@dimen/margin_x1"
+                                        android:hint="@string/hint_company"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toEndOf="@id/ic_company"
+                                        app:layout_constraintTop_toTopOf="parent">
+
+                                    <com.google.android.material.textfield.TextInputEditText
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:inputType="text"
+                                            android:maxLines="1"
+                                            android:text="@={viewModel.user.company}" />
+
+                                </com.google.android.material.textfield.TextInputLayout>
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/layout_website"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/margin_x2"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@id/layout_company">
+
+                                <ImageView
+                                        android:id="@+id/iv_website"
+                                        android:layout_width="32dp"
+                                        android:layout_height="32dp"
+                                        android:layout_marginEnd="@dimen/margin_x1"
+                                        android:src="@drawable/ic_website"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toStartOf="@id/text_input_layout_website"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                        android:id="@+id/text_input_layout_website"
+                                        style="@style/TextAppearance.MaterialComponents.Headline6"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginEnd="@dimen/margin_x1"
+                                        android:hint="@string/hint_website"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toEndOf="@id/iv_website"
+                                        app:layout_constraintTop_toTopOf="parent">
+
+                                    <com.google.android.material.textfield.TextInputEditText
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:inputType="textWebEditText"
+                                            android:maxLines="1"
+                                            android:text="@={viewModel.user.website}" />
+
+                                </com.google.android.material.textfield.TextInputLayout>
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/layout_email"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/margin_x2"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@id/layout_website">
+
+                                <ImageView
+                                        android:id="@+id/ic_email"
+                                        android:layout_width="32dp"
+                                        android:layout_height="32dp"
+                                        android:layout_marginEnd="@dimen/margin_x1"
+                                        android:contentDescription="@string/user_info"
+                                        android:src="@drawable/ic_mail"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toStartOf="@id/text_input_layout_user_info"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                        android:id="@+id/text_input_layout_user_info"
+                                        style="@style/TextAppearance.MaterialComponents.Headline6"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginEnd="@dimen/margin_x1"
+                                        android:hint="@string/hint_email"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toEndOf="@id/ic_email"
+                                        app:layout_constraintTop_toTopOf="parent">
+
+                                    <com.google.android.material.textfield.TextInputEditText
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:inputType="textEmailAddress"
+                                            android:maxLines="1"
+                                            android:text="@={viewModel.user.email}" />
+
+                                </com.google.android.material.textfield.TextInputLayout>
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/layout_phone_number"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/margin_x2"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@id/layout_email">
+
+                                <ImageView
+                                        android:id="@+id/ic_phone"
+                                        android:layout_width="32dp"
+                                        android:layout_height="32dp"
+                                        android:layout_marginEnd="@dimen/margin_x1"
+                                        android:contentDescription="@string/user_info"
+                                        android:src="@drawable/ic_phone"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toStartOf="@id/text_input_layout_phone_number"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                        android:id="@+id/text_input_layout_phone_number"
+                                        style="@style/TextAppearance.MaterialComponents.Headline6"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginEnd="@dimen/margin_x1"
+                                        android:hint="@string/hint_phone"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toEndOf="@id/ic_phone"
+                                        app:layout_constraintTop_toTopOf="parent">
+
+                                    <com.google.android.material.textfield.TextInputEditText
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:inputType="phone"
+                                            android:maxLines="1"
+                                            android:text="@={viewModel.user.phone}" />
+
+                                </com.google.android.material.textfield.TextInputLayout>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/layout_photos"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/margin_x2"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@id/layout_phone_number">
+
+                                <ImageView
+                                        android:id="@+id/ic_camera"
+                                        android:layout_width="32dp"
+                                        android:layout_height="32dp"
+                                        android:layout_marginEnd="@dimen/margin_x1"
+                                        android:contentDescription="@string/user_info"
+                                        android:src="@drawable/ic_camera"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toStartOf="@id/container_photos"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                        android:id="@+id/container_photos"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        app:layout_constraintBottom_toBottomOf="@id/ic_camera"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toEndOf="@id/ic_camera"
+                                        app:layout_constraintTop_toTopOf="@id/ic_camera">
+
+                                    <de.hdodenhof.circleimageview.CircleImageView
+                                            android:id="@+id/photo1"
+                                            android:layout_width="48dp"
+                                            android:layout_height="48dp"
+                                            android:foreground="@drawable/ripple_white"
+                                            android:onClick="@{onClickPhoto1}"
+                                            android:src="@color/colorBlack_10"
+                                            app:civ_border_color="@color/colorBlack_20"
+                                            app:civ_border_width="3dp"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintEnd_toStartOf="@id/photo2"
+                                            app:layout_constraintHorizontal_chainStyle="spread"
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toTopOf="parent"
+                                            tools:src="@color/colorBlack" />
+
+                                    <de.hdodenhof.circleimageview.CircleImageView
+                                            android:id="@+id/photo2"
+                                            android:layout_width="48dp"
+                                            android:layout_height="48dp"
+                                            android:foreground="@drawable/ripple_white"
+                                            android:onClick="@{onClickPhoto2}"
+                                            android:src="@color/colorBlack_10"
+                                            app:civ_border_color="@color/colorBlack_20"
+                                            app:civ_border_width="3dp"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintEnd_toStartOf="@id/photo3"
+                                            app:layout_constraintHorizontal_chainStyle="spread"
+                                            app:layout_constraintStart_toEndOf="@id/photo1"
+                                            app:layout_constraintTop_toTopOf="parent"
+                                            tools:src="@color/colorBlack" />
+
+                                    <de.hdodenhof.circleimageview.CircleImageView
+                                            android:id="@+id/photo3"
+                                            android:layout_width="48dp"
+                                            android:layout_height="48dp"
+                                            android:foreground="@drawable/ripple_white"
+                                            android:onClick="@{onClickPhoto3}"
+                                            android:src="@color/colorBlack_10"
+                                            app:civ_border_color="@color/colorBlack_20"
+                                            app:civ_border_width="3dp"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintEnd_toStartOf="@id/photo4"
+                                            app:layout_constraintHorizontal_chainStyle="spread"
+                                            app:layout_constraintStart_toEndOf="@id/photo2"
+                                            app:layout_constraintTop_toTopOf="parent"
+                                            tools:src="@color/colorBlack" />
+
+                                    <de.hdodenhof.circleimageview.CircleImageView
+                                            android:id="@+id/photo4"
+                                            android:layout_width="48dp"
+                                            android:layout_height="48dp"
+                                            android:foreground="@drawable/ripple_white"
+                                            android:onClick="@{onClickPhoto4}"
+                                            android:src="@color/colorBlack_10"
+                                            app:civ_border_color="@color/colorBlack_20"
+                                            app:civ_border_width="3dp"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintEnd_toStartOf="@id/photo5"
+                                            app:layout_constraintHorizontal_chainStyle="spread"
+                                            app:layout_constraintStart_toEndOf="@id/photo3"
+                                            app:layout_constraintTop_toTopOf="parent"
+                                            tools:src="@color/colorBlack" />
+
+                                    <de.hdodenhof.circleimageview.CircleImageView
+                                            android:id="@+id/photo5"
+                                            android:layout_width="48dp"
+                                            android:layout_height="48dp"
+                                            android:foreground="@drawable/ripple_white"
+                                            android:onClick="@{onClickPhoto5}"
+                                            android:src="@color/colorBlack_10"
+                                            app:civ_border_color="@color/colorBlack_20"
+                                            app:civ_border_width="3dp"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintEnd_toEndOf="parent"
+                                            app:layout_constraintHorizontal_chainStyle="spread"
+                                            app:layout_constraintStart_toEndOf="@id/photo4"
+                                            app:layout_constraintTop_toTopOf="parent"
+                                            tools:src="@color/colorBlack" />
+
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
 
                             <TextView
                                     android:id="@+id/text_sign_out"
                                     style="@style/TextAppearance.MaterialComponents.Body2"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/margin_x2"
                                     android:layout_marginEnd="@dimen/margin_x2"
                                     android:layout_marginBottom="@dimen/margin_x2"
                                     android:foreground="@drawable/ripple_white"
@@ -131,6 +527,7 @@
                                     android:textColor="@color/colorLinkBlue"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@id/layout_photos"
                                     tools:text="@string/sign_out" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
