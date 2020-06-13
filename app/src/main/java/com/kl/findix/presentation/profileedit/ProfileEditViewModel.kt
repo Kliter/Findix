@@ -77,7 +77,7 @@ class ProfileEditViewModel @Inject constructor(
                 uiState.postValue(UiState.Loading)
                 (0..4).forEach {
                     delay(100) // 待たずにpostすると5だけになる
-                    val reference = firebaseStorageService.getWorkPhotoRef(firebaseUser.uid, it)
+                    val reference = firebaseStorageService.getWorkPhotoRef(firebaseUser.uid, it + 1)
                     setWorkPhotosCommand.postValue(Pair(it + 1, reference))
                 }
             }
