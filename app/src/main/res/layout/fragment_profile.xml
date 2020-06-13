@@ -23,7 +23,23 @@
                 type="android.view.View.OnClickListener" />
 
         <variable
-                name="onClickPhoto"
+                name="onClickPhoto1"
+                type="android.view.View.OnClickListener" />
+
+        <variable
+                name="onClickPhoto2"
+                type="android.view.View.OnClickListener" />
+
+        <variable
+                name="onClickPhoto3"
+                type="android.view.View.OnClickListener" />
+
+        <variable
+                name="onClickPhoto4"
+                type="android.view.View.OnClickListener" />
+
+        <variable
+                name="onClickPhoto5"
                 type="android.view.View.OnClickListener" />
 
     </data>
@@ -264,7 +280,7 @@
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
                                 android:contentDescription="@null"
-                                android:onClick="@{onClickPhoto}"
+                                android:onClick="@{onClickPhoto1}"
                                 android:src="@color/colorBlack_10"
                                 app:civ_border_color="@color/colorBlack_20"
                                 app:civ_border_width="3dp"
@@ -278,7 +294,7 @@
                                 android:id="@+id/photo2"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
-                                android:onClick="@{onClickPhoto}"
+                                android:onClick="@{onClickPhoto2}"
                                 android:src="@color/colorBlack_10"
                                 app:civ_border_color="@color/colorBlack_20"
                                 app:civ_border_width="3dp"
@@ -293,7 +309,7 @@
                                 android:id="@+id/photo3"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
-                                android:onClick="@{onClickPhoto}"
+                                android:onClick="@{onClickPhoto3}"
                                 android:src="@color/colorBlack_10"
                                 app:civ_border_color="@color/colorBlack_20"
                                 app:civ_border_width="3dp"
@@ -308,7 +324,7 @@
                                 android:id="@+id/photo4"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
-                                android:onClick="@{onClickPhoto}"
+                                android:onClick="@{onClickPhoto4}"
                                 android:src="@color/colorBlack_10"
                                 app:civ_border_color="@color/colorBlack_20"
                                 app:civ_border_width="3dp"
@@ -323,7 +339,7 @@
                                 android:id="@+id/photo5"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
-                                android:onClick="@{onClickPhoto}"
+                                android:onClick="@{onClickPhoto5}"
                                 android:src="@color/colorBlack_10"
                                 app:civ_border_color="@color/colorBlack_20"
                                 app:civ_border_width="3dp"

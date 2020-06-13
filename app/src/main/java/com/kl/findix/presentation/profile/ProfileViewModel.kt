@@ -19,6 +19,7 @@ import com.kl.findix.services.FirebaseUserService
 import com.kl.findix.util.UiState
 import com.kl.findix.util.delegate.UiStateViewModelDelegate
 import com.shopify.livedataktx.PublishLiveDataKtx
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -115,7 +116,8 @@ class ProfileViewModel @Inject constructor(
             firebaseUser?.let { firebaseUser ->
                 uiState.postValue(UiState.Loading)
                 (0..4).forEach {
-                    val reference = firebaseStorageService.getWorkPhotoRef(firebaseUser.uid, it)
+                    delay(100) // 待たずにpostすると5だけになる
+                    val reference = firebaseStorageService.getWorkPhotoRef(firebaseUser.uid, it + 1)
                     setWorkPhotosCommand.postValue(Pair(it + 1, reference))
                 }
             }

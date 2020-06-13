@@ -6,8 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import androidx.core.graphics.drawable.toBitmap
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -21,7 +19,6 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.material.snackbar.Snackbar
 import com.kl.findix.R
 import com.kl.findix.databinding.FragmentProfileBinding
-import com.kl.findix.model.Photo
 import com.kl.findix.util.extension.nonNullObserve
 import com.kl.findix.util.extension.viewModelProvider
 import dagger.android.support.AndroidSupportInjection
@@ -73,10 +70,39 @@ class ProfileFragment : Fragment() {
                     ProfileFragmentDirections.toProfileEdit()
                 )
             }
-            this.setOnClickPhoto {
-                val photo = Photo(bitmap = (it as ImageView).drawable.toBitmap())
+            this.setOnClickPhoto1 {
                 navController.navigate(
-                    ProfileFragmentDirections.toPhoto(photo)
+                    ProfileFragmentDirections.toPhoto(
+                        PHOTO_INDEX_1
+                    )
+                )
+            }
+            this.setOnClickPhoto2 {
+                navController.navigate(
+                    ProfileFragmentDirections.toPhoto(
+                        PHOTO_INDEX_2
+                    )
+                )
+            }
+            this.setOnClickPhoto3 {
+                navController.navigate(
+                    ProfileFragmentDirections.toPhoto(
+                        PHOTO_INDEX_3
+                    )
+                )
+            }
+            this.setOnClickPhoto4 {
+                navController.navigate(
+                    ProfileFragmentDirections.toPhoto(
+                        PHOTO_INDEX_4
+                    )
+                )
+            }
+            this.setOnClickPhoto5 {
+                navController.navigate(
+                    ProfileFragmentDirections.toPhoto(
+                        PHOTO_INDEX_5
+                    )
                 )
             }
         }
@@ -139,6 +165,7 @@ class ProfileFragment : Fragment() {
                             )
                         )
                         .load(it.second)
+                        .placeholder(R.color.colorBlack_10)
                         .into(workPhotoImageView)
                 }
             }

@@ -166,8 +166,8 @@
             android:name="com.kl.findix.presentation.photo.PhotoFragment"
             android:label="Photo">
         <argument
-                android:name="photo"
-                app:argType="com.kl.findix.model.Photo" />
+                android:name="index"
+                app:argType="integer" />
     </fragment>
 
     <fragment

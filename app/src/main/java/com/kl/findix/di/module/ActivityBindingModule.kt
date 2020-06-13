@@ -8,6 +8,7 @@ import com.kl.findix.presentation.login.LoginModule
 import com.kl.findix.presentation.map.MapsModule
 import com.kl.findix.presentation.order.OrderModule
 import com.kl.findix.presentation.orderdetail.OrderDetailModule
+import com.kl.findix.presentation.photo.PhotoModule
 import com.kl.findix.presentation.profile.ProfileModule
 import com.kl.findix.presentation.profiledetail.ProfileDetailModule
 import com.kl.findix.presentation.profileedit.ProfileEditModule
@@ -45,6 +46,7 @@ abstract class ActivityBindingModule {
             ProfileEditModule::class,
             SignUpModule::class,
             SplashModule::class,
+            PhotoModule::class,
             NavModule::class
         ]
     )
