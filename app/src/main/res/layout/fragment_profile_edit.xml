@@ -412,12 +412,10 @@
                             android:layout_height="48dp"
                             android:foreground="@drawable/ripple_white"
                             android:onClick="@{onClickPhoto1}"
-                            android:src="@color/colorBlack_10"
                             app:civ_border_color="@color/colorBlack_20"
                             app:civ_border_width="3dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@id/photo2"
-                            app:layout_constraintHorizontal_chainStyle="spread"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             tools:src="@color/colorBlack" />
@@ -428,12 +426,10 @@
                             android:layout_height="48dp"
                             android:foreground="@drawable/ripple_white"
                             android:onClick="@{onClickPhoto2}"
-                            android:src="@color/colorBlack_10"
                             app:civ_border_color="@color/colorBlack_20"
                             app:civ_border_width="3dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@id/photo3"
-                            app:layout_constraintHorizontal_chainStyle="spread"
                             app:layout_constraintStart_toEndOf="@id/photo1"
                             app:layout_constraintTop_toTopOf="parent"
                             tools:src="@color/colorBlack" />
@@ -444,12 +440,10 @@
                             android:layout_height="48dp"
                             android:foreground="@drawable/ripple_white"
                             android:onClick="@{onClickPhoto3}"
-                            android:src="@color/colorBlack_10"
                             app:civ_border_color="@color/colorBlack_20"
                             app:civ_border_width="3dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@id/photo4"
-                            app:layout_constraintHorizontal_chainStyle="spread"
                             app:layout_constraintStart_toEndOf="@id/photo2"
                             app:layout_constraintTop_toTopOf="parent"
                             tools:src="@color/colorBlack" />
@@ -460,12 +454,10 @@
                             android:layout_height="48dp"
                             android:foreground="@drawable/ripple_white"
                             android:onClick="@{onClickPhoto4}"
-                            android:src="@color/colorBlack_10"
                             app:civ_border_color="@color/colorBlack_20"
                             app:civ_border_width="3dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@id/photo5"
-                            app:layout_constraintHorizontal_chainStyle="spread"
                             app:layout_constraintStart_toEndOf="@id/photo3"
                             app:layout_constraintTop_toTopOf="parent"
                             tools:src="@color/colorBlack" />
@@ -481,12 +473,12 @@
                             app:civ_border_width="3dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_chainStyle="spread"
                             app:layout_constraintStart_toEndOf="@id/photo4"
                             app:layout_constraintTop_toTopOf="parent"
                             tools:src="@color/colorBlack" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView

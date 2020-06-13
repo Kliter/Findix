@@ -30,7 +30,7 @@ class ProfileEditFragment : Fragment() {
 
     companion object {
         private const val TAG = "ProfileEditFragment"
-        private const val KEY_PHOTO_NUMBER = "key_photo_number"
+        private const val DEFAULT_PHOTO_NUMBER = -1
         private const val PHOTO_INDEX_1 = 1
         private const val PHOTO_INDEX_2 = 2
         private const val PHOTO_INDEX_3 = 3
@@ -43,6 +43,7 @@ class ProfileEditFragment : Fragment() {
     @Inject
     lateinit var navController: NavController
 
+    private var photoNumber = DEFAULT_PHOTO_NUMBER
     private lateinit var _viewModel: ProfileEditViewModel
     private val binding: FragmentProfileEditBinding by lazy {
         DataBindingUtil.inflate<FragmentProfileEditBinding>(
@@ -110,21 +111,17 @@ class ProfileEditFragment : Fragment() {
     }
 
     private fun chooseWorkPhoto(number: Int) {
+        photoNumber = number
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
         intent.type = GALLERY_TYPE_IMAGE
-        intent.putExtra(KEY_PHOTO_NUMBER, number)
         startActivityForResult(intent, REQUEST_CODE_CHOOOSE_WORK_PHOTO)
     }
 
     private fun observeEvent(viewModel: ProfileEditViewModel) {
-    }
-
-    private fun observeState(viewModel: ProfileEditViewModel) {
         viewModel.run {
             setWorkPhotosCommand.nonNullObserve(viewLifecycleOwner) {
                 context?.let { context ->
-                    val workPhotoImageView = getWorkPhotoImageView(it.first)
                     Glide.with(context)
                         .applyDefaultRequestOptions(
                             RequestOptions.diskCacheStrategyOf(
@@ -132,7 +129,28 @@ class ProfileEditFragment : Fragment() {
                             )
                         )
                         .load(it.second)
-                        .into(workPhotoImageView)
+                        .placeholder(R.color.colorBlack_10)
+                        .error(R.color.colorBlack_10)
+                        .into(getWorkPhotoImageView(it.first))
+                }
+            }
+        }
+    }
+
+    private fun observeState(viewModel: ProfileEditViewModel) {
+        viewModel.run {
+            photos.forEachIndexed { index, photo ->
+                photo.nonNullObserve(viewLifecycleOwner) {
+                    context?.let { context ->
+                        Glide.with(context)
+                            .applyDefaultRequestOptions(
+                                RequestOptions.diskCacheStrategyOf(
+                                    DiskCacheStrategy.NONE
+                                )
+                            )
+                            .load(it.bitmap)
+                            .into(getWorkPhotoImageView(index + 1))
+                    }
                 }
             }
         }
@@ -145,9 +163,9 @@ class ProfileEditFragment : Fragment() {
                 data?.data,
                 activity?.contentResolver
             ) { uri, contentResolver ->
-                data?.getIntExtra(KEY_PHOTO_NUMBER, 0)?.let { number ->
+                if (photoNumber != DEFAULT_PHOTO_NUMBER) {
                     _viewModel.updateWorkPhoto(
-                        number = number,
+                        number = photoNumber,
                         uri = uri,
                         contentResolver = contentResolver
                     )

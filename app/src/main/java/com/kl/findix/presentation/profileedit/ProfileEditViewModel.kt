@@ -18,9 +18,9 @@ import com.kl.findix.services.FirebaseUserService
 import com.kl.findix.services.ImageService
 import com.kl.findix.util.UiState
 import com.kl.findix.util.delegate.UiStateViewModelDelegate
-import com.kl.findix.util.extension.MutableListLiveData
 import com.kl.findix.util.extension.safeLet
 import com.shopify.livedataktx.PublishLiveDataKtx
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -42,21 +42,15 @@ class ProfileEditViewModel @Inject constructor(
     val user: MutableLiveData<User>
         get() = _user
 
-    private val _photos: MutableListLiveData<Photo> = MutableListLiveData()
-    val photos: MutableList<Photo>
-        get() = _photos
+    val photos: MutableList<MutableLiveData<Photo>> = (0..4).map {
+        MutableLiveData<Photo>()
+    }.toMutableList()
 
     // Event
     var hideRefreshCommand: PublishLiveDataKtx<Boolean> = PublishLiveDataKtx()
-    val setWorkPhotosCommand: PublishLiveDataKtx<Pair<Int, StorageReference>> = PublishLiveDataKtx()
+    val setWorkPhotosCommand: MutableLiveData<Pair<Int, StorageReference>> = MutableLiveData()
 
     private var firebaseUser: FirebaseUser? = firebaseUserService.getCurrentSignInUser()
-
-    init {
-        (0..4).forEach {
-            _photos.add(Photo())
-        }
-    }
 
     fun fetchUserInfo() {
         viewModelScope.launch {
@@ -82,6 +76,7 @@ class ProfileEditViewModel @Inject constructor(
             firebaseUser?.let { firebaseUser ->
                 uiState.postValue(UiState.Loading)
                 (0..4).forEach {
+                    delay(100) // 待たずにpostすると5だけになる
                     val reference = firebaseStorageService.getWorkPhotoRef(firebaseUser.uid, it)
                     setWorkPhotosCommand.postValue(Pair(it + 1, reference))
                 }
@@ -107,7 +102,7 @@ class ProfileEditViewModel @Inject constructor(
     fun savePhoto() {
         viewModelScope.launch {
             photos.forEachIndexed { index, photo ->
-                photo.bitmap?.let { bitmap ->
+                photo.value?.bitmap?.let { bitmap ->
                     val photoByteArray =
                         (imageService.getBytesFromBitmap(bitmap) as? ServiceResult.Success)?.data
                     safeLet(firebaseUser?.uid, photoByteArray) { id, photoByteArray ->
@@ -137,9 +132,11 @@ class ProfileEditViewModel @Inject constructor(
 
     fun updateWorkPhoto(number: Int, uri: Uri, contentResolver: ContentResolver) {
         val result = imageService.getBitmap(uri, contentResolver)
-        photos[number] = Photo(
-            (result as? ServiceResult.Success)?.data,
-            uri
+        photos[number - 1].postValue(
+            Photo(
+                (result as? ServiceResult.Success)?.data,
+                uri
+            )
         )
     }
 
