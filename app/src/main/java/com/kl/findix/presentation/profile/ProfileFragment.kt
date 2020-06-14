@@ -65,6 +65,10 @@ class ProfileFragment : Fragment() {
             lifecycleOwner = this@ProfileFragment
             viewModel = _viewModel
             toolbar.setTitle(R.string.action_profile)
+            this.setOnClickUserMenu {
+                val dialog = UserMenuBottomSheetDialog.newInstance()
+                dialog.show(childFragmentManager, "UserMenu")
+            }
             this.setOnClickEdit {
                 navController.navigate(
                     ProfileFragmentDirections.toProfileEdit()
@@ -167,6 +171,20 @@ class ProfileFragment : Fragment() {
                         .load(it.second)
                         .placeholder(R.color.colorBlack_10)
                         .into(workPhotoImageView)
+                }
+            }
+            showSignOutDialogCommand.nonNullObserve(viewLifecycleOwner) {
+                context?.let {
+                    AlertDialog.Builder(it)
+                        .setTitle(R.string.sign_out_dialog_title)
+                        .setMessage(R.string.sign_out_dialog_message)
+                        .setPositiveButton(R.string.ok) { _, _ ->
+                            _viewModel.signOut()
+                            navController.navigate(
+                                ProfileFragmentDirections.toLogin()
+                            )
+                        }
+                        .show()
                 }
             }
         }

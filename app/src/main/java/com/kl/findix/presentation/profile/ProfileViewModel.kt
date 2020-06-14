@@ -50,6 +50,7 @@ class ProfileViewModel @Inject constructor(
     val showDeleteOrderConfirmDialogCommand: PublishLiveDataKtx<String> = PublishLiveDataKtx()
     val showSnackBarCommand: PublishLiveDataKtx<Int> = PublishLiveDataKtx()
     val setWorkPhotosCommand: PublishLiveDataKtx<Pair<Int, StorageReference>> = PublishLiveDataKtx()
+    val showSignOutDialogCommand: PublishLiveDataKtx<Unit> = PublishLiveDataKtx()
 
     var index: Int = 0
     private var firebaseUser: FirebaseUser? = firebaseUserService.getCurrentSignInUser()
@@ -121,6 +122,16 @@ class ProfileViewModel @Inject constructor(
                     setWorkPhotosCommand.postValue(Pair(it + 1, reference))
                 }
             }
+        }
+    }
+
+    fun showSignOutDialog() {
+        showSignOutDialogCommand.postValue(Unit)
+    }
+
+    fun signOut() {
+        viewModelScope.launch {
+            firebaseUserService.signOut()
         }
     }
 }

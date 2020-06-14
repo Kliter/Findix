@@ -480,24 +480,6 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <TextView
-                    android:id="@+id/text_sign_out"
-                    style="@style/TextAppearance.MaterialComponents.Body2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_x1_5"
-                    android:layout_marginEnd="@dimen/margin_x2"
-                    android:layout_marginBottom="@dimen/margin_x2"
-                    android:foreground="@drawable/ripple_white"
-                    android:onClick="@{onClickSignOut}"
-                    android:text="@string/sign_out"
-                    android:textColor="@color/colorLinkBlue"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/layout_photos"
-                    tools:text="@string/sign_out" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

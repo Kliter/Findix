@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -77,20 +76,6 @@ class ProfileEditFragment : Fragment() {
             setOnClickSave {
                 _viewModel.saveProfile()
                 _viewModel.savePhoto()
-            }
-            setOnClickSignOut {
-                context?.let {
-                    AlertDialog.Builder(it)
-                        .setTitle(R.string.sign_out_dialog_title)
-                        .setMessage(R.string.sign_out_dialog_message)
-                        .setPositiveButton(R.string.ok) { _, _ ->
-                            _viewModel.signOut()
-                            navController.navigate(
-                                ProfileEditFragmentDirections.toLogin()
-                            )
-                        }
-                        .show()
-                }
             }
             this.toolbar.setNavigationOnClickListener {
                 navController.popBackStack()

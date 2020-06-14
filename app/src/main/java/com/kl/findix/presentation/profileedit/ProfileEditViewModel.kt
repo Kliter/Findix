@@ -139,10 +139,4 @@ class ProfileEditViewModel @Inject constructor(
             )
         )
     }
-
-    fun signOut() {
-        viewModelScope.launch {
-            firebaseUserService.signOut()
-        }
-    }
 }
