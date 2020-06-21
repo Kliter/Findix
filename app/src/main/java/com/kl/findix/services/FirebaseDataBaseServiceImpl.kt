@@ -254,4 +254,58 @@ class FirebaseDataBaseServiceImpl @Inject constructor(
                 continuation.resume(ServiceResult.Failure(e))
             }
         }
+
+    override suspend fun deleteUser(userId: String): ServiceResult<Unit> =
+        suspendCoroutine { continuation ->
+            try {
+                database.collection("User")
+                    .document(userId)
+                    .delete()
+                    .addOnSuccessListener {
+                        continuation.resume(ServiceResult.Success(Unit))
+                    }
+                    .addOnFailureListener {
+                        continuation.resume(ServiceResult.Failure(it))
+                    }
+            } catch (e: Exception) {
+                continuation.resume(ServiceResult.Failure(e))
+            }
+        }
+
+    override suspend fun deleteUserLocation(userId: String): ServiceResult<Unit> =
+        suspendCoroutine { continuation ->
+            try {
+                database.collection("UserLocation")
+                    .document(userId)
+                    .delete()
+                    .addOnSuccessListener {
+                        continuation.resume(ServiceResult.Success(Unit))
+                    }
+                    .addOnFailureListener {
+                        continuation.resume(ServiceResult.Failure(it))
+                    }
+            } catch (e: Exception) {
+                continuation.resume(ServiceResult.Failure(e))
+            }
+        }
+
+    override suspend fun deleteOrderFromUserId(userId: String): ServiceResult<Unit> =
+        suspendCoroutine { continuation ->
+            try {
+                database.collection("Order")
+                    .whereEqualTo("userId", userId)
+                    .get()
+                    .addOnSuccessListener {
+                        it.documents.forEach { document ->
+                            document.reference.delete()
+                        }
+                        continuation.resume(ServiceResult.Success(Unit))
+                    }
+                    .addOnFailureListener {
+                        continuation.resume(ServiceResult.Failure(it))
+                    }
+            } catch (e: Exception) {
+                continuation.resume(ServiceResult.Failure(e))
+            }
+        }
 }

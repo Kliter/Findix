@@ -47,6 +47,10 @@ class UserMenuBottomSheetDialog : BottomSheetDialogFragment() {
             _viewModel.showSignOutDialog()
             dismissAllowingStateLoss()
         }
+        binding.btnDeleteAccount.setOnClickListener {
+            _viewModel.showDeleteAccountDialog()
+            dismissAllowingStateLoss()
+        }
         binding.btnCancel.setOnClickListener {
             dismissAllowingStateLoss()
         }

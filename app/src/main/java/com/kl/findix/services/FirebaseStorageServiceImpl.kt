@@ -4,6 +4,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.kl.findix.model.ServiceResult
 import com.kl.findix.util.extension.getStorageOrderPhotoPath
 import com.kl.findix.util.extension.getStorageProfileIconPath
+import com.kl.findix.util.extension.getStorageUserPath
 import com.kl.findix.util.extension.getStorageWorkPhotoPath
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -65,7 +66,7 @@ class FirebaseStorageServiceImpl(
             )
         )
 
-    override fun deleteOrderPhoto(userId: String, orderId: String) {
+    override suspend fun deleteOrderPhoto(userId: String, orderId: String) {
         val orderPhotoReference = storage.reference.child(
             getStorageOrderPhotoPath(
                 userId,
@@ -80,15 +81,43 @@ class FirebaseStorageServiceImpl(
         byteArray: ByteArray,
         number: Int
     ) = suspendCoroutine<ServiceResult<Unit>> { continuation ->
-            try {
-                val workPhotoReference = storage.reference.child(
-                    getStorageWorkPhotoPath(
-                        userId,
-                        number
-                    )
+        try {
+            val workPhotoReference = storage.reference.child(
+                getStorageWorkPhotoPath(
+                    userId,
+                    number
                 )
-                workPhotoReference.putBytes(byteArray)
+            )
+            workPhotoReference.putBytes(byteArray)
+                .addOnSuccessListener {
+                    continuation.resume(ServiceResult.Success(Unit))
+                }
+                .addOnFailureListener {
+                    continuation.resume(ServiceResult.Failure(it))
+                }
+        } catch (e: Exception) {
+            continuation.resume(ServiceResult.Failure(e))
+        }
+    }
+
+    override suspend fun getWorkPhotoRef(userId: String, number: Int) =
+        storage.reference.child(
+            getStorageWorkPhotoPath(
+                userId,
+                number
+            )
+        )
+
+    override suspend fun deleteUser(userId: String): ServiceResult<Unit> =
+        suspendCoroutine { continuation ->
+            try {
+                storage.reference
+                    .child(getStorageUserPath(userId))
+                    .listAll()
                     .addOnSuccessListener {
+                        it.items.forEach {
+                            it.delete()
+                        }
                         continuation.resume(ServiceResult.Success(Unit))
                     }
                     .addOnFailureListener {
@@ -98,12 +127,4 @@ class FirebaseStorageServiceImpl(
                 continuation.resume(ServiceResult.Failure(e))
             }
         }
-
-    override suspend fun getWorkPhotoRef(userId: String, number: Int) =
-        storage.reference.child(
-            getStorageWorkPhotoPath(
-                userId,
-                number
-            )
-        )
 }

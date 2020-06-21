@@ -27,8 +27,6 @@ class FirebaseUserServiceImpl @Inject constructor(
         private const val TAG = "FirebaseUserServiceImpl"
     }
 
-    private var mUserData: MutableLiveData<User> = MutableLiveData()
-
     override fun getCurrentSignInUser(): FirebaseUser? {
         return mAuth.currentUser
     }
@@ -111,6 +109,21 @@ class FirebaseUserServiceImpl @Inject constructor(
                     }
             } catch (e: Exception) {
                 continutation.resume(ServiceResult.Failure(e))
+            }
+        }
+
+    override suspend fun deleteAccount(userId: String): ServiceResult<Unit> =
+        suspendCoroutine { continuation ->
+            try {
+                mAuth.currentUser?.delete()
+                    ?.addOnSuccessListener {
+                        continuation.resume(ServiceResult.Success(Unit))
+                    }
+                    ?.addOnFailureListener {
+                        continuation.resume(ServiceResult.Failure(it))
+                    }
+            } catch (e: Exception) {
+                continuation.resume(ServiceResult.Failure(e))
             }
         }
 }

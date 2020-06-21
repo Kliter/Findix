@@ -10,5 +10,6 @@ interface FirebaseStorageService {
     suspend fun getOrderPhotoRef(userId: String, orderId: String): StorageReference
     suspend fun uploadWorkPhoto(userId: String, byteArray: ByteArray, number: Int): ServiceResult<Unit>
     suspend fun getWorkPhotoRef(userId: String, number: Int): StorageReference
-    fun deleteOrderPhoto(userId: String, orderId: String)
+    suspend fun deleteOrderPhoto(userId: String, orderId: String)
+    suspend fun deleteUser(userId: String): ServiceResult<Unit>
 }

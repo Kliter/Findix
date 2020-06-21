@@ -1,11 +1,11 @@
 package com.kl.findix.presentation.profile
 
-import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -149,12 +149,14 @@ class ProfileFragment : Fragment() {
     private fun observeEvent(viewModel: ProfileViewModel) {
         viewModel.run {
             showDeleteOrderConfirmDialogCommand.nonNullObserve(viewLifecycleOwner) { orderId ->
-                AlertDialog.Builder(context)
-                    .setTitle("")
-                    .setMessage(getString(R.string.confirm_delete_order))
-                    .setPositiveButton(getString(R.string.ok)) { _, _ ->
-                        viewModel.deleteOrder(orderId)
-                    }.show()
+                context?.let {
+                    AlertDialog.Builder(it)
+                        .setTitle("")
+                        .setMessage(getString(R.string.confirm_delete_order))
+                        .setPositiveButton(getString(R.string.ok)) { _, _ ->
+                            viewModel.deleteOrder(orderId)
+                        }.show()
+                }
             }
             showSnackBarCommand.nonNullObserve(viewLifecycleOwner) { resId ->
                 Snackbar.make(binding.container, getString(resId), Snackbar.LENGTH_LONG).show()
@@ -180,6 +182,20 @@ class ProfileFragment : Fragment() {
                         .setMessage(R.string.sign_out_dialog_message)
                         .setPositiveButton(R.string.ok) { _, _ ->
                             _viewModel.signOut()
+                            navController.navigate(
+                                ProfileFragmentDirections.toLogin()
+                            )
+                        }
+                        .show()
+                }
+            }
+            showDeleteAccountDialogCommand.nonNullObserve(viewLifecycleOwner) {
+                context?.let {
+                    AlertDialog.Builder(it)
+                        .setTitle(R.string.delete_account_dialog_title)
+                        .setMessage(R.string.delete_account_dialog_message)
+                        .setPositiveButton(R.string.ok) { _, _ ->
+                            _viewModel.deleteAccount()
                             navController.navigate(
                                 ProfileFragmentDirections.toLogin()
                             )

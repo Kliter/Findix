@@ -78,7 +78,9 @@
     <string name="sign_out">Sign Out</string>
 
     <string name="sign_out_dialog_title">Sign Out</string>
+    <string name="delete_account_dialog_title">Delete this account</string>
     <string name="sign_out_dialog_message">Are you sure to Sign Out?</string>
+    <string name="delete_account_dialog_message">Are you sure to delete this account?</string>
     <string name="ok">OK</string>
 
     <string name="forgot_password">Forgot password?</string>

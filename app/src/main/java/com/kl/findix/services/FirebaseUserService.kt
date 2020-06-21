@@ -10,4 +10,5 @@ interface FirebaseUserService {
     suspend fun signInWithGoogle(googleSignInAccount: GoogleSignInAccount): ServiceResult<Unit>
     suspend fun signUpWithEmail(email: String, password: String): ServiceResult<Unit>
     suspend fun signInWithEmail(email: String, password: String): ServiceResult<Unit>
+    suspend fun deleteAccount(userId: String): ServiceResult<Unit>
 }

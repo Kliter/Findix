@@ -20,3 +20,5 @@ fun getStorageOrderPhotoPath(userId: String, orderId: String) =
 
 fun getStorageWorkPhotoPath(userId: String, number: Int) =
     "$FIREBASE_IMAGE_STORAGE/$userId/work_photo_$number.png"
+
+fun getStorageUserPath(userId: String) = "$FIREBASE_IMAGE_STORAGE$userId"
