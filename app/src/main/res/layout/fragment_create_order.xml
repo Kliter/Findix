@@ -86,38 +86,15 @@
             </com.google.android.material.appbar.AppBarLayout>
 
             <ImageView
-                    android:id="@+id/image"
-                    android:layout_width="0dp"
-                    android:layout_height="200dp"
-                    android:background="@color/colorBlack_10"
-                    app:bitmapSrc="@{orderPhotoSrc}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/appbar_layout" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/btn_edit"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
-                    android:layout_marginStart="@dimen/margin_x2"
-                    android:backgroundTint="@color/colorPrimary"
-                    android:onClick="@{onClickSetPhoto}"
-                    android:src="@drawable/ic_camera"
-                    app:borderWidth="0dp"
-                    app:layout_constraintBottom_toBottomOf="@id/image"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/image" />
-
-            <ImageView
                     android:id="@+id/iv_title"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_marginStart="@dimen/margin_x1"
-                    android:layout_marginTop="@dimen/margin_x7"
+                    android:layout_marginTop="@dimen/margin_x4"
                     android:src="@drawable/ic_title"
                     app:layout_constraintEnd_toStartOf="@id/text_input_layout_title"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/btn_edit" />
+                    app:layout_constraintTop_toBottomOf="@id/appbar_layout" />
 
             <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/text_input_layout_title"
@@ -146,7 +123,7 @@
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_marginStart="@dimen/margin_x1"
-                    android:layout_marginTop="@dimen/margin_x7"
+                    android:layout_marginTop="@dimen/margin_x5"
                     android:src="@drawable/ic_description"
                     app:layout_constraintEnd_toStartOf="@id/text_input_layout_description"
                     app:layout_constraintStart_toStartOf="parent"
@@ -178,8 +155,7 @@
                     android:id="@+id/iv_username_icon"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    android:layout_marginStart="@dimen/margin_x1"
-                    android:layout_marginTop="@dimen/margin_x7"
+                    android:layout_marginTop="@dimen/margin_x5"
                     android:src="@drawable/ic_user"
                     app:layout_constraintEnd_toStartOf="@id/text_input_layout_description"
                     app:layout_constraintStart_toStartOf="parent"
@@ -211,7 +187,7 @@
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_marginStart="@dimen/margin_x1"
-                    android:layout_marginTop="@dimen/margin_x7"
+                    android:layout_marginTop="@dimen/margin_x5"
                     android:src="@drawable/ic_city"
                     app:layout_constraintEnd_toStartOf="@id/city_spinner_container"
                     app:layout_constraintStart_toStartOf="parent"
@@ -242,12 +218,37 @@
                         android:splitMotionEvents="false" />
             </FrameLayout>
 
+            <ImageView
+                    android:id="@+id/ic_camera"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="@dimen/margin_x2"
+                    android:src="@drawable/ic_camera"
+                    app:layout_constraintBottom_toBottomOf="@id/city_spinner_container"
+                    app:layout_constraintStart_toEndOf="@id/city_spinner_container"
+                    app:layout_constraintTop_toTopOf="@id/city_spinner_container" />
+
+            <ImageView
+                    android:id="@+id/image"
+                    android:layout_width="96dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="@dimen/margin_x2"
+                    android:background="@drawable/shape_order_image"
+                    android:contentDescription="@null"
+                    android:onClick="@{onClickSetPhoto}"
+                    android:src="@color/colorBlack_10"
+                    app:bitmapSrc="@{orderPhotoSrc}"
+                    app:layout_constraintBottom_toBottomOf="@id/ic_camera"
+                    app:layout_constraintStart_toEndOf="@id/ic_camera"
+                    app:layout_constraintTop_toTopOf="@id/ic_camera"
+                    tools:src="@color/colorBlack" />
+
             <CheckBox
                     android:id="@+id/checkbox_register_location"
                     style="@style/TextAppearance.MaterialComponents.Body2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_x6"
+                    android:layout_marginTop="@dimen/margin_x5"
                     android:layout_marginBottom="@dimen/margin_x2"
                     android:checked="@={viewModel.order.shouldRegisterLocation}"
                     android:enabled="true"
