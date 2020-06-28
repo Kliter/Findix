@@ -9,7 +9,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.epoxy.EpoxyController
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
@@ -40,6 +39,8 @@ class OrderFragment : Fragment(), RewardedVideoAdListener {
     private lateinit var binding: FragmentOrderBinding
     private lateinit var rewardedVideoAd: RewardedVideoAd
     private var controller: OrderController? = null
+    private var isAdRewarded = false
+    private var isAdClosed = false
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -105,6 +106,8 @@ class OrderFragment : Fragment(), RewardedVideoAdListener {
         context?.let {
             loadMovieAd()
         }
+        isAdClosed = true
+        navigateToCreateOrder()
     }
 
     override fun onRewardedVideoAdLeftApplication() {
@@ -126,11 +129,8 @@ class OrderFragment : Fragment(), RewardedVideoAdListener {
     }
 
     override fun onRewarded(reward: RewardItem?) {
-        context?.let {
-            navController.navigate(
-                OrderFragmentDirections.toCreateOrder()
-            )
-        }
+        isAdRewarded = true
+        navigateToCreateOrder()
     }
 
     override fun onRewardedVideoStarted() {
@@ -145,6 +145,16 @@ class OrderFragment : Fragment(), RewardedVideoAdListener {
         val adRequest = AdRequest.Builder().build()
         binding.adView.loadAd(adRequest)
         loadMovieAd()
+    }
+
+    private fun navigateToCreateOrder() {
+        if (isAdClosed && isAdRewarded) {
+            context?.let {
+                navController.navigate(
+                    OrderFragmentDirections.toCreateOrder()
+                )
+            }
+        }
     }
 
     private fun loadMovieAd() {
