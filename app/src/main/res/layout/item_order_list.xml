@@ -22,13 +22,12 @@
                 type="android.view.View.OnClickListener" />
     </data>
 
-    <com.google.android.material.card.MaterialCardView
+    <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_x0_5"
             android:foreground="@drawable/ripple_white"
-            android:onClick="@{onClickOrder}"
-            app:cardElevation="4dp">
+            android:onClick="@{onClickOrder}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -40,7 +39,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="90dp"
                     android:layout_margin="@dimen/margin_x0_5"
-                    android:background="@color/colorBlack_10"
+                    android:background="@drawable/shape_order_image_frame"
                     android:contentDescription="@null"
                     app:layout_constraintBottom_toTopOf="@id/title"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -104,5 +103,5 @@
                     tools:text="12:00, 01/01, 2020" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
+    </androidx.cardview.widget.CardView>
 </layout>

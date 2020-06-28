@@ -236,7 +236,7 @@
                     android:layout_width="96dp"
                     android:layout_height="48dp"
                     android:layout_marginStart="@dimen/margin_x2"
-                    android:background="@drawable/shape_order_image"
+                    android:background="@drawable/shape_order_image_frame"
                     android:contentDescription="@null"
                     android:onClick="@{onClickSetPhoto}"
                     android:src="@color/colorBlack_10"
