@@ -7,7 +7,7 @@ import androidx.databinding.library.baseAdapters.BR
 import java.util.*
 
 @Keep
-class Order(): BaseObservable() {
+class Order() : BaseObservable() {
 
     constructor(
         userId: String? = "",
@@ -19,7 +19,7 @@ class Order(): BaseObservable() {
         hasPhoto: Boolean? = false,
         shouldRegisterLocation: Boolean = false,
         timeStamp: Date? = null
-    ): this() {
+    ) : this() {
         this.userId = userId
         this.userName = userName
         this.title = title
@@ -95,7 +95,4 @@ class Order(): BaseObservable() {
             field = value
             notifyPropertyChanged(BR.timeStamp)
         }
-
-    fun isFilledTitle() = title?.isNotBlank() ?: false
-    fun isFilledDescription() = description?.isNotBlank() ?: false
 }

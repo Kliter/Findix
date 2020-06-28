@@ -8,7 +8,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -47,10 +47,27 @@ class CreateOrderViewModel @Inject constructor(
         private const val TAG = "CreateOrderViewModel"
     }
 
-    private val _order: MutableLiveData<Order> = MutableLiveData()
-    val order: LiveData<Order>
-        get() = _order
+    val title: MutableLiveData<String> = MutableLiveData()
+    val description: MutableLiveData<String> = MutableLiveData()
+    val name: MutableLiveData<String> = MutableLiveData()
+    val shouldRegisterLocation: MutableLiveData<Boolean> = MutableLiveData()
+
     var orderPhotoBitmap: MutableLiveData<Bitmap> = MutableLiveData()
+
+    val isEnableToSaveOrder: MediatorLiveData<Boolean> = MediatorLiveData<Boolean>().apply {
+        this.addSource(title) {
+            this.postValue(isFilledRequiredParams())
+        }
+        this.addSource(description) {
+            this.postValue(isFilledRequiredParams())
+        }
+        this.addSource(name) {
+            this.postValue(isFilledRequiredParams())
+        }
+        this.addSource(orderPhotoBitmap) {
+            this.postValue(isFilledRequiredParams())
+        }
+    }
 
     var showToastCommand: PublishLiveDataKtx<Int> = PublishLiveDataKtx()
     var succeedCreateOrderCommand: PublishLiveDataKtx<Boolean> = PublishLiveDataKtx()
@@ -61,7 +78,6 @@ class CreateOrderViewModel @Inject constructor(
     var cityNumber: CityNumber? = null // Spinnerのテキストバインドするために必要
 
     fun resetOrderInfo() {
-        _order.postValue(Order())
         cityNumber = CityNumber()
         _orderPhotoUri = null
     }
@@ -71,31 +87,30 @@ class CreateOrderViewModel @Inject constructor(
         locationProviderClient: FusedLocationProviderClient,
         contentResolver: ContentResolver
     ) {
-        safeLet(firebaseUser, _order.value) { firebaseUser, order ->
-            if (order.isFilledTitle() && order.isFilledDescription()) {
-                viewModelScope.launch {
-                    uiState.postValue(UiState.Loading)
-                    cityNumber?.number?.let { number ->
-                        order.city = context.resources.getStringArray(R.array.cities)[number]
-                    }
-                    if (order.shouldRegisterLocation == true) {
-                        order.userLocation = getLocation(context, locationProviderClient)
-                    }
-                    order.hasPhoto = _orderPhotoUri != null
+        firebaseUser?.let { firebaseUser ->
+            viewModelScope.launch {
+                uiState.postValue(UiState.Loading)
+                val order = Order()
+                order.title = title.value
+                order.description = description.value
+                order.userName = name.value
+                cityNumber?.number?.let { number ->
+                    order.city = context.resources.getStringArray(R.array.cities)[number]
+                }
+                if (order.shouldRegisterLocation == true) {
+                    order.userLocation = getLocation(context, locationProviderClient)
+                }
 
-                    when (val result = firebaseDataBaseService.createOrder(firebaseUser, order)) {
-                        is ServiceResult.Success -> {
-                            uiState.postValue(UiState.Loaded)
-                            succeedCreateOrderCommand.postValue(true)
-                            prepareExecuteUploadOrderPhoto(result.data, contentResolver)
-                        }
-                        is ServiceResult.Failure -> {
-                            handleError(result.exception)
-                        }
+                when (val result = firebaseDataBaseService.createOrder(firebaseUser, order)) {
+                    is ServiceResult.Success -> {
+                        uiState.postValue(UiState.Loaded)
+                        succeedCreateOrderCommand.postValue(true)
+                        prepareExecuteUploadOrderPhoto(result.data, contentResolver)
+                    }
+                    is ServiceResult.Failure -> {
+                        handleError(result.exception)
                     }
                 }
-            } else {
-                showToastCommand.postValue(R.string.error_order_info_not_filled)
             }
         }
     }
@@ -197,4 +212,9 @@ class CreateOrderViewModel @Inject constructor(
             return null
         }
     }
+
+    private fun isFilledRequiredParams(): Boolean = title.value?.isNotEmpty() == true
+            && description.value?.isNotEmpty() == true
+            && name.value?.isNotEmpty() == true
+            && orderPhotoBitmap.value != null
 }

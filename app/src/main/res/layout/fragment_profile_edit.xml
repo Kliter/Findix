@@ -63,7 +63,7 @@
                     android:layout_marginEnd="@dimen/margin_x2"
                     android:foreground="@drawable/ripple_white"
                     android:onClick="@{onClickSave}"
-                    android:src="@drawable/ic_checkmark"
+                    android:src="@drawable/ic_check_green"
                     app:layout_constraintBottom_toBottomOf="@id/toolbar"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/toolbar" />

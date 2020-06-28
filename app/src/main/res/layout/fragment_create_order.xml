@@ -60,6 +60,7 @@
                         <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:contentDescription="@null"
                                 android:foreground="@drawable/ripple_white"
                                 android:onClick="@{onClickBack}"
                                 android:src="@drawable/ic_back_arrow"
@@ -71,13 +72,15 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="@dimen/margin_x2"
+                                android:clickable="@{viewModel.isEnableToSaveOrder}"
+                                android:contentDescription="@null"
                                 android:foreground="@drawable/ripple_white"
                                 android:onClick="@{onClickSave}"
-                                android:src="@drawable/ic_checkmark"
+                                android:src="@{viewModel.isEnableToSaveOrder ? @drawable/ic_check_green : @drawable/ic_check_gray}"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                tools:src="@drawable/ic_checkmark" />
+                                tools:src="@drawable/ic_check_green" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -114,7 +117,7 @@
                         android:layout_height="wrap_content"
                         android:inputType="text"
                         android:maxLines="1"
-                        android:text="@={viewModel.order.title}" />
+                        android:text="@={viewModel.title}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -147,7 +150,7 @@
                         android:layout_height="wrap_content"
                         android:inputType="text"
                         android:maxLines="1"
-                        android:text="@={viewModel.order.description}" />
+                        android:text="@={viewModel.description}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -178,7 +181,7 @@
                         android:layout_height="wrap_content"
                         android:inputType="text"
                         android:maxLines="1"
-                        android:text="@={viewModel.order.userName}" />
+                        android:text="@={viewModel.name}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -250,7 +253,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_x5"
                     android:layout_marginBottom="@dimen/margin_x2"
-                    android:checked="@={viewModel.order.shouldRegisterLocation}"
+                    android:checked="@={viewModel.shouldRegisterLocation}"
                     android:enabled="true"
                     android:text="@string/register_order_location"
                     app:layout_constraintBottom_toBottomOf="parent"

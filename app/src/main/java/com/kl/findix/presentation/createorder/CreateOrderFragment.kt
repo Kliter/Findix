@@ -75,17 +75,19 @@ class CreateOrderFragment : Fragment() {
                 navController.popBackStack()
             }
             onClickSave = View.OnClickListener {
-                val isTitleFilled = binding.textInputLayoutTitle.editText?.text?.isNotBlank()
-                val isDescriptionFilled =
-                    binding.textInputLayoutDescription.editText?.text?.isNotBlank()
                 safeLet(
-                    isTitleFilled,
-                    isDescriptionFilled
-                ) { isTitleFilled, isDescriptionFilled ->
-                    createOrderIfEnable(isTitleFilled, isDescriptionFilled)
+                    context,
+                    activity
+                ) { context, activity ->
+                    _viewModel.createOrder(
+                        context,
+                        mLocationProviderClient,
+                        activity.contentResolver
+                    )
                 }
             }
         }
+        lifecycle.addObserver(_viewModel)
         _viewModel.resetOrderInfo()
         setupSpinner()
 
@@ -144,30 +146,6 @@ class CreateOrderFragment : Fragment() {
                     }
                     navController.popBackStack()
                 }
-            }
-        }
-    }
-
-    private fun createOrderIfEnable(
-        isTitleFilled: Boolean,
-        isDescriptionFilled: Boolean
-    ) {
-        if (!isTitleFilled) {
-            binding.textInputLayoutTitle.apply {
-                this.isErrorEnabled = true
-                this.error = getString(R.string.error_title_is_not_filled)
-            }
-        } else if (!isDescriptionFilled) {
-            binding.textInputLayoutDescription.apply {
-                this.isErrorEnabled = true
-                this.error = getString(R.string.error_description_is_not_filled)
-            }
-        } else {
-            safeLet(
-                context,
-                activity
-            ) { context, activity ->
-                _viewModel.createOrder(context, mLocationProviderClient, activity.contentResolver)
             }
         }
     }
