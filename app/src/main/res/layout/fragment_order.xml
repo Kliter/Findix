@@ -44,6 +44,8 @@
                 android:id="@+id/swipe_refresh"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_x0_5"
+                android:layout_marginEnd="@dimen/margin_x0_5"
                 android:paddingBottom="?attr/actionBarSize"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -52,7 +54,10 @@
             <com.airbnb.epoxy.EpoxyRecyclerView
                     android:id="@+id/recycler_view"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:splitMotionEvents="false"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:spanCount="2" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

@@ -162,10 +162,7 @@ class OrderFragment : Fragment(), RewardedVideoAdListener {
                 )
             }
         )
-        binding.recyclerView.let {
-            it.setController(controller as EpoxyController)
-            it.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        }
+        binding.recyclerView.setController(controller as EpoxyController)
     }
 
     private fun observeState(viewModel: OrderViewModel) {
