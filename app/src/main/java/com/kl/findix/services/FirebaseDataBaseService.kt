@@ -5,6 +5,7 @@ import com.kl.findix.model.Order
 import com.kl.findix.model.ServiceResult
 import com.kl.findix.model.User
 import com.kl.findix.model.UserLocation
+import java.util.*
 
 interface FirebaseDataBaseService {
     suspend fun fetchOwnProfileInfo(firebaseUser: FirebaseUser): ServiceResult<User>
@@ -21,4 +22,5 @@ interface FirebaseDataBaseService {
     suspend fun deleteUser(userId: String): ServiceResult<Unit>
     suspend fun deleteUserLocation(userId: String): ServiceResult<Unit>
     suspend fun deleteOrderFromUserId(userId: String): ServiceResult<Unit>
+    suspend fun fetchAdditional15Orders(timeStamp: Date): ServiceResult<List<Order>>
 }

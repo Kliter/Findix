@@ -170,6 +170,9 @@ class OrderFragment : Fragment(), RewardedVideoAdListener {
                 navController.navigate(
                     OrderFragmentDirections.toOrderDetail(order.orderId)
                 )
+            },
+            onLoadMore = {
+                _viewModel.fetchAdditional15Orders()
             }
         )
         binding.recyclerView.setController(controller as EpoxyController)
@@ -178,7 +181,7 @@ class OrderFragment : Fragment(), RewardedVideoAdListener {
     private fun observeState(viewModel: OrderViewModel) {
         viewModel.run {
             this.orderListItems.nonNullObserve(viewLifecycleOwner) { orderListItems ->
-                controller?.setData(orderListItems)
+                controller?.setData(orderListItems.first, orderListItems.second)
                 if (binding.swipeRefresh.isRefreshing) {
                     binding.swipeRefresh.isRefreshing = false
                 }
