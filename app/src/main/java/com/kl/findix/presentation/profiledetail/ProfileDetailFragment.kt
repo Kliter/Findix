@@ -10,7 +10,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.kl.findix.R
 import com.kl.findix.databinding.FragmentProfileDetailBinding
 import com.kl.findix.util.extension.nonNullObserve
@@ -22,6 +25,11 @@ class ProfileDetailFragment : Fragment() {
 
     companion object {
         private const val TAG = "ProfileDetailFragment"
+        private const val PHOTO_INDEX_1 = 1
+        private const val PHOTO_INDEX_2 = 2
+        private const val PHOTO_INDEX_3 = 3
+        private const val PHOTO_INDEX_4 = 4
+        private const val PHOTO_INDEX_5 = 5
     }
 
     @Inject
@@ -31,6 +39,7 @@ class ProfileDetailFragment : Fragment() {
 
     private lateinit var _viewModel: ProfileDetailViewModel
     private lateinit var binding: FragmentProfileDetailBinding
+    private val controller: ProfileDetailController = ProfileDetailController()
 
     private val args: ProfileDetailFragmentArgs by navArgs()
 
@@ -45,14 +54,19 @@ class ProfileDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _viewModel = viewModelProvider(mViewModelFactory)
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile_detail, container, false)
-        binding.apply {
-            lifecycleOwner = viewLifecycleOwner
-            viewModel = _viewModel
-            onClickBack = View.OnClickListener {
-                navController.popBackStack()
+        binding =
+            DataBindingUtil.inflate<FragmentProfileDetailBinding>(
+                inflater,
+                R.layout.fragment_profile_detail,
+                container,
+                false
+            ).apply {
+                lifecycleOwner = viewLifecycleOwner
+                viewModel = _viewModel
+                onClickBack = View.OnClickListener {
+                    navController.popBackStack()
+                }
             }
-        }
 
         _viewModel.fetchUserInfo(args.userId)
 
@@ -61,21 +75,73 @@ class ProfileDetailFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        setController()
+        _viewModel.setWorkPhotos()
         observeState(_viewModel)
         observeEvent(_viewModel)
     }
 
+    private fun setController() {
+        binding.recyclerView.apply {
+            this.layoutManager =
+                ProfileDetailLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            this.setController(controller)
+        }
+    }
+
     private fun observeState(viewModel: ProfileDetailViewModel) {
-        //
+        viewModel.run {
+            orders.nonNullObserve(viewLifecycleOwner) {
+                controller.setData(it)
+            }
+        }
     }
 
     private fun observeEvent(viewModel: ProfileDetailViewModel) {
         viewModel.run {
-            this.setProfilePhotoCommand.nonNullObserve(viewLifecycleOwner) { storageReference ->
-                Glide.with(requireContext())
-                    .load(storageReference)
-                    .into(binding.profilePhoto)
+            setWorkPhotosCommand.nonNullObserve(viewLifecycleOwner) {
+                context?.let { context ->
+                    val workPhotoImageView = getWorkPhotoImageView(it.first)
+                    Glide.with(context)
+                        .applyDefaultRequestOptions(
+                            RequestOptions.diskCacheStrategyOf(
+                                DiskCacheStrategy.NONE
+                            )
+                        )
+                        .load(it.second)
+                        .placeholder(R.color.colorBlack_10)
+                        .into(workPhotoImageView)
+                }
             }
+        }
+    }
+
+    private fun getWorkPhotoImageView(index: Int) = when (index) {
+        PHOTO_INDEX_1 -> {
+            binding.photo1
+        }
+        PHOTO_INDEX_2 -> {
+            binding.photo2
+        }
+        PHOTO_INDEX_3 -> {
+            binding.photo3
+        }
+        PHOTO_INDEX_4 -> {
+            binding.photo4
+        }
+        PHOTO_INDEX_5 -> {
+            binding.photo5
+        }
+        else -> {
+            throw IndexOutOfBoundsException("")
+        }
+    }
+
+    class ProfileDetailLayoutManager(context: Context?, orientation: Int, reverseLayout: Boolean) :
+        LinearLayoutManager(context, orientation, reverseLayout) {
+
+        override fun canScrollVertically(): Boolean {
+            return false
         }
     }
 }

@@ -208,9 +208,6 @@ class ProfileFragment : Fragment() {
 
     private fun observeState(viewModel: ProfileViewModel) {
         viewModel.run {
-            profileIconBitmap.nonNullObserve(viewLifecycleOwner) { profileIconBitmap ->
-                binding.profileIconSrc = profileIconBitmap
-            }
             orders.nonNullObserve(viewLifecycleOwner) { orders ->
                 controller?.setData(orders)
             }

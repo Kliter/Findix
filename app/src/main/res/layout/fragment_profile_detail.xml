@@ -10,11 +10,27 @@
                 type="com.kl.findix.presentation.profiledetail.ProfileDetailViewModel" />
 
         <variable
-                name="profileIconSrc"
-                type="android.graphics.Bitmap" />
+                name="onClickBack"
+                type="android.view.View.OnClickListener" />
 
         <variable
-                name="onClickBack"
+                name="onClickPhoto1"
+                type="android.view.View.OnClickListener" />
+
+        <variable
+                name="onClickPhoto2"
+                type="android.view.View.OnClickListener" />
+
+        <variable
+                name="onClickPhoto3"
+                type="android.view.View.OnClickListener" />
+
+        <variable
+                name="onClickPhoto4"
+                type="android.view.View.OnClickListener" />
+
+        <variable
+                name="onClickPhoto5"
                 type="android.view.View.OnClickListener" />
 
     </data>
@@ -25,68 +41,50 @@
             android:layout_height="match_parent"
             android:background="@color/colorDarkWhite">
 
-        <com.google.android.material.appbar.AppBarLayout
-                android:id="@+id/appbar_layout"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+        <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                style="@style/Widget.Findix.Toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:elevation="4dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@null"
+                    android:foreground="@drawable/ripple_white"
+                    android:onClick="@{onClickBack}"
+                    android:src="@drawable/ic_back_arrow"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                    style="@style/TextAppearance.MaterialComponents.Headline6"
                     android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:elevation="4dp">
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/margin_x1"
+                    android:paddingEnd="@dimen/margin_x1"
+                    android:text="@{viewModel.user.userName}"
+                    tools:text="Test" />
 
-                <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:foreground="@drawable/ripple_white"
-                        android:onClick="@{onClickBack}"
-                        android:src="@drawable/ic_back_arrow"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+        </androidx.appcompat.widget.Toolbar>
 
-                <TextView
-                        style="@style/TextAppearance.MaterialComponents.Headline6"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingStart="@dimen/margin_x1"
-                        android:paddingEnd="@dimen/margin_x1"
-                        android:text="@{viewModel.user.userName}"
-                        tools:text="Test" />
-
-            </androidx.appcompat.widget.Toolbar>
-
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <androidx.cardview.widget.CardView
-                android:id="@+id/profile_icon_container"
+        <ScrollView
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:background="@color/colorWhite"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/appbar_layout">
+                app:layout_constraintTop_toBottomOf="@id/toolbar">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorWhite">
-
-                <ImageView
-                        android:id="@+id/profile_photo"
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:background="@color/colorBlack_10"
-                        app:bitmapSrc="@{profileIconSrc}"
-                        app:civ_border_color="@color/colorBlack"
-                        app:civ_border_width="2dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_height="0dp">
 
                 <TextView
                         android:id="@+id/text_user_name"
@@ -95,10 +93,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_x2"
                         android:layout_marginTop="@dimen/margin_x2"
-                        android:text="@{viewModel.user.userName}"
+                        android:text='@{"Name : " + viewModel.user.userName}'
                         android:textColor="@color/colorBlack"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/profile_photo"
+                        app:layout_constraintTop_toTopOf="parent"
                         tools:text="Katsumi Kusumi" />
 
                 <TextView
@@ -106,7 +104,7 @@
                         style="@style/TextAppearance.MaterialComponents.Body2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text='@{"Working at " + viewModel.user.company}'
+                        android:text='@{"Working at : " + viewModel.user.company}'
                         android:textColor="@color/colorBlack_70"
                         app:layout_constraintStart_toStartOf="@id/text_user_name"
                         app:layout_constraintTop_toBottomOf="@id/text_user_name"
@@ -115,7 +113,7 @@
                 <View
                         android:id="@+id/horizontal_divider1"
                         android:layout_width="0dp"
-                        android:layout_height="0.5dp"
+                        android:layout_height="1dp"
                         android:layout_marginStart="@dimen/margin_x2"
                         android:layout_marginTop="@dimen/margin_x1"
                         android:layout_marginEnd="@dimen/margin_x2"
@@ -155,7 +153,7 @@
 
                 <View
                         android:id="@+id/vertical_divider"
-                        android:layout_width="0.5dp"
+                        android:layout_width="1dp"
                         android:layout_height="0dp"
                         android:background="@color/colorBlack_10"
                         app:layout_constraintBottom_toBottomOf="@id/major_container"
@@ -168,9 +166,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_x2"
+                        android:layout_marginTop="@dimen/margin_x1"
                         android:layout_marginBottom="@dimen/margin_x1"
                         android:orientation="vertical"
-                        app:layout_constraintBottom_toTopOf="@id/description_container"
+                        app:layout_constraintBottom_toTopOf="@id/horizontal_divider2"
                         app:layout_constraintStart_toEndOf="@id/vertical_divider"
                         app:layout_constraintTop_toBottomOf="@id/horizontal_divider1">
 
@@ -194,7 +193,7 @@
                 <View
                         android:id="@+id/horizontal_divider2"
                         android:layout_width="0dp"
-                        android:layout_height="0.5dp"
+                        android:layout_height="1dp"
                         android:layout_marginStart="@dimen/margin_x2"
                         android:layout_marginTop="@dimen/margin_x1"
                         android:layout_marginEnd="@dimen/margin_x2"
@@ -211,7 +210,6 @@
                         android:layout_marginTop="@dimen/margin_x1"
                         android:layout_marginEnd="@dimen/margin_x2"
                         android:orientation="vertical"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/horizontal_divider2">
@@ -221,8 +219,7 @@
                             style="@style/TextAppearance.MaterialComponents.Body1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text='@{"About " + viewModel.user.userName}'
-                            tools:text="About Katsumi Kusumi " />
+                            android:text="About You" />
 
                     <TextView
                             android:id="@+id/text_description"
@@ -234,7 +231,145 @@
                             tools:text="abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz" />
 
                 </LinearLayout>
+
+                <View
+                        android:id="@+id/horizontal_divider3"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="@dimen/margin_x2"
+                        android:layout_marginTop="@dimen/margin_x1"
+                        android:layout_marginEnd="@dimen/margin_x2"
+                        android:background="@color/colorBlack_10"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/description_container" />
+
+                <LinearLayout
+                        android:id="@+id/photos_container"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_x2"
+                        android:layout_marginTop="@dimen/margin_x1"
+                        android:layout_marginEnd="@dimen/margin_x2"
+                        android:orientation="vertical"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/horizontal_divider3">
+
+                    <TextView
+                            android:id="@+id/text_photos_label"
+                            style="@style/TextAppearance.MaterialComponents.Body1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/photos" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_x1">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/photo1"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:contentDescription="@null"
+                                android:onClick="@{onClickPhoto1}"
+                                android:src="@color/colorBlack_10"
+                                app:civ_border_color="@color/colorBlack_20"
+                                app:civ_border_width="3dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintHorizontal_chainStyle="spread"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:src="@color/colorBlack" />
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/photo2"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:onClick="@{onClickPhoto2}"
+                                android:src="@color/colorBlack_10"
+                                app:civ_border_color="@color/colorBlack_20"
+                                app:civ_border_width="3dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@id/photo3"
+                                app:layout_constraintHorizontal_chainStyle="spread"
+                                app:layout_constraintStart_toEndOf="@id/photo1"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:src="@color/colorBlack" />
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/photo3"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:onClick="@{onClickPhoto3}"
+                                android:src="@color/colorBlack_10"
+                                app:civ_border_color="@color/colorBlack_20"
+                                app:civ_border_width="3dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@id/photo4"
+                                app:layout_constraintHorizontal_chainStyle="spread"
+                                app:layout_constraintStart_toEndOf="@id/photo2"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:src="@color/colorBlack" />
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/photo4"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:onClick="@{onClickPhoto4}"
+                                android:src="@color/colorBlack_10"
+                                app:civ_border_color="@color/colorBlack_20"
+                                app:civ_border_width="3dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@id/photo5"
+                                app:layout_constraintHorizontal_chainStyle="spread"
+                                app:layout_constraintStart_toEndOf="@id/photo3"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:src="@color/colorBlack" />
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/photo5"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:onClick="@{onClickPhoto5}"
+                                android:src="@color/colorBlack_10"
+                                app:civ_border_color="@color/colorBlack_20"
+                                app:civ_border_width="3dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_chainStyle="spread"
+                                app:layout_constraintStart_toEndOf="@id/photo4"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:src="@color/colorBlack" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
+
+                <View
+                        android:id="@+id/horizontal_divider4"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="@dimen/margin_x2"
+                        android:layout_marginTop="@dimen/margin_x1"
+                        android:layout_marginEnd="@dimen/margin_x2"
+                        android:background="@color/colorBlack_10"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/photos_container" />
+
+                <com.airbnb.epoxy.EpoxyRecyclerView
+                        android:id="@+id/recycler_view"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_x1"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/horizontal_divider4" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
+        </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -25,6 +25,10 @@ class UiStateViewModelDelegateImpl: UiStateViewModelDelegate {
                 uiState.postValue(UiState.Error)
                 showErrorAlertCommand.postValue(exception.alertMessage)
             }
+            is FindixError.UserNotFoundError -> {
+                uiState.postValue(UiState.Error)
+                showErrorAlertCommand.postValue(exception.alertMessage)
+            }
             else -> {
                 uiState.postValue(UiState.Error)
                 exception.message?.let { message ->

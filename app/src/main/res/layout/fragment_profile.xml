@@ -11,10 +11,6 @@
                 type="com.kl.findix.presentation.profile.ProfileViewModel" />
 
         <variable
-                name="profileIconSrc"
-                type="android.graphics.Bitmap" />
-
-        <variable
                 name="onClickUserMenu"
                 type="android.view.View.OnClickListener" />
 
@@ -87,19 +83,6 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp">
-
-                <ImageView
-                        android:id="@+id/profile_photo"
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:background="@color/colorBlack_10"
-                        android:visibility="gone"
-                        app:bitmapSrc="@{profileIconSrc}"
-                        app:civ_border_color="@color/colorBlack"
-                        app:civ_border_width="2dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                         android:id="@+id/text_user_name"

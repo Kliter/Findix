@@ -1,6 +1,5 @@
 package com.kl.findix.presentation.profile
 
-import android.graphics.Bitmap
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -44,8 +43,6 @@ class ProfileViewModel @Inject constructor(
     val orders: LiveData<List<Order>>
         get() = _orders
 
-    var profileIconBitmap: MutableLiveData<Bitmap> = MutableLiveData()
-
     // Event
     val showDeleteOrderConfirmDialogCommand: PublishLiveDataKtx<String> = PublishLiveDataKtx()
     val showSnackBarCommand: PublishLiveDataKtx<Int> = PublishLiveDataKtx()
@@ -78,7 +75,7 @@ class ProfileViewModel @Inject constructor(
         firebaseUser?.let { firebaseUser ->
             viewModelScope.launch {
                 uiState.postValue(UiState.Loading)
-                when (val result = firebaseDataBaseService.fetchOwnOrders(
+                when (val result = firebaseDataBaseService.fetchOrdersByUserId(
                     userId = firebaseUser.uid,
                     lastOrder = lastOrder
                 )) {

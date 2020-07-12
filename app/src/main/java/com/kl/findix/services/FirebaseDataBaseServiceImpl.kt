@@ -7,7 +7,9 @@ import com.kl.findix.model.Order
 import com.kl.findix.model.ServiceResult
 import com.kl.findix.model.User
 import com.kl.findix.model.UserLocation
-import com.kl.findix.util.FindixError
+import com.kl.findix.util.FindixError.NetworkError
+import com.kl.findix.util.FindixError.UndefinedError
+import com.kl.findix.util.FindixError.UserNotFoundError
 import com.kl.findix.util.extension.getStorageProfileIconPath
 import java.net.SocketTimeoutException
 import java.util.*
@@ -32,10 +34,10 @@ class FirebaseDataBaseServiceImpl @Inject constructor(
                     .addOnFailureListener {
                         when (it) {
                             is SocketTimeoutException -> {
-                                continuation.resume(ServiceResult.Failure(FindixError.NetworkError()))
+                                continuation.resume(ServiceResult.Failure(NetworkError()))
                             }
                             else -> {
-                                continuation.resume(ServiceResult.Failure(FindixError.UndefinedError()))
+                                continuation.resume(ServiceResult.Failure(UndefinedError()))
                             }
                         }
                     }
@@ -198,8 +200,12 @@ class FirebaseDataBaseServiceImpl @Inject constructor(
                     .document(userId)
                     .get()
                     .addOnSuccessListener { result ->
-                        val user = result.toObject(User::class.java)
-                        continuation.resume(ServiceResult.Success(user))
+                        if (result.exists()) {
+                            val user = result.toObject(User::class.java)
+                            continuation.resume(ServiceResult.Success(user))
+                        } else {
+                            continuation.resume(ServiceResult.Failure(UserNotFoundError()))
+                        }
                     }
                     .addOnFailureListener {
                         continuation.resume(ServiceResult.Failure(it))
@@ -209,7 +215,7 @@ class FirebaseDataBaseServiceImpl @Inject constructor(
             }
         }
 
-    override suspend fun fetchOwnOrders(userId: String, lastOrder: Order?) =
+    override suspend fun fetchOrdersByUserId(userId: String, lastOrder: Order?) =
         suspendCoroutine<ServiceResult<List<Order>>> { continuation ->
             try {
                 // lastOrder受け取った時だけそこから10件取得するためにstartAfter設定する。
