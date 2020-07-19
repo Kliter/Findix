@@ -9,7 +9,7 @@ class SettingController(
     private val onClickContactUs: () -> Unit,
     private val onClickPrivacyPolicy: () -> Unit,
     private val onClickDeleteAccount: () -> Unit,
-    private val onClickLicences: () -> Unit
+    private val onClickLicenses: () -> Unit
 ) : EpoxyController() {
     override fun buildModels() {
         itemSettingSectionHeader {
@@ -50,9 +50,9 @@ class SettingController(
         }
         itemSettingSelectorList {
             id(modelCountBuiltSoFar)
-            selectorText("Licences")
+            selectorText("Licenses")
             onClickList { _ ->
-                onClickLicences.invoke()
+                onClickLicenses.invoke()
             }
         }
         itemSettingSelectorList {

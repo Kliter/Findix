@@ -11,10 +11,6 @@
                 type="com.kl.findix.presentation.profile.ProfileViewModel" />
 
         <variable
-                name="onClickUserMenu"
-                type="android.view.View.OnClickListener" />
-
-        <variable
                 name="onClickBack"
                 type="android.view.View.OnClickListener" />
 
@@ -60,16 +56,7 @@
                 android:title="@{viewModel.user.userName}"
                 ads:layout_constraintEnd_toEndOf="parent"
                 ads:layout_constraintStart_toStartOf="parent"
-                ads:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:contentDescription="@null"
-                    android:onClick="@{onClickUserMenu}"
-                    android:src="@drawable/ic_keyboard_arrow_down" />
-
-        </androidx.appcompat.widget.Toolbar>
+                ads:layout_constraintTop_toTopOf="parent" />
 
         <ScrollView
                 android:layout_width="0dp"

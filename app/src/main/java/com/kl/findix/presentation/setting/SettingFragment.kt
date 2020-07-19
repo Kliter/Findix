@@ -1,17 +1,21 @@
 package com.kl.findix.presentation.setting
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import com.airbnb.epoxy.EpoxyController
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.kl.findix.R
 import com.kl.findix.databinding.FragmentSettingBinding
+import com.kl.findix.presentation.profile.ProfileFragmentDirections
 import com.kl.findix.util.extension.viewModelProvider
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
@@ -60,19 +64,49 @@ class SettingFragment : Fragment() {
     private fun setupController() {
         controller = SettingController(
             onClickSignOut = {
-
+                context?.let {
+                    AlertDialog.Builder(it)
+                        .setTitle(R.string.sign_out_dialog_title)
+                        .setMessage(R.string.sign_out_dialog_message)
+                        .setPositiveButton(R.string.ok) { _, _ ->
+                            _viewModel.signOut()
+                            navController.navigate(
+                                ProfileFragmentDirections.toLogin()
+                            )
+                        }
+                        .setNegativeButton(R.string.cancel) { _, _ ->
+                            // NOP
+                        }
+                        .show()
+                }
             },
             onClickContactUs = {
-
+                // Todo
             },
             onClickPrivacyPolicy = {
 
             },
             onClickDeleteAccount = {
-
+                context?.let {
+                    AlertDialog.Builder(it)
+                        .setTitle(R.string.delete_account_dialog_title)
+                        .setMessage(R.string.delete_account_dialog_message)
+                        .setPositiveButton(R.string.ok) { _, _ ->
+                            _viewModel.deleteAccount()
+                            navController.navigate(
+                                ProfileFragmentDirections.toLogin()
+                            )
+                        }
+                        .setNegativeButton(R.string.cancel) { _, _ ->
+                            // NOP
+                        }
+                        .show()
+                }
             },
-            onClickLicences = {
-                // Todo
+            onClickLicenses = {
+                val intent = Intent(context, OssLicensesMenuActivity::class.java)
+                intent.putExtra("title", "Oss Licenses")
+                startActivity(intent)
             }
         )
         binding.recyclerView.apply {

@@ -20,10 +20,6 @@ abstract class ProfileModule {
     @ContributesAndroidInjector
     abstract fun contributeProfileBottomSheetDialog(): ProfileBottomSheetDialog
 
-    @FragmentScoped
-    @ContributesAndroidInjector
-    abstract fun contributeUserMenuBottomSheetDialog(): UserMenuBottomSheetDialog
-
     @Binds
     @IntoMap
     @ViewModelKey(ProfileViewModel::class)

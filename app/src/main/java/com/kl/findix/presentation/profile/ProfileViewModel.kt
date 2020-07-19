@@ -47,8 +47,6 @@ class ProfileViewModel @Inject constructor(
     val showDeleteOrderConfirmDialogCommand: PublishLiveDataKtx<String> = PublishLiveDataKtx()
     val showSnackBarCommand: PublishLiveDataKtx<Int> = PublishLiveDataKtx()
     val setWorkPhotosCommand: PublishLiveDataKtx<Pair<Int, StorageReference>> = PublishLiveDataKtx()
-    val showSignOutDialogCommand: PublishLiveDataKtx<Unit> = PublishLiveDataKtx()
-    val showDeleteAccountDialogCommand: PublishLiveDataKtx<Unit> = PublishLiveDataKtx()
 
     var index: Int = 0
     private var firebaseUser: FirebaseUser? = firebaseUserService.getCurrentSignInUser()
@@ -121,38 +119,6 @@ class ProfileViewModel @Inject constructor(
                     delay(100) // 待たずにpostすると5だけになる
                     val reference = firebaseStorageService.getWorkPhotoRef(firebaseUser.uid, it + 1)
                     setWorkPhotosCommand.postValue(Pair(it + 1, reference))
-                }
-            }
-        }
-    }
-
-    fun showSignOutDialog() {
-        showSignOutDialogCommand.postValue(Unit)
-    }
-
-    fun signOut() {
-        viewModelScope.launch {
-            firebaseUserService.signOut()
-        }
-    }
-
-    fun showDeleteAccountDialog() {
-        showDeleteAccountDialogCommand.postValue(Unit)
-    }
-
-    fun deleteAccount() {
-        viewModelScope.launch {
-            firebaseUser?.let {
-                when (val result = firebaseUserService.deleteAccount(it.uid)) {
-                    is ServiceResult.Success -> {
-                        firebaseDataBaseService.deleteUser(it.uid)
-                        firebaseDataBaseService.deleteUserLocation(it.uid)
-                        firebaseDataBaseService.deleteOrderFromUserId(it.uid)
-                        firebaseStorageService.deleteUser(it.uid)
-                    }
-                    is ServiceResult.Failure -> {
-                        handleError(result.exception)
-                    }
                 }
             }
         }

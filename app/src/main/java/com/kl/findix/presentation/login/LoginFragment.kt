@@ -107,7 +107,7 @@ class LoginFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_SIGN_IN) {
             val task = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
-            if (task.isSuccess) {
+            if (task?.isSuccess == true) {
                 _viewModel.signInWithGoogle(task.signInAccount)
             }
         }
