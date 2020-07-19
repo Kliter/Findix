@@ -9,6 +9,8 @@
     <color name="colorBlack">#000000</color>
     <color name="colorTransparent">#00000000</color>
 
+    <color name="colorPrimary_50">#80F3DE8A</color>
+
     <color name="colorBlack_90">#e6000000</color>
     <color name="colorBlack_80">#cc000000</color>
     <color name="colorBlack_70">#b3000000</color>

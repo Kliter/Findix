@@ -50,20 +50,35 @@ class SettingFragment : Fragment() {
         lifecycle.addObserver(_viewModel)
 
 
-        settingController()
+        setupController()
         observeState(_viewModel)
         observeEvent(_viewModel)
 
         return binding.root
     }
 
-    private fun settingController() {
+    private fun setupController() {
         controller = SettingController(
-            // Todo
+            onClickSignOut = {
+
+            },
+            onClickContactUs = {
+
+            },
+            onClickPrivacyPolicy = {
+
+            },
+            onClickDeleteAccount = {
+
+            },
+            onClickLicences = {
+                // Todo
+            }
         )
         binding.recyclerView.apply {
             this.setController(controller as EpoxyController)
         }
+        controller?.requestModelBuild()
     }
 
     private fun observeState(viewModel: SettingViewModel) {

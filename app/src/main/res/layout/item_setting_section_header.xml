@@ -12,15 +12,18 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary_50">
 
         <TextView
+                style="@style/TextAppearance.MaterialComponents.Body1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_x2"
-                android:layout_marginTop="@dimen/margin_x2"
-                android:layout_marginBottom="@dimen/margin_x2"
+                android:layout_marginTop="@dimen/margin_x1_5"
+                android:layout_marginBottom="@dimen/margin_x1_5"
                 android:text="@{headerText}"
+                android:textColor="@color/colorBlack"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
