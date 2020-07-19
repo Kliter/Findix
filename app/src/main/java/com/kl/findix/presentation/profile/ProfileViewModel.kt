@@ -101,6 +101,9 @@ class ProfileViewModel @Inject constructor(
             when (val result = firebaseDataBaseService.deleteOrder(orderId = orderId)) {
                 is ServiceResult.Success -> {
                     fetchOwnOrder()
+                    firebaseUser?.let {
+                        firebaseStorageService.deleteOrderPhoto(it.uid, orderId)
+                    }
                     showSnackBarCommand.postValue(R.string.complete_delete_order)
                 }
                 is ServiceResult.Failure -> {
