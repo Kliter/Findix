@@ -16,7 +16,7 @@
                 type="String" />
 
         <variable
-                name="menuVisibility"
+                name="isShownMenu"
                 type="Boolean" />
 
         <variable
@@ -58,7 +58,7 @@
                 android:foreground="@drawable/ripple_white"
                 android:onClick="@{onClickMenu}"
                 android:src="@drawable/ic_menu"
-                android:visibility="@{menuVisibility ? View.VISIBLE : View.GONE}"
+                android:visibility="@{isShownMenu ? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toBottomOf="@id/title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/title" />

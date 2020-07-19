@@ -8,7 +8,7 @@ import com.kl.findix.util.extension.getDateTimeText
 
 class ProfileController(
     private val onClickMenu: (String) -> Unit
-): TypedEpoxyController<List<Order>?>() {
+) : TypedEpoxyController<List<Order>?>() {
 
     override fun buildModels(data: List<Order>?) {
         itemProfileOredersSectionHeader {
@@ -18,6 +18,7 @@ class ProfileController(
             itemProfileOrderList {
                 id("order_${order.orderId}")
                 order(order)
+                isShownMenu(true)
                 order.timeStamp?.let {
                     dateTime(getDateTimeText(it))
                 }

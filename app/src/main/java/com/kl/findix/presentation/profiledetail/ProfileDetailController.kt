@@ -21,6 +21,7 @@ class ProfileDetailController : TypedEpoxyController<List<Order>?>() {
             itemProfileOrderList {
                 id("order_${order.orderId}")
                 order(order)
+                isShownMenu(false)
                 order.timeStamp?.let {
                     dateTime(getDateTimeText(it))
                 }
