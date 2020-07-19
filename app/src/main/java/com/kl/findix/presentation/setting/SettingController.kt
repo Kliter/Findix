@@ -1,7 +1,9 @@
 package com.kl.findix.presentation.setting
 
 import com.airbnb.epoxy.EpoxyController
+import com.kl.findix.BuildConfig
 import com.kl.findix.itemSettingSectionHeader
+import com.kl.findix.itemSettingSelectorAppVersion
 import com.kl.findix.itemSettingSelectorList
 
 class SettingController(
@@ -55,9 +57,9 @@ class SettingController(
                 onClickLicenses.invoke()
             }
         }
-        itemSettingSelectorList {
+        itemSettingSelectorAppVersion {
             id(modelCountBuiltSoFar)
-            selectorText("App Version")
+            versionName(BuildConfig.VERSION_NAME)
         }
     }
 }
