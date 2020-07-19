@@ -2,6 +2,7 @@ package com.kl.findix.presentation.setting
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -81,7 +82,11 @@ class SettingFragment : Fragment() {
                 }
             },
             onClickContactUs = {
-                // Todo
+                val intent = Intent(Intent.ACTION_SENDTO)
+                intent.data = Uri.parse("mailto:")
+                intent.putExtra(Intent.EXTRA_EMAIL, arrayOf("example@gmail.com")) // Todo: Fix address.
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Findix")
+                startActivity(intent)
             },
             onClickPrivacyPolicy = {
 
