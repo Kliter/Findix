@@ -7,7 +7,7 @@
     <string name="button_sign_in">Sign In</string>
 
     <string name="web_client_key">983690829081-n0lfljm32e8q33bmthuo97i1s9l91rdt.apps.googleusercontent.com</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_setting">Setting</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
 

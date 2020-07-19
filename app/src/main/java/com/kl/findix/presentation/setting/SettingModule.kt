@@ -1,4 +1,4 @@
-package com.kl.findix.presentation.photo
+package com.kl.findix.presentation.setting
 
 import androidx.lifecycle.ViewModel
 import com.kl.findix.di.FragmentScoped
@@ -10,14 +10,14 @@ import dagger.multibindings.IntoMap
 
 @Module
 @Suppress("UNUSED")
-abstract class PhotoModule {
+abstract class SettingModule {
 
     @FragmentScoped
     @ContributesAndroidInjector
-    abstract fun contributeProfileFragment(): PhotoFragment
+    abstract fun contributeSettingFragment(): SettingFragment
 
     @Binds
     @IntoMap
-    @ViewModelKey(PhotoViewModel::class)
-    abstract fun bindPhotoViewModel(viewModel: PhotoViewModel): ViewModel
+    @ViewModelKey(SettingViewModel::class)
+    abstract fun bindSettingViewModel(viewModel: SettingViewModel): ViewModel
 }

@@ -27,7 +27,7 @@ import javax.inject.Inject
 class ProfileFragment : Fragment() {
 
     companion object {
-        private const val TAG = "MapsFragment"
+        private const val TAG = "ProfileFragment"
         private const val PHOTO_INDEX_1 = 1
         private const val PHOTO_INDEX_2 = 2
         private const val PHOTO_INDEX_3 = 3
@@ -64,7 +64,6 @@ class ProfileFragment : Fragment() {
         ).apply {
             lifecycleOwner = this@ProfileFragment
             viewModel = _viewModel
-            toolbar.setTitle(R.string.action_profile)
             this.setOnClickUserMenu {
                 val dialog = UserMenuBottomSheetDialog.newInstance()
                 dialog.show(childFragmentManager, "UserMenu")

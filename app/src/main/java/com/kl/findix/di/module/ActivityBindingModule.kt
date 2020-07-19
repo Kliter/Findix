@@ -12,6 +12,7 @@ import com.kl.findix.presentation.photo.PhotoModule
 import com.kl.findix.presentation.profile.ProfileModule
 import com.kl.findix.presentation.profiledetail.ProfileDetailModule
 import com.kl.findix.presentation.profileedit.ProfileEditModule
+import com.kl.findix.presentation.setting.SettingModule
 import com.kl.findix.presentation.signup.SignUpModule
 import com.kl.findix.presentation.splash.SplashModule
 import dagger.Module
@@ -47,7 +48,8 @@ abstract class ActivityBindingModule {
             SignUpModule::class,
             SplashModule::class,
             PhotoModule::class,
-            NavModule::class
+            NavModule::class,
+            SettingModule::class
         ]
     )
     abstract fun mainActivity(): MainActivity

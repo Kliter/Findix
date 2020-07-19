@@ -104,6 +104,14 @@
     </fragment>
 
     <fragment
+            android:id="@+id/fragment_setting"
+            android:name="com.kl.findix.presentation.setting.SettingFragment"
+            android:label="Setting">
+
+
+    </fragment>
+
+    <fragment
             android:id="@+id/fragment_create_order"
             android:name="com.kl.findix.presentation.createorder.CreateOrderFragment"
             android:label="CreateOrder" />
